@@ -7,6 +7,8 @@ class ImageColumn extends StatefulWidget {
 
 class _ImageColumnState extends State<ImageColumn> {
   bool _showImages = false;
+  //hover button variable, it will help us to find allbutton hover state
+  bool _allButtonhour = false;
 
   void _toggleImages() {
     setState(() {
@@ -52,20 +54,35 @@ class _ImageColumnState extends State<ImageColumn> {
               Row(
                 children: [
                   Container(
+                    //
                     child: TextButton(
                       onPressed: _toggleImages,
-                      child: Text('All'),
+                      onHover: (val) {
+                        if (val == true) {
+                          _allButtonhour = true;
+                        } else {
+                          _allButtonhour = false;
+                        }
+                        setState(() {});
+                      },
+                      child: Text(
+                        'All',
+                        style: TextStyle(
+                            color: _allButtonhour == true
+                                ? Colors.white
+                                : Colors.blueAccent),
+                      ),
                     ),
                     width: 40,
                     height: 29,
                     decoration: BoxDecoration(
+                      color: _allButtonhour == true ? Colors.blueAccent : null,
                       border: Border.all(
                         width: 1,
                         color: Colors.blueAccent,
                       ),
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.all(14.0),
                     child: Container(
