@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:originalmorals/aboutscreen.dart';
 import 'package:originalmorals/contactscreen.dart';
 import 'package:originalmorals/portfolio.dart';
+import 'package:originalmorals/skillscreen.dart';
 
 import 'experience screen.dart';
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: Aboutscreen(),
+      home: Skillscreen(),
     );
   }
 }
