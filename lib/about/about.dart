@@ -59,7 +59,9 @@ class _About extends State<About> {
                       height: getProportionHieght(20),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+
+                      },
                       child: getTextStyle(
                           "ABOUT", FontWeight.w500, Colors.white, 20),
                     ),
@@ -67,7 +69,9 @@ class _About extends State<About> {
                       height: getProportionHieght(10),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+
+                      },
                       child: getTextStyle(
                           "EXPERIENCE", FontWeight.w500, Colors.white, 20),
                     ),
@@ -184,7 +188,7 @@ class _About extends State<About> {
                         height: 30,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 800.0),
+                        padding: const EdgeInsets.only(right: 700.0),
                         child: getTextStyle(
                             "I am experienced in leveraging agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.",
                             FontWeight.normal,

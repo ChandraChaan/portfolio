@@ -35,7 +35,7 @@ class _ExperienceState extends State<Experience> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                height: getProportionHieght(180),
+                height: getProportionHieght(243),
                 width: getProportionWidth(140),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -94,7 +94,7 @@ class _ExperienceState extends State<Experience> {
                 ),
               ),
               Container(
-                height: getProportionHieght(180),
+                height: getProportionHieght(243),
                 width: getProportionWidth(140),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -159,7 +159,7 @@ class _ExperienceState extends State<Experience> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                height: getProportionHieght(180),
+                height: getProportionHieght(243),
                 width: getProportionWidth(140),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -218,7 +218,7 @@ class _ExperienceState extends State<Experience> {
                 ),
               ),
               Container(
-                height: getProportionHieght(180),
+                height: getProportionHieght(243),
                 width: getProportionWidth(140),
                 decoration: BoxDecoration(
                   color: Colors.white,

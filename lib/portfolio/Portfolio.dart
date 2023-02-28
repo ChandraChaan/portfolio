@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -10,11 +11,12 @@ import '../utils/font_style.dart';
 class Portfolio extends StatefulWidget {
   @override
   State<Portfolio> createState() => _PortfolioState();
+
 }
 
 Widget gridView(int itemCounts, List<String> images) {
   return SizedBox(
-    height: getProportionHieght(550),
+    height: getProportionHieght(500),
     width: getProportionWidth(250),
     child: GridView.builder(
       itemCount: itemCounts,
@@ -49,6 +51,11 @@ class _PortfolioState extends State<Portfolio> {
 
   //hover button variable, it will help us to find allbutton hover state
   bool _allButtonhour = false;
+  bool _allButtonhour2 = false;
+  bool _allButtonhour3 = false;
+  bool _allButtonhour4 = false;
+
+  set isHover(bool isHover) {}
 
   void allImages() {
     setState(() {
@@ -94,11 +101,12 @@ class _PortfolioState extends State<Portfolio> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     SizexGet().init(context);
     return Container(
-        height: getProportionHieght(812),
+        height: getProportionHieght(802),
         width: getProportionWidth(315),
         color: Colors.grey[200],
         child: Column(children: [
@@ -115,14 +123,14 @@ class _PortfolioState extends State<Portfolio> {
             color: Colors.blue,
           ),
           SizedBox(
-            height: getProportionHieght(60),
+            height: getProportionHieght(50),
           ),
           FittedBox(
             child: Row(
               children: [
                 Container(
                   width: getProportionWidth(16),
-                  height: getProportionHieght(35),
+                  height: getProportionHieght(40),
                   decoration: BoxDecoration(
                     color: _allButtonhour == true ? Colors.blueAccent : null,
                     border: Border.all(
@@ -132,13 +140,25 @@ class _PortfolioState extends State<Portfolio> {
                   ),
                   child: FittedBox(
                     child: TextButton(
+                        onHover: (val){
+                          _allButtonhour = val;
+                          setState(() {
+
+
+
+                          });
+                        },
+
+
                         onPressed: allImages,
                         child: AutoSizeText(
                           "ALL",
-                          style: GoogleFonts.abyssinicaSil(
+
+                            style: GoogleFonts.abyssinicaSil(
                               textStyle: TextStyle(
+
                                   color: _allButtonhour == true
-                                      ? Colors.amber
+                                      ? Colors.white
                                       : Colors.blueAccent,
                                   fontSize: 20)),
                         )),
@@ -148,23 +168,30 @@ class _PortfolioState extends State<Portfolio> {
                   width: getProportionWidth(5),
                 ),
                 Container(
-                  width: getProportionWidth(26),
-                  height: getProportionHieght(35),
+                  width: getProportionWidth(36),
+                  height: getProportionHieght(40),
                   decoration: BoxDecoration(
-                    color: _allButtonhour == true ? Colors.blueAccent : null,
+                    color: _allButtonhour2 == true ? Colors.blueAccent : null,
                     border: Border.all(
                       width: 1,
                       color: Colors.blueAccent,
                     ),
                   ),
                   child: TextButton(
+                      onHover: (val2){
+                        _allButtonhour2 = val2;
+                        setState(() {
+
+
+                        });
+                      },
                       onPressed: webDesignImages,
                       child: AutoSizeText(
                         "WEB DESIGN",
                         style: GoogleFonts.abyssinicaSil(
                             textStyle: TextStyle(
-                                color: _allButtonhour == true
-                                    ? Colors.amber
+                                color: _allButtonhour2 == true
+                                    ? Colors.white
                                     : Colors.blueAccent,
                                 fontSize: 20)),
                       )),
@@ -173,23 +200,30 @@ class _PortfolioState extends State<Portfolio> {
                   width: getProportionWidth(5),
                 ),
                 Container(
-                  width: getProportionWidth(30),
-                  height: getProportionHieght(35),
+                  width: getProportionWidth(37),
+                  height: getProportionHieght(40),
                   decoration: BoxDecoration(
-                    color: _allButtonhour == true ? Colors.blueAccent : null,
+                    color: _allButtonhour3 == true ? Colors.blueAccent : null,
                     border: Border.all(
                       width: 1,
                       color: Colors.blueAccent,
                     ),
                   ),
                   child: TextButton(
+                    onHover: (val3){
+                      _allButtonhour3 = val3;
+                      setState(() {
+
+
+                      });
+                    },
                       onPressed: mobileAppImages,
                       child: AutoSizeText(
                         "MOBILE APP",
                         style: GoogleFonts.abyssinicaSil(
                             textStyle: TextStyle(
-                                color: _allButtonhour == true
-                                    ? Colors.amber
+                                color: _allButtonhour3 == true
+                                    ? Colors.white
                                     : Colors.blueAccent,
                                 fontSize: 20)),
                       )),
@@ -198,23 +232,30 @@ class _PortfolioState extends State<Portfolio> {
                   width: getProportionWidth(5),
                 ),
                 Container(
-                  width: getProportionWidth(36),
-                  height: getProportionHieght(35),
+                  width: getProportionWidth(45),
+                  height: getProportionHieght(40),
                   decoration: BoxDecoration(
-                    color: _allButtonhour == true ? Colors.blueAccent : null,
+                    color: _allButtonhour4 == true ? Colors.blueAccent : null,
                     border: Border.all(
                       width: 1,
                       color: Colors.blueAccent,
                     ),
                   ),
                   child: TextButton(
+                      onHover: (val4){
+                        _allButtonhour4 = val4;
+                        setState(() {
+
+
+                        });
+                      },
                       onPressed: graphicDesignImages,
                       child: AutoSizeText(
                         "GRAPHICS DESIGN",
                         style: GoogleFonts.abyssinicaSil(
                             textStyle: TextStyle(
-                                color: _allButtonhour == true
-                                    ? Colors.amber
+                                color: _allButtonhour4 == true
+                                    ? Colors.white
                                     : Colors.blueAccent,
                                 fontSize: 20)),
                       )),
