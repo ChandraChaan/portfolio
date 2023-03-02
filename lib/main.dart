@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:originalmorals/providers/user_info.dart';
+import 'package:provider/provider.dart';
 
 import 'about/about.dart';
+import 'home_screen.dart';
 
 void main() {
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
@@ -12,13 +16,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: ((_) => UserInfo())),
+      ],
+      child: MaterialApp(
+        title: 'Flutter',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        debugShowCheckedModeBanner: false,
+        home:  MyHomePage()
       ),
-      debugShowCheckedModeBanner: false,
-      home: const About()
     );
   }
 }
