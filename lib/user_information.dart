@@ -15,10 +15,7 @@ class _UserInformationState extends State<UserInformation> {
     return Scaffold(
       body: Center(child: Column(
         children: [
-
-          Text(context.watch<UserInfo>().name.toString()),
-          Text('Age : '+context.watch<UserInfo>().age.toString()),
-          Text('skill : html ,css, javascript'),
+          Text(context.watch<UserInfo>().user.toString()),
         ],
       ),),
     );
