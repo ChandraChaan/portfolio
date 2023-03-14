@@ -5,15 +5,20 @@ import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
 
 class Experience extends StatefulWidget {
+  static var length;
+
   @override
   State<Experience> createState() => _ExperienceState();
+
 }
 
 class _ExperienceState extends State<Experience> {
   @override
   Widget build(BuildContext context) {
     SizexGet().init(context);
+
     return Container(
+
         height: getProportionHieght(812),
         width: getProportionWidth(315),
         color: Colors.grey[200],

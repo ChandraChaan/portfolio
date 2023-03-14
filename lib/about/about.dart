@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-
 import '../awards/Awards.dart';
 import '../contact/Contact.dart';
 import '../experience/Experience.dart';
 import '../portfolio/Portfolio.dart';
 import '../providers/user_info.dart';
 import '../skills/Skills.dart';
-import '../user_information.dart';
 import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
 
 class About extends StatefulWidget {
-  const About({super.key});
-
   @override
   State<About> createState() => _About();
 }
 
 class _About extends State<About> {
+  final _scrollController = ScrollController();
+  final _sections = [
+    'Section 1',
+    'Section 2',
+    'Section 3',
+    'Section 4',
+    'Section 5',
+    'Section 6'
+  ];
   var searchTerm = "";
   var isSearching = false;
+
+  get item => null;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +73,9 @@ class _About extends State<About> {
                           height: getProportionHieght(20),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _scrollToTop();
+                          },
                           child: getTextStyle(
                               "ABOUT", FontWeight.w500, Colors.white, 20),
                         ),
@@ -74,7 +83,9 @@ class _About extends State<About> {
                           height: getProportionHieght(10),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _scrollToSection(1);
+                          },
                           child: getTextStyle(
                               "EXPERIENCE", FontWeight.w500, Colors.white, 20),
                         ),
@@ -82,7 +93,9 @@ class _About extends State<About> {
                           height: getProportionHieght(10),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _scrollToSection(2);
+                          },
                           child: getTextStyle(
                               "PORTFOLIO", FontWeight.w500, Colors.white, 20),
                         ),
@@ -90,21 +103,27 @@ class _About extends State<About> {
                           height: getProportionHieght(10),
                         ),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _scrollToSection(3);
+                            },
                             child: getTextStyle(
                                 "SKILLS", FontWeight.w500, Colors.white, 20)),
                         SizedBox(
                           height: getProportionHieght(10),
                         ),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _scrollToSection(4);
+                            },
                             child: getTextStyle(
                                 "AWARDS", FontWeight.w500, Colors.white, 20)),
                         SizedBox(
                           height: getProportionHieght(10),
                         ),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _scrollToSection(5);
+                            },
                             child: getTextStyle(
                                 "CONTACT", FontWeight.w500, Colors.white, 20)),
                       ],
@@ -114,7 +133,7 @@ class _About extends State<About> {
               ],
             ),
             SingleChildScrollView(
-              scrollDirection: Axis.vertical,
+              controller: _scrollController,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -277,13 +296,43 @@ class _About extends State<About> {
                   Portfolio(),
                   Skills(),
                   Awards(),
-                  Contact()
+                  Contact(),
                 ],
               ),
-            )
+            ),
           ],
         ));
       },
+    );
+  }
+
+  Widget _buildSection(String title, Color color) {
+    return Container(
+      height: 500,
+      color: color,
+      child: Center(
+        child: Text(
+          title,
+          style: const TextStyle(fontSize: 30),
+        ),
+      ),
+    );
+  }
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _scrollToSection(int sectionIndex) {
+    final sectionPosition = sectionIndex * MediaQuery.of(context).size.height;
+    _scrollController.animateTo(
+      sectionPosition,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
     );
   }
 }

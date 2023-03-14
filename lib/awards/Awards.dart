@@ -17,12 +17,12 @@ class _AwardsState extends State<Awards> {
   Widget build(BuildContext context) {
     SizexGet().init(context);
     return Container(
-      height: getProportionHieght(716),
+      height: getProportionHieght(670),
       width: getProportionWidth(315),
       color: Colors.grey[200],
       child: Column(
         children: [
-          SizedBox(height: getProportionHieght(150),),
+          SizedBox(height: getProportionHieght(100),),
           getTextStyle("AWARDS", FontWeight.bold, Colors.black, 50),
           const SizedBox(
             height: 10,
@@ -32,7 +32,7 @@ class _AwardsState extends State<Awards> {
             width: getProportionWidth(20),
             color: Colors.blue,
           ),
-          const SizedBox(height: 90.0,),
+          const SizedBox(height: 70.0,),
     TimelineTile(
     alignment: TimelineAlign.center,
     lineXY: 0.2,

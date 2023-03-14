@@ -4,15 +4,21 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
 
+
+
 class Skills extends StatefulWidget {
   @override
   State<Skills> createState() => _SkillsState();
+
 }
 
 class _SkillsState extends State<Skills> {
   @override
   Widget build(BuildContext context) {
     SizexGet().init(context);
+    var percent;
+
+
     return Container(
       width: getProportionWidth(315),
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:originalmorals/providers/user_info.dart';
+import 'package:originalmorals/scrollnavigation_screen.dart';
+import 'package:originalmorals/skills/Skills.dart';
 import 'package:provider/provider.dart';
 
 import 'about/about.dart';
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
-        home:  MyHomePage()
+        home: About(),
       ),
     );
   }
