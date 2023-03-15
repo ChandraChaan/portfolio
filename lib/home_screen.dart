@@ -59,8 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       if (context.read<UserInfo>().userDeatile(_name.text)) {
-                        // Navigator.push(context,
-                        //     MaterialPageRoute(builder: (context) => About()));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => About()));
                       } else {
                         showDialog(
                           context: context,
