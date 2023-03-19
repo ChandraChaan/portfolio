@@ -110,7 +110,7 @@ class _AwardsState extends State<Awards> {
               ),
             ),
           ),
-          const SizedBox(width: 50,),
+          // const SizedBox(width: 50,),
         ],
       ),
 

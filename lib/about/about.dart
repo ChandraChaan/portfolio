@@ -9,6 +9,8 @@ import '../providers/user_info.dart';
 import '../skills/Skills.dart';
 import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
+import 'package:sizer/sizer.dart';
+
 
 class About extends StatefulWidget {
   @override

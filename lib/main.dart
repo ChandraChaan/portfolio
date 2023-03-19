@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:originalmorals/about/about.dart';
 import 'package:originalmorals/providers/user_info.dart';
-import 'package:originalmorals/scrollnavigation_screen.dart';
-import 'package:originalmorals/skills/Skills.dart';
+// import 'package:originalmorals/scrollnavigation_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
-import 'about/about.dart';
-import 'home_screen.dart';
+void main()  {
 
-void main() {
   runApp(const MyApp());
-
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -18,6 +18,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    return Sizer(builder : (context,orientation, deviceType){
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: ((_) => UserInfo())),
@@ -31,5 +33,6 @@ class MyApp extends StatelessWidget {
         home: About(),
       ),
     );
+  });
   }
 }
