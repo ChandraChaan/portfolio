@@ -1,11 +1,12 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:originalmorals/about/about.dart';
-import 'package:originalmorals/providers/user_info.dart';
+import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import 'local_pushnotifications.dart';
+import 'about/about.dart';
+
+// import 'local_pushnotifications.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

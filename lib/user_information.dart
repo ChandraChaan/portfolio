@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:originalmorals/providers/user_info.dart';
+import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
 
 class UserInformation extends StatefulWidget {

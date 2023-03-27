@@ -1,6 +1,6 @@
-# originalmorals
+# portfoli_web
 
-A new Flutter project.
+this is resume type website.
 
 ## Getting Started
 
