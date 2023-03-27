@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import '../awards/Awards.dart';
-import '../contact/Contact.dart';
-import '../experience/Experience.dart';
-import '../portfolio/Portfolio.dart';
+import '../awards/awards.dart';
+import '../contact/contact.dart';
+import '../experience/experience.dart';
+import '../portfolio/portfolio.dart';
 import '../providers/user_info.dart';
-import '../skills/Skills.dart';
+import '../skills/skills.dart';
 import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
 import 'package:sizer/sizer.dart';
