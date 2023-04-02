@@ -21,6 +21,7 @@ class _AboutState extends State<About> {
   Widget build(BuildContext context) {
     SizexGet().init(context);
     return Consumer<UserInfo>(builder: (context, provider, child) {
+      provider.removeLastNameOnUser();
       return Container(
         height: getProportionHieght(812),
         width: getProportionWidth(315),
@@ -65,31 +66,22 @@ class _AboutState extends State<About> {
               FittedBox(
                 child: Row(
                   children: [
-                    getTextStyle("${provider.user.toUpperCase()}",
+                    getTextStyle(provider.userFirstName.toUpperCase(),
                         FontWeight.bold, Colors.black, 70),
                     SizedBox(
                       width: getProportionWidth(5),
                     ),
                     getTextStyle(
-                        "BONSEN", FontWeight.bold, Colors.blue, 70),
+                        provider.user.split(' ').last.toUpperCase(), FontWeight.bold, Colors.blue, 70),
                   ],
                 ),
               ),
               FittedBox(
-                child: Row(
-                  children: [
-                    getTextStyle(
-                        "THE NEXT BIG IDEA IS WAITING FOR ITS NEXT BIG CHANGER WITH ",
-                        FontWeight.bold,
-                        Colors.black45,
-                        20),
-                    SizedBox(
-                      width: getProportionWidth(1),
-                    ),
-                    getTextStyle("THEMSBIT", FontWeight.bold,
-                        Colors.blue, 20),
-                  ],
-                ),
+                child: getTextStyle(
+                    provider.smallTagline,
+                    FontWeight.bold,
+                    Colors.black45,
+                    20),
               ),
               const SizedBox(
                 height: 30,
@@ -97,7 +89,7 @@ class _AboutState extends State<About> {
               Padding(
                 padding: const EdgeInsets.only(right: 700.0),
                 child: getTextStyle(
-                    "I am experienced in leveraging agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.",
+                  provider.bigTagline,
                     FontWeight.normal,
                     Colors.black38,
                     20),

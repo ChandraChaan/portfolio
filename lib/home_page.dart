@@ -21,18 +21,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   final _scrollController = ScrollController();
-  final _sections = [
-    'Section 1',
-    'Section 2',
-    'Section 3',
-    'Section 4',
-    'Section 5',
-    'Section 6'
-  ];
-  var searchTerm = "";
-  var isSearching = false;
-
-  get item => null;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +30,7 @@ class _HomePage extends State<HomePage> {
         return Scaffold(
             body: Row(
               children: [
+                // side menu
                 Column(
                   children: [
                     FittedBox(
@@ -136,6 +125,7 @@ class _HomePage extends State<HomePage> {
                     )
                   ],
                 ),
+                // body
                 SingleChildScrollView(
                   controller: _scrollController,
                   child: Column(
@@ -153,19 +143,6 @@ class _HomePage extends State<HomePage> {
               ],
             ));
       },
-    );
-  }
-
-  Widget _buildSection(String title, Color color) {
-    return Container(
-      height: 500,
-      color: color,
-      child: Center(
-        child: Text(
-          title,
-          style: const TextStyle(fontSize: 30),
-        ),
-      ),
     );
   }
 
