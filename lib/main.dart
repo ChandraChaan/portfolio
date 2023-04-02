@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import 'about/about.dart';
+import 'home_page.dart';
 
 // import 'local_pushnotifications.dart';
 
@@ -40,13 +41,13 @@ void main() async {
   );
 
 
-  runApp(const MyApp());
+  runApp(const RoleApp());
 }
 
 
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class RoleApp extends StatelessWidget {
+  const RoleApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
-        home: About(),
+        home: HomePage(),
       ),
     );
   });

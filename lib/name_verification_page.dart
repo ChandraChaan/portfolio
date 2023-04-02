@@ -6,12 +6,12 @@ import 'package:provider/provider.dart';
 
 import 'about/about.dart';
 
-class MyHomePage extends StatefulWidget {
+class NameVerificationPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _NameVerificationPageState createState() => _NameVerificationPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _NameVerificationPageState extends State<NameVerificationPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _name = TextEditingController();
 
