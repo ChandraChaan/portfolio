@@ -9,16 +9,18 @@ import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
 
 class Portfolio extends StatefulWidget {
+  const Portfolio({super.key});
+
   @override
   State<Portfolio> createState() => _PortfolioState();
 }
 
-Widget gridView(int itemCounts, List<String> images) {
+Widget gridView(List<String> images) {
   return SizedBox(
-    height: getProportionHieght(500),
+    height: getProportionHieght(750),
     width: getProportionWidth(250),
     child: GridView.builder(
-      itemCount: itemCounts,
+      itemCount: images.length,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -105,7 +107,7 @@ class _PortfolioState extends State<Portfolio> {
   Widget build(BuildContext context) {
     SizexGet().init(context);
     return Container(
-        height: getProportionHieght(802),
+        height: getProportionHieght(1002),
         width: getProportionWidth(315),
         color: Colors.grey[200],
         child: Column(children: [
@@ -264,7 +266,7 @@ class _PortfolioState extends State<Portfolio> {
             height: getProportionHieght(35),
           ),
           _showAllImages
-              ? gridView(4, [
+              ? gridView([
                   "https://picsum.photos/200",
                   "https://picsum.photos/200",
                   "https://picsum.photos/200",
@@ -272,10 +274,10 @@ class _PortfolioState extends State<Portfolio> {
                 ])
               : const SizedBox(),
           _showWebDesignImages
-              ? gridView(1, ["https://picsum.photos/200"])
+              ? gridView(["https://picsum.photos/200"])
               : const SizedBox(),
           _showMobileAppImages
-              ? gridView(3, [
+              ? gridView([
                   "https://picsum.photos/200",
                   "https://picsum.photos/200",
                   "https://picsum.photos/200"
@@ -283,7 +285,7 @@ class _PortfolioState extends State<Portfolio> {
               : const SizedBox(),
           _showGraphicDesignImages
               ? gridView(
-                  2, ["https://picsum.photos/200", "https://picsum.photos/200"])
+                   ["https://picsum.photos/200", "https://picsum.photos/200"])
               : const SizedBox(),
           // SizedBox(height: getProportionHieght(50),)
         ]));

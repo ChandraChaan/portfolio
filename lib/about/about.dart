@@ -19,12 +19,11 @@ class _AboutState extends State<About> {
 
   @override
   Widget build(BuildContext context) {
-    SizexGet().init(context);
     return Consumer<UserInfo>(builder: (context, provider, child) {
       provider.removeLastNameOnUser();
       return Container(
-        height: getProportionHieght(812),
-        width: getProportionWidth(315),
+        height: MediaQuery.of(context).size.height,
+        width: double.infinity,
         decoration: const BoxDecoration(
           // borderRadius: BorderRadius.all(Radius.circular(100)),
             image: DecorationImage(
@@ -37,29 +36,29 @@ class _AboutState extends State<About> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FittedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: getProportionHieght(100),
-                      width: getProportionWidth(40),
-                      decoration: const BoxDecoration(
-                        // borderRadius: BorderRadius.all(Radius.circular(100)),
-                          image: DecorationImage(
-                            image:
-                            AssetImage("assets/profile_logo.jpg"),
-                            fit: BoxFit.fill,
-                          )),
-                    ),
-                    SizedBox(
-                      width: getProportionWidth(3),
-                    ),
-                    getTextStyle("profile", FontWeight.bold,
-                        Colors.blue, 50),
-                  ],
-                ),
-              ),
+              // FittedBox(
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: [
+              //       Container(
+              //         height: 100,
+              //         width: 40,
+              //         decoration: const BoxDecoration(
+              //           // borderRadius: BorderRadius.all(Radius.circular(100)),
+              //             image: DecorationImage(
+              //               image:
+              //               AssetImage("assets/profile_logo.jpg"),
+              //               fit: BoxFit.fill,
+              //             )),
+              //       ),
+              //       const SizedBox(
+              //         width: 3,
+              //       ),
+              //       getTextStyle("profile", FontWeight.bold,
+              //           Colors.blue, 50),
+              //     ],
+              //   ),
+              // ),
               const SizedBox(
                 height: 30,
               ),
@@ -68,8 +67,8 @@ class _AboutState extends State<About> {
                   children: [
                     getTextStyle(provider.userFirstName.toUpperCase(),
                         FontWeight.bold, Colors.black, 70),
-                    SizedBox(
-                      width: getProportionWidth(5),
+                    const SizedBox(
+                      width: 5,
                     ),
                     getTextStyle(
                         provider.user.split(' ').last.toUpperCase(), FontWeight.bold, Colors.blue, 70),
@@ -86,6 +85,7 @@ class _AboutState extends State<About> {
               const SizedBox(
                 height: 30,
               ),
+              // please do not use static padding, please found alternate here
               Padding(
                 padding: const EdgeInsets.only(right: 700.0),
                 child: getTextStyle(
