@@ -1,10 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import 'dart:convert';
 import 'dart:io';
 
+import '../providers/user_info.dart';
 import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
 
@@ -105,189 +107,116 @@ class _PortfolioState extends State<Portfolio> {
 
   @override
   Widget build(BuildContext context) {
-    SizexGet().init(context);
-    return Container(
-        height: getProportionHieght(1002),
-        width: getProportionWidth(315),
-        color: Colors.grey[200],
-        child: Column(children: [
-          // SizedBox(
-          //   height: getProportionHieght(50),
-          // ),
-          getTextStyle("Portfolio", FontWeight.bold, Colors.black, 50),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            height: getProportionHieght(6),
-            width: getProportionWidth(20),
-            color: Colors.blue,
-          ),
-          SizedBox(
-            height: getProportionHieght(50),
-          ),
-          FittedBox(
-            child: Row(
-              children: [
-                Container(
-                  width: getProportionWidth(16),
-                  height: getProportionHieght(40),
-                  decoration: BoxDecoration(
-                    color: (_allButtonhour == true || _showAllImages == true)
-                        ? Colors.blueAccent
-                        : null,
-                    border: Border.all(
-                      width: 1,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                  child: FittedBox(
-                    child: TextButton(
-                        onHover: (val) {
-                          _allButtonhour = val;
-                          setState(() {});
-                        },
-                        onPressed: allImages,
-                        child: AutoSizeText(
-                          "ALL",
-                          style: GoogleFonts.abyssinicaSil(
-                              textStyle: TextStyle(
-                                  color: (_allButtonhour == true ||
-                                          _showAllImages == true)
-                                      ? Colors.white
-                                      : Colors.blueAccent,
-                                  fontSize: 20)),
-                        )),
-                  ),
+    return Consumer<UserInfo>(
+      builder: (context, provider, child) {
+        provider.imagesListModifiying();
+        return provider.pImages.isNotEmpty
+            ? Column(children: [
+                const SizedBox(
+                  height: (50),
                 ),
-                SizedBox(
-                  width: getProportionWidth(5),
+                getTextStyle("Portfolio", FontWeight.bold, Colors.black, 50),
+                const SizedBox(
+                  height: 10,
                 ),
                 Container(
-                  width: getProportionWidth(36),
-                  height: getProportionHieght(40),
-                  decoration: BoxDecoration(
-                    color: (_allButtonhour2 == true ||
-                            _showWebDesignImages == true)
-                        ? Colors.blueAccent
-                        : null,
-                    border: Border.all(
-                      width: 1,
-                      color: Colors.blueAccent,
+                  height: (6),
+                  width: (120),
+                  color: Colors.blue,
+                ),
+                const SizedBox(
+                  height: (50),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
+                        child: TextButton(
+                            onHover: (val) {},
+                            onPressed: () {
+                              provider.imagesListModifiying();
+                            },
+                            child: Text(
+                              'ALL',
+                              style: GoogleFonts.abyssinicaSil(
+                                  textStyle: const TextStyle(
+                                      color: Colors.blueAccent, fontSize: 20)),
+                            )),
+                      ),
                     ),
+                    for (int c = 0; c < provider.imagesKeys.length; c++)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Container(
+                          // width: (36),
+                          // height: (40),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                          child: TextButton(
+                              onHover: (val) {},
+                              onPressed: () {
+                                provider.imageFilter(provider.imagesKeys[c]);
+                              },
+                              child: Text(
+                                '${provider.imagesKeys[c]}'.toUpperCase(),
+                                style: GoogleFonts.abyssinicaSil(
+                                    textStyle: const TextStyle(
+                                        color: Colors.blueAccent,
+                                        fontSize: 20)),
+                              )),
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(
+                  height: (35),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: GridView.builder(
+                    itemCount: provider.pImages.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 18.0,
+                            childAspectRatio: 2,
+                            mainAxisSpacing: 18.0),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Image.network(
+                          provider.pImages[index]['img'],
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    },
                   ),
-                  child: TextButton(
-                      onHover: (val2) {
-                        _allButtonhour2 = val2;
-                        setState(() {});
-                      },
-                      onPressed: webDesignImages,
-                      child: AutoSizeText(
-                        "WEB DESIGN",
-                        style: GoogleFonts.abyssinicaSil(
-                            textStyle: TextStyle(
-                                color: (_allButtonhour2 == true ||
-                                        _showWebDesignImages == true)
-                                    ? Colors.white
-                                    : Colors.blueAccent,
-                                fontSize: 20)),
-                      )),
                 ),
-                SizedBox(
-                  width: getProportionWidth(5),
+                const SizedBox(
+                  height: 50,
                 ),
-                Container(
-                  width: getProportionWidth(37),
-                  height: getProportionHieght(40),
-                  decoration: BoxDecoration(
-                    color: (_allButtonhour3 == true ||
-                            _showMobileAppImages == true)
-                        ? Colors.blueAccent
-                        : null,
-                    border: Border.all(
-                      width: 1,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                  child: TextButton(
-                      onHover: (val3) {
-                        _allButtonhour3 = val3;
-                        setState(() {});
-                      },
-                      onPressed: mobileAppImages,
-                      child: AutoSizeText(
-                        "MOBILE APP",
-                        style: GoogleFonts.abyssinicaSil(
-                            textStyle: TextStyle(
-                                color: (_allButtonhour3 == true ||
-                                        _showMobileAppImages == true)
-                                    ? Colors.white
-                                    : Colors.blueAccent,
-                                fontSize: 20)),
-                      )),
-                ),
-                SizedBox(
-                  width: getProportionWidth(5),
-                ),
-                Container(
-                  width: getProportionWidth(45),
-                  height: getProportionHieght(40),
-                  decoration: BoxDecoration(
-                    color: (_allButtonhour4 == true ||
-                            _showGraphicDesignImages == true)
-                        ? Colors.blueAccent
-                        : null,
-                    border: Border.all(
-                      width: 1,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                  child: TextButton(
-                      onHover: (val4) {
-                        _allButtonhour4 = val4;
-                        setState(() {});
-                      },
-                      onPressed: graphicDesignImages,
-                      child: AutoSizeText(
-                        "GRAPHICS DESIGN",
-                        style: GoogleFonts.abyssinicaSil(
-                            textStyle: TextStyle(
-                                color: (_allButtonhour4 == true ||
-                                        _showGraphicDesignImages == true)
-                                    ? Colors.white
-                                    : Colors.blueAccent,
-                                fontSize: 20)),
-                      )),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: getProportionHieght(35),
-          ),
-          _showAllImages
-              ? gridView([
-                  "https://picsum.photos/200",
-                  "https://picsum.photos/200",
-                  "https://picsum.photos/200",
-                  "https://picsum.photos/200"
-                ])
-              : const SizedBox(),
-          _showWebDesignImages
-              ? gridView(["https://picsum.photos/200"])
-              : const SizedBox(),
-          _showMobileAppImages
-              ? gridView([
-                  "https://picsum.photos/200",
-                  "https://picsum.photos/200",
-                  "https://picsum.photos/200"
-                ])
-              : const SizedBox(),
-          _showGraphicDesignImages
-              ? gridView(
-                   ["https://picsum.photos/200", "https://picsum.photos/200"])
-              : const SizedBox(),
-          // SizedBox(height: getProportionHieght(50),)
-        ]));
+              ])
+            : const Center(child: CircularProgressIndicator());
+      },
+    );
   }
 }

@@ -66,4 +66,35 @@ class UserInfo extends ChangeNotifier {
       "score": "74%",
     },
   ];
+
+  Map imagesMap  = {
+      'ntr' : [
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg/1024px-N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg/1024px-N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg/1024px-N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg',
+      ],
+      'ram' : [
+        'https://static.toiimg.com/thumb/75733242.cms?width=680&height=512&imgsize=1099096',
+        'https://static.toiimg.com/thumb/msid-92543510,imgsize-48774,width-800,height-600,resizemode-75/92543510.jpg'
+      ]
+    };
+List imagesKeys = [];
+List pImages = [];
+  imagesListModifiying(){
+    imagesKeys.clear();
+    pImages.clear();
+    imagesKeys = imagesMap.keys.toList();
+    for(int a=0;a<imagesKeys.length; a++){
+      for(int i=0; i<imagesMap[imagesKeys[a]].length; i++) {
+        pImages.add({'img': '${imagesMap[imagesKeys[a]][i]}', 'type' : '${imagesKeys[a]}'});
+      }
+    }
+  }
+
+  imageFilter(String typ){
+    print('add filter to $typ');
+    pImages.where((o) => o['type'] == typ).toList();
+    print(pImages.toString());
+  }
+
 }
