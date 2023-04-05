@@ -17,14 +17,11 @@ class Skills extends StatefulWidget {
 class _SkillsState extends State<Skills> {
   @override
   Widget build(BuildContext context) {
-    SizexGet().init(context);
-    var percent;
-
     return Consumer<UserInfo>(
       builder: (context, provider, child) {
         return Container(
-          width: getProportionWidth(315),
-          height: getProportionHieght(1000),
+          width: double.infinity,
+          // height: (1000),
           decoration: const BoxDecoration(
             // borderRadius: BorderRadius.all(Radius.circular(100)),
               image: DecorationImage(
@@ -133,6 +130,7 @@ class _SkillsState extends State<Skills> {
                     // )
                   ],
                 ),
+                const SizedBox(height: 20,)
               ],
             ),
           ),

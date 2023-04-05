@@ -134,6 +134,7 @@ class _PortfolioState extends State<Portfolio> {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Container(
                         decoration: BoxDecoration(
+                          color: Colors.blueAccent,
                           border: Border.all(
                             width: 1,
                             color: Colors.blueAccent,
@@ -148,7 +149,7 @@ class _PortfolioState extends State<Portfolio> {
                               'ALL',
                               style: GoogleFonts.abyssinicaSil(
                                   textStyle: const TextStyle(
-                                      color: Colors.blueAccent, fontSize: 20)),
+                                      color: Colors.white, fontSize: 20)),
                             )),
                       ),
                     ),
