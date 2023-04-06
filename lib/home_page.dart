@@ -47,7 +47,7 @@ class _HomePage extends State<HomePage> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(100)),
                                 image: DecorationImage(
-                                  image: AssetImage("assets/profile_image.jpg"),
+                                  image: AssetImage("assets/profile.jpg"),
                                   fit: BoxFit.fill,
                                 ))),
                       ),

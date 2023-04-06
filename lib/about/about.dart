@@ -27,7 +27,7 @@ class _AboutState extends State<About> {
         decoration: const BoxDecoration(
           // borderRadius: BorderRadius.all(Radius.circular(100)),
             image: DecorationImage(
-              image: AssetImage("assets/background_image.jpg"),
+              image: AssetImage("assets/backGround-image.jpg"),
               fit: BoxFit.fill,
             )),
         child: Padding(
@@ -66,7 +66,7 @@ class _AboutState extends State<About> {
                 child: Row(
                   children: [
                     getTextStyle(provider.userFirstName.toUpperCase(),
-                        FontWeight.bold, Colors.black, 70),
+                        FontWeight.bold, Colors.white, 70),
                     const SizedBox(
                       width: 5,
                     ),
@@ -79,7 +79,7 @@ class _AboutState extends State<About> {
                 child: getTextStyle(
                     provider.smallTagline,
                     FontWeight.bold,
-                    Colors.black45,
+                    Colors.white54,
                     20),
               ),
               const SizedBox(
@@ -91,7 +91,7 @@ class _AboutState extends State<About> {
                 child: getTextStyle(
                   provider.bigTagline,
                     FontWeight.normal,
-                    Colors.black38,
+                    Colors.white38,
                     20),
               ),
               const SizedBox(

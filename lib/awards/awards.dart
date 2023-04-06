@@ -29,122 +29,86 @@ class _AwardsState extends State<Awards> {
           ),
           Container(
             height: (6),
-            width: (20),
+            width: (120),
             color: Colors.blue,
           ),
           const SizedBox(
             height: 70.0,
           ),
-          for(int i=0; i<3; i++)
+          for(int a=0;a<3;a++)
           TimelineTile(
             alignment: TimelineAlign.center,
             lineXY: 0.2,
             endChild: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: (10),
-                    ),
-                    Container(
-                      height: (220),
-                      width: (125),
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            right: 20.0, top: 20.0, bottom: 20.0, left: 60.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            FittedBox(
-                              child: getTextStyle("Apr 2017 - Mar 2018",
-                                  FontWeight.normal, Colors.blue, 19),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            FittedBox(
-                              child: getTextStyle(
-                                  "Google Analytics Certified Developer",
-                                  FontWeight.bold,
-                                  Colors.black,
-                                  19),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            AutoSizeText(
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mattis felis vitae risus pulvinar tincidunt. Nam ac venenatis enim. Aenean hendrerit justo sed. ",
-                              style: GoogleFonts.abyssinicaSil(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black45,
-                                    fontSize: 19),
-                              ),
-                              textAlign: TextAlign.right,
-                              maxLines: 3,
-                              minFontSize: 10,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                constraints: const BoxConstraints(
-                  minHeight: 170,
-                ),
                 color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(28.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Apr 2017 - Mar 2018",),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                          "Google Analytics Certified Developer",
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mattis felis vitae risus pulvinar tincidunt. Nam ac venenatis enim. Aenean hendrerit justo sed. ",
+                        style: GoogleFonts.abyssinicaSil(
+                          textStyle: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black45,
+                              fontSize: 19),
+                        ),
+                        textAlign: TextAlign.right,
+                        maxLines: 3,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             startChild: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      height: (245),
-                      width: (125),
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            right: 60.0, top: 20.0, bottom: 20.0, left: 20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            FittedBox(
-                              child: getTextStyle("Apr 2018 - Mar 2019",
-                                  FontWeight.normal, Colors.blue, 19),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            FittedBox(
-                              child: getTextStyle(
-                                  "Mobile Web Specialist - Google Certification",
-                                  FontWeight.bold,
-                                  Colors.black,
-                                  19),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            getTextStyle(
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mattis felis vitae risus pulvinar tincidunt. Nam ac venenatis enim. Aenean hendrerit justo sed. ",
-                                FontWeight.normal,
-                                Colors.black45,
-                                19),
-                          ],
-                        ),
-                      ),
-                    ),
-                    // const SizedBox(width: 50,),
-                  ],
-                ),
                 color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(28.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Apr 2017 - Mar 2018",),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Google Analytics Certified Developer",
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mattis felis vitae risus pulvinar tincidunt. Nam ac venenatis enim. Aenean hendrerit justo sed. ",
+                        style: GoogleFonts.abyssinicaSil(
+                          textStyle: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black45,
+                              fontSize: 19),
+                        ),
+                        textAlign: TextAlign.right,
+                        maxLines: 3,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
