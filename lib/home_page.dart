@@ -26,164 +26,275 @@ class _HomePage extends State<HomePage> {
       tablet: tabletUI(),
       desktop: deskTopUI(),
     );
-
   }
 
-  Widget deskTopUI(){
+  Widget deskTopUI() {
     return Scaffold(
         body: Row(
-          children: [
-            // side menu
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: Colors.blue,
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 160,
-                      width: 140,
-                      decoration: const BoxDecoration(
-                          color: Colors.lightBlueAccent,
-                          borderRadius: BorderRadius.all(Radius.circular(100))),
-                      child: Center(
-                        child: Container(
-                            height: 150,
-                            width: 130,
-                            decoration: const BoxDecoration(
-                                borderRadius:
+      children: [
+        // side menu
+        Expanded(
+          flex: 1,
+          child: Container(
+            color: Colors.blue,
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  height: 160,
+                  width: 140,
+                  decoration: const BoxDecoration(
+                      color: Colors.lightBlueAccent,
+                      borderRadius: BorderRadius.all(Radius.circular(100))),
+                  child: Center(
+                    child: Container(
+                        height: 150,
+                        width: 130,
+                        decoration: const BoxDecoration(
+                            borderRadius:
                                 BorderRadius.all(Radius.circular(100)),
-                                image: DecorationImage(
-                                  image: AssetImage("assets/profile.jpg"),
-                                  fit: BoxFit.fill,
-                                ))),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        _scrollToTop();
-                      },
-                      child:
+                            image: DecorationImage(
+                              image: AssetImage("assets/profile.jpg"),
+                              fit: BoxFit.fill,
+                            ))),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextButton(
+                  onPressed: () {
+                    _scrollToTop();
+                  },
+                  child:
                       getTextStyle("ABOUT", FontWeight.w500, Colors.white, 20),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        _scrollToSection(1);
-                      },
-                      child: getTextStyle(
-                          "EXPERIENCE", FontWeight.w500, Colors.white, 20),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        _scrollToSection(2);
-                      },
-                      child: getTextStyle(
-                          "PORTFOLIO", FontWeight.w500, Colors.white, 20),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        _scrollToSection(3);
-                      },
-                      child:
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextButton(
+                  onPressed: () {
+                    _scrollToSection(1);
+                  },
+                  child: getTextStyle(
+                      "EXPERIENCE", FontWeight.w500, Colors.white, 20),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextButton(
+                  onPressed: () {
+                    _scrollToSection(2);
+                  },
+                  child: getTextStyle(
+                      "PORTFOLIO", FontWeight.w500, Colors.white, 20),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextButton(
+                  onPressed: () {
+                    _scrollToSection(3);
+                  },
+                  child:
                       getTextStyle("SKILLS", FontWeight.w500, Colors.white, 20),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          _scrollToSection(4);
-                        },
-                        child: getTextStyle(
-                            "AWARDS", FontWeight.w500, Colors.white, 20)),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          _scrollToSection(5);
-                        },
-                        child: getTextStyle(
-                            "CONTACT", FontWeight.w500, Colors.white, 20)),
-                  ],
                 ),
-              ),
-            ),
-            // body
-            Expanded(
-              flex: 4,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const About(),
-                    const Experience(),
-                    const Portfolio(),
-                    Skills(),
-                    const Awards(),
-                    Contact(),
-                  ],
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
+                TextButton(
+                    onPressed: () {
+                      _scrollToSection(4);
+                    },
+                    child: getTextStyle(
+                        "AWARDS", FontWeight.w500, Colors.white, 20)),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextButton(
+                    onPressed: () {
+                      _scrollToSection(5);
+                    },
+                    child: getTextStyle(
+                        "CONTACT", FontWeight.w500, Colors.white, 20)),
+              ],
             ),
-          ],
-        )
-    );
-  }
-  Widget tabletUI(){
-    return Scaffold(
-        body: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const About(),
-              const Experience(),
-              const Portfolio(),
-              Skills(),
-              const Awards(),
-              Contact(),
-            ],
           ),
-        )
-    );
+        ),
+        // body
+        Expanded(
+          flex: 4,
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: const [
+                About(),
+                Experience(
+                  smallCard: false,
+                ),
+                Portfolio(),
+                Skills(),
+                Awards(smallCard: false,),
+                // Contact(),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ));
   }
 
-  Widget mobileUI(){
+  Widget tabletUI() {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          iconTheme: const IconThemeData(color: Colors.black),
+        ),
+        drawer: drawerMobile(),
         body: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const About(),
-              const Experience(),
-              const Portfolio(),
-              Skills(),
-              const Awards(),
-              Contact(),
-            ],
+      controller: _scrollController,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: const [
+          About(),
+          Experience(
+            smallCard: false,
           ),
-        )
-    );
+          Portfolio(),
+          Skills(),
+          Awards(smallCard: false,),
+          // Contact(),
+        ],
+      ),
+    ));
   }
 
+  Widget mobileUI() {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
+      drawer: drawerMobile(),
+        body: SingleChildScrollView(
+      controller: _scrollController,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: const [
+          About(),
+          Experience(
+            smallCard: true,
+          ),
+          Portfolio(),
+          Skills(),
+          Awards(smallCard: true,),
+          // Contact(),
+        ],
+      ),
+    ));
+  }
+
+  Drawer drawerMobile () {
+    return Drawer(
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Container(
+            color: Colors.blue,
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  height: 160,
+                  width: 140,
+                  decoration: const BoxDecoration(
+                      color: Colors.lightBlueAccent,
+                      borderRadius: BorderRadius.all(Radius.circular(100))),
+                  child: Center(
+                    child: Container(
+                        height: 150,
+                        width: 130,
+                        decoration: const BoxDecoration(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(100)),
+                            image: DecorationImage(
+                              image: AssetImage("assets/profile.jpg"),
+                              fit: BoxFit.fill,
+                            ))),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextButton(
+                  onPressed: () {
+                    _scrollToTop();
+                  },
+                  child:
+                  getTextStyle("ABOUT", FontWeight.w500, Colors.white, 20),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextButton(
+                  onPressed: () {
+                    _scrollToSection(1);
+                  },
+                  child: getTextStyle(
+                      "EXPERIENCE", FontWeight.w500, Colors.white, 20),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextButton(
+                  onPressed: () {
+                    _scrollToSection(2);
+                  },
+                  child: getTextStyle(
+                      "PORTFOLIO", FontWeight.w500, Colors.white, 20),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextButton(
+                  onPressed: () {
+                    _scrollToSection(3);
+                  },
+                  child:
+                  getTextStyle("SKILLS", FontWeight.w500, Colors.white, 20),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextButton(
+                    onPressed: () {
+                      _scrollToSection(4);
+                    },
+                    child: getTextStyle(
+                        "AWARDS", FontWeight.w500, Colors.white, 20)),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextButton(
+                    onPressed: () {
+                      _scrollToSection(5);
+                    },
+                    child: getTextStyle(
+                        "CONTACT", FontWeight.w500, Colors.white, 20)),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
   void _scrollToTop() {
     _scrollController.animateTo(
       0,

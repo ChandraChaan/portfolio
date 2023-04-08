@@ -77,10 +77,6 @@ class UserInfo extends ChangeNotifier {
       'https://static.toiimg.com/thumb/75733242.cms?width=680&height=512&imgsize=1099096',
       'https://static.toiimg.com/thumb/msid-92543510,imgsize-48774,width-800,height-600,resizemode-75/92543510.jpg'
     ],
-    'arun': [
-      'https://static.toiimg.com/thumb/75733242.cms?width=680&height=512&imgsize=1099096',
-      'https://static.toiimg.com/thumb/msid-92543510,imgsize-48774,width-800,height-600,resizemode-75/92543510.jpg'
-    ],
   };
   List imagesKeys = [];
   List pImages = [];

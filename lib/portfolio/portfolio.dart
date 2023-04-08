@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -204,10 +205,15 @@ class _PortfolioState extends State<Portfolio> {
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(10.0),
                         ),
-                        child: Image.network(
-                          provider.pImages[index]['img'],
+                        child: CachedNetworkImage(
+                          imageUrl: "${provider.pImages[index]['img']}",
+                          placeholder: (context, url) =>
+                              const Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.image_not_supported),
                           fit: BoxFit.cover,
                         ),
+
                       );
                     },
                   ),
