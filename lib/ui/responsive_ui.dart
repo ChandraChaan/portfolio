@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
+
 class ResponsiveHome extends StatelessWidget {
-  const ResponsiveHome({Key? key}) : super(key: key);
+  const ResponsiveHome({
+    Key? key,
+    required this.mobile,
+    required this.tablet,
+    required this.desktop,
+  }) : super(key: key);
+
+  final Widget mobile;
+  final Widget tablet;
+  final Widget desktop;
 
   @override
   Widget build(BuildContext context) {
-    // here add conditions to implement the responsive ui
-    return const Placeholder();
+    return LayoutBuilder(
+      builder: (context, dimens) {
+        if (dimens.maxWidth < 768.0) {
+          return mobile;
+        } else if (dimens.maxWidth >= 768.0 && dimens.maxWidth < 1000) {
+          return tablet;
+        } else {
+          return desktop;
+        }
+      },
+    );
   }
 }

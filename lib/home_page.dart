@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfoli_web/ui/responsive_ui.dart';
 import '../awards/awards.dart';
 import '../contact/contact.dart';
 import '../experience/experience.dart';
@@ -20,6 +21,15 @@ class _HomePage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    return ResponsiveHome(
+      mobile: mobileUI(),
+      tablet: tabletUI(),
+      desktop: deskTopUI(),
+    );
+
+  }
+
+  Widget deskTopUI(){
     return Scaffold(
         body: Row(
           children: [
@@ -45,7 +55,7 @@ class _HomePage extends State<HomePage> {
                             width: 130,
                             decoration: const BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(100)),
+                                BorderRadius.all(Radius.circular(100)),
                                 image: DecorationImage(
                                   image: AssetImage("assets/profile.jpg"),
                                   fit: BoxFit.fill,
@@ -60,7 +70,7 @@ class _HomePage extends State<HomePage> {
                         _scrollToTop();
                       },
                       child:
-                          getTextStyle("ABOUT", FontWeight.w500, Colors.white, 20),
+                      getTextStyle("ABOUT", FontWeight.w500, Colors.white, 20),
                     ),
                     const SizedBox(
                       height: 10,
@@ -90,7 +100,7 @@ class _HomePage extends State<HomePage> {
                         _scrollToSection(3);
                       },
                       child:
-                          getTextStyle("SKILLS", FontWeight.w500, Colors.white, 20),
+                      getTextStyle("SKILLS", FontWeight.w500, Colors.white, 20),
                     ),
                     const SizedBox(
                       height: 10,
@@ -133,7 +143,45 @@ class _HomePage extends State<HomePage> {
               ),
             ),
           ],
-        ));
+        )
+    );
+  }
+  Widget tabletUI(){
+    return Scaffold(
+        body: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const About(),
+              const Experience(),
+              const Portfolio(),
+              Skills(),
+              const Awards(),
+              Contact(),
+            ],
+          ),
+        )
+    );
+  }
+
+  Widget mobileUI(){
+    return Scaffold(
+        body: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const About(),
+              const Experience(),
+              const Portfolio(),
+              Skills(),
+              const Awards(),
+              Contact(),
+            ],
+          ),
+        )
+    );
   }
 
   void _scrollToTop() {

@@ -28,7 +28,7 @@ class _AboutState extends State<About> {
           // borderRadius: BorderRadius.all(Radius.circular(100)),
             image: DecorationImage(
               image: AssetImage("assets/backGround-image.jpg"),
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
             )),
         child: Padding(
           padding: const EdgeInsets.only(left: 40.0),
@@ -86,13 +86,21 @@ class _AboutState extends State<About> {
                 height: 30,
               ),
               // please do not use static padding, please found alternate here
-              Padding(
-                padding: const EdgeInsets.only(right: 700.0),
-                child: getTextStyle(
-                  provider.bigTagline,
-                    FontWeight.normal,
-                    Colors.white38,
-                    20),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: getTextStyle(
+                      provider.bigTagline,
+                        FontWeight.normal,
+                        Colors.white38,
+                        20),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 50,
