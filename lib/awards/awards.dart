@@ -153,6 +153,7 @@ final bool smallCard;
                 ),
               ) : null,
             ),
+            const SizedBox(height: 120,),
           ],
         ),
       ),

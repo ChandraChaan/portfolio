@@ -135,10 +135,10 @@ class _HomePage extends State<HomePage> {
                 Experience(
                   smallCard: false,
                 ),
-                Portfolio(),
+                Portfolio(smallCard: false,),
                 Skills(),
                 Awards(smallCard: false,),
-                // Contact(),
+                Contact(),
               ],
             ),
           ),
@@ -164,10 +164,10 @@ class _HomePage extends State<HomePage> {
           Experience(
             smallCard: false,
           ),
-          Portfolio(),
+          Portfolio(smallCard: false,),
           Skills(),
           Awards(smallCard: false,),
-          // Contact(),
+          Contact(),
         ],
       ),
     ));
@@ -190,10 +190,10 @@ class _HomePage extends State<HomePage> {
           Experience(
             smallCard: true,
           ),
-          Portfolio(),
+          Portfolio(smallCard: true,),
           Skills(),
           Awards(smallCard: true,),
-          // Contact(),
+          Contact(),
         ],
       ),
     ));

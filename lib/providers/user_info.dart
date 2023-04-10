@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 class UserInfo extends ChangeNotifier {
   String user = 'Chandra Obul Reddy';
   String userFirstName = '';
+  String imageFilterString = 'all';
+  bool imageLoaded = false;
   String smallTagline =
       'THE NEXT BIG IDEA IS WAITING FOR ITS NEXT BIG CHANGER WITH THEMSELF';
   String bigTagline =
@@ -68,6 +70,7 @@ class UserInfo extends ChangeNotifier {
   ];
 
   Map imagesMap = {
+    'all':[],
     'ntr': [
       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg/1024px-N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg/1024px-N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg',
@@ -82,6 +85,7 @@ class UserInfo extends ChangeNotifier {
   List pImages = [];
 
   imagesListModifiying() {
+    imageLoaded = false;
     imagesKeys.clear();
     pImages.clear();
     imagesKeys = imagesMap.keys.toList();
@@ -93,11 +97,15 @@ class UserInfo extends ChangeNotifier {
         });
       }
     }
+    imageLoaded = true;
   }
 
   imageFilter(String typ) {
+    imageLoaded = false;
     print('add filter to $typ');
-    pImages.where((o) => o['type'] == typ).toList();
-    print(pImages.toString());
+    imageFilterString = typ;
+    pImages = pImages.where((o) => o['type'] == typ).toList();
+    imageLoaded=true;
+    notifyListeners();
   }
 }
