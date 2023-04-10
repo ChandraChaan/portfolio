@@ -8,10 +8,11 @@ class UserInfo extends ChangeNotifier {
   bool imageLoaded = false;
   String smallTagline =
       'THE NEXT BIG IDEA IS WAITING FOR ITS NEXT BIG CHANGER WITH THEMSELF';
-  String bigTagline =
-      'I am experienced in leveraging agile frameworks to provide a robust synopsis '
-      'for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking '
-      'to further the overall value proposition';
+  String bigTagline = 'I have a total of around 4.6 years of experience,'
+      'recently, with FLUTTER, I\'m developed multiple projects. I believe my'
+      'professional skill set and my previous experience working as a Full-Stack and'
+      'senior flutter developer could make me a valuable asset to your organization,'
+      ' so I am writing to inform you of my interest in pursuing a career at org name';
 
   bool userDeatile(String? text) {
     user = text ?? 'User';
@@ -34,33 +35,66 @@ class UserInfo extends ChangeNotifier {
   }
 
   List<Map<String, dynamic>> expData = [
-    for (int i = 0; i < 5; i++)
-      {
-        "icon": Icons.laptop_outlined,
-        "title": "Full Stack Developer",
-        "summary":
-            "Dedicated and efficient full stack developer with 6+ years experience in application layers, presentation layers, and databases. Certified in both F/E and B/E technologies. Spearheaded successful transition from LAMP stack to MEAN which cut latency by 40% and increased effectiveness of database administrators by 20%. Seeking to further improve HTML5 and CSS3 skills as the future full stack developer at Atmospheric Solutions.",
-        "startDate": "March 2020",
-        "endDate": "April 2022",
-        "present": i == 0 ? true : false,
-      },
+    {
+      "icon": Icons.laptop_outlined,
+      "title": "Senior Mobile App Developer",
+      "summary": "Here I am team lead, we are working on sprint wise features, and DDD"
+          "architecture and GetX, Bloc, providers state management we are using. Kotlin"
+          "  for android native payment integration purpose we are used. Swift for IOS"
+          "Native feature development we are used."
+          "Flutter web also we are done here, flutter web very fast code, functionality will"
+          "be same mobile and web, UI will do difference so fast code we will make for"
+          "flutter web",
+      "startDate": "Feb 2021",
+      "endDate": "",
+      "present": true,
+    },
+    {
+      "icon": Icons.laptop_outlined,
+      "title": "Software Developer",
+      "summary": "I'm Full Stack developer at this company and"
+          "We are using framework CodeIgniter, PHP frameworks for backend, and we"
+          "are using for mobile development in flutter, and we are using jQuery, JS,"
+          "bootstrap for frontend."
+          "This is product base company"
+          "Maintained integrity of general ledger, including the chart of accounts",
+      "startDate": "Feb 2018",
+      "endDate": "Jan 2021",
+      "present": false,
+    },
   ];
 
   List<Map<String, dynamic>> skillData = [
     {
       "name": "Flutter",
-      "score": "44%",
+      "score": "100%",
     },
     {
       "name": "Java",
-      "score": "24%",
+      "score": "80%",
     },
     {
       "name": "Dart",
-      "score": "54%",
+      "score": "100%",
     },
     {
-      "name": "Android",
+      "name": "JavaScript",
+      "score": "94%",
+    },
+    {
+      "name": "HTML",
+      "score": "74%",
+    },
+    {
+      "name": "FIREBASE",
+      "score": "74%",
+    },
+    {
+      "name": "PYTHON",
+      "score": "84%",
+    },
+    {
+      "name": "PHP",
       "score": "94%",
     },
     {
@@ -70,7 +104,7 @@ class UserInfo extends ChangeNotifier {
   ];
 
   Map imagesMap = {
-    'all':[],
+    'all': [],
     'ntr': [
       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg/1024px-N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg/1024px-N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg',
@@ -105,7 +139,7 @@ class UserInfo extends ChangeNotifier {
     print('add filter to $typ');
     imageFilterString = typ;
     pImages = pImages.where((o) => o['type'] == typ).toList();
-    imageLoaded=true;
+    imageLoaded = true;
     notifyListeners();
   }
 }
