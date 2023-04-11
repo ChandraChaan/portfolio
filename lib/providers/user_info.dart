@@ -64,6 +64,82 @@ class UserInfo extends ChangeNotifier {
     },
   ];
 
+  List<Map<String, dynamic>> projectsData = [
+    {
+      'title': 'Lochinvar',
+      'date': 'Jun 2022',
+      'summary':
+          'This is boiler app , using this app, we can control the boiler from everywhere, this is very use full app, here iam doing Kotlin app to flutter app conversation for Web and Mobile hybrid code, here I used flutter and provider state management.'
+    },
+    {
+      'title': 'Sunstone hub',
+      'date': 'Jan 2022',
+      'summary':
+          'This is University app, there students will do attendance, and books, fees etc I developed here fee module. With Getx state management, flutter.'
+    },
+    {
+      'title': 'People first Platform',
+      'date': 'February 2021',
+      'summary':
+          'Here we are using DDD architecture with Getx, bloc, and cubit, in that architecture infrastructure'
+              'domain, application presentation layers we maintain here, and network layer also.'
+    },
+    {
+      'title': 'Ferry App',
+      'date': 'April 2021',
+      'summary':
+          'Here common network Layer I’m using here and it will show you the check-in process for airplane journey users.'
+    },
+    {
+      'title': 'EstreetMart - Singapore online shopping website',
+      'date': 'May 2021',
+      'summary':
+          'Here I’m using DDD architecture with GetX, and this is the web, tablet, mobile, and desktop also'
+              'multiple designs with the same functionality and this is a large project here IMS, CMS, and this one is there.'
+    },
+    {
+      'title': 'Skadaddle Online Sports activity App',
+      'date': 'June 2021',
+      'summary':
+          'Here I’m using DDD architecture with GetX, this is a mobile app with only excellent UI and better functionality.'
+    },
+    {
+      'title': 'RandAc app - Online Book Technician for AC Repairing',
+      'date': 'September 2021',
+      'summary':
+          'This is an ac repairing app, this is currently what we are developing Here I’m using DDD architecture with Getx, this is a mobile app with only excellent UI and better functionality.'
+    },
+    {
+      'title': 'GastroCare -Online Doctor consultation Booking App',
+      'date': 'August 2021',
+      'summary':
+          'This is a Medical app, this is currently we are developing Here I’m using Bloc, Providers, this is a mobile app here we are used zoom video calling functionality for doctor consultation.'
+    },
+    {
+      'title': 'Plus Pin Pharma -Online Medical Store',
+      'date': 'August 2021',
+      'summary':
+          'This is a Medical Store app, this is currently 3members are developing Here I’m using MVC architecture with Bloc and GetX, this is a mobile app with only excellent UI and better functionality.'
+    },
+    {
+      'title': 'Food Delivery App',
+      'date': 'February 2020',
+      'summary': 'This is a food delivery app using flutter.'
+    },
+    {
+      'title': 'Online shopping web & mobile application',
+      'date': 'January 2019',
+      'summary':
+          'This is a flutter platform-based online shopping service, food, clothes, and etc. so many services are there, for the web, we are using PHP Laravel and fronted bootstrap, jQuery.'
+    },
+    {
+      'title': 'School management system',
+      'date': 'May 2019',
+      'summary':
+          'It is a flutter Mobile application. This application is very useful for schools, This application has a fee management system and HR and payroll and online classes and online exams and so many services there,'
+    },
+  ];
+
   List<Map<String, dynamic>> skillData = [
     {
       "name": "Flutter",
@@ -105,15 +181,11 @@ class UserInfo extends ChangeNotifier {
 
   Map imagesMap = {
     'all': [],
-    'ntr': [
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg/1024px-N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg/1024px-N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg/1024px-N.T.Rama_Rao_Jr._at_the_RRR_Press_Meet_in_Chennai.jpg',
-    ],
-    'ram': [
-      'https://static.toiimg.com/thumb/75733242.cms?width=680&height=512&imgsize=1099096',
-      'https://static.toiimg.com/thumb/msid-92543510,imgsize-48774,width-800,height-600,resizemode-75/92543510.jpg'
-    ],
+    'ui': [
+      'assets/portfolio/chandra/arrton1.png',
+      'assets/portfolio/chandra/arrton2.png',
+      'assets/portfolio/chandra/arrton3.png',
+      ],
   };
   List imagesKeys = [];
   List pImages = [];

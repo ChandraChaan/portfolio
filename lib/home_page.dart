@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfoli_web/ui/responsive_ui.dart';
-import '../awards/awards.dart';
+import '../projects/projects.dart';
 import '../contact/contact.dart';
 import '../experience/experience.dart';
 import '../portfolio/portfolio.dart';
@@ -109,7 +109,7 @@ class _HomePage extends State<HomePage> {
                       _scrollToSection(4);
                     },
                     child: getTextStyle(
-                        "AWARDS", FontWeight.w500, Colors.white, 20)),
+                        "PROJECTS", FontWeight.w500, Colors.white, 20)),
                 const SizedBox(
                   height: 10,
                 ),

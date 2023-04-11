@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import '../providers/user_info.dart';
+import '../utils/dynamic_image.dart';
 import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
 
@@ -84,14 +85,7 @@ class Portfolio extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
                           padding: const EdgeInsets.all(12.0),
-                          child: CachedNetworkImage(
-                            imageUrl: "${provider.pImages[index]['img']}",
-                            placeholder: (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
-                            errorWidget: (context, url, error) =>
-                            const Icon(Icons.image_not_supported),
-                            fit: BoxFit.cover,
-                          ),
+                          child: ImageDynamic(img:"${provider.pImages[index]['img']}"),
                         );
                       }) :
                   GridView.builder(
@@ -106,20 +100,13 @@ class Portfolio extends StatelessWidget {
                             mainAxisSpacing: 18.0),
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
-                        height: 150,
-                        width: 150,
+                        height: 170,
+                        // width: 120,
                         decoration: BoxDecoration(
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(10.0),
                         ),
-                        child: CachedNetworkImage(
-                          imageUrl: "${provider.pImages[index]['img']}",
-                          placeholder: (context, url) =>
-                              const Center(child: CircularProgressIndicator()),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.image_not_supported),
-                          fit: BoxFit.cover,
-                        ),
+                        child: ImageDynamic(img:"${provider.pImages[index]['img']}"),
 
                       );
                     },
