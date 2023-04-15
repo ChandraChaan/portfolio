@@ -8,7 +8,7 @@ class UserInfo extends ChangeNotifier {
   bool imageLoaded = false;
   String smallTagline =
       'THE NEXT BIG IDEA IS WAITING FOR ITS NEXT BIG CHANGER WITH THEMSELF';
-  String bigTagline = 'I have a total of around 4.6 years of experience,'
+  String bigTagline = 'I have a total of around 5.3 years of experience,'
       'recently, with FLUTTER, I\'m developed multiple projects. I believe my'
       'professional skill set and my previous experience working as a Full-Stack and'
       'senior flutter developer could make me a valuable asset to your organization,'

@@ -8,10 +8,10 @@ import '../providers/user_info.dart';
 import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
 
-class Awards extends StatelessWidget {
+class Projects extends StatelessWidget {
   final bool smallCard;
 
-  const Awards({super.key, required this.smallCard});
+  const Projects({super.key, required this.smallCard});
 
   @override
   Widget build(BuildContext context) {
