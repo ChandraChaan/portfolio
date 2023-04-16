@@ -59,7 +59,7 @@ class RoleApp extends StatelessWidget {
         ChangeNotifierProvider(create: ((_) => UserInfo())),
       ],
       child: MaterialApp(
-        title: 'portfolio',
+        title: 'Curriculum Vitae',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),

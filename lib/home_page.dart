@@ -10,8 +10,15 @@ import '../utils/font_style.dart';
 
 import 'about/about.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
    HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+ final scrollControllerLocal = ScrollController();
 
   final aboutScrollKey = GlobalKey();
 
@@ -25,16 +32,27 @@ class HomePage extends StatelessWidget {
 
   final contactScrollKey = GlobalKey();
 
+
+  @override
+  void initState() {
+    // scrollControllerLocal.addListener(() {
+    //
+    // });
+    super.initState();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveHome(
       mobile: mobileUI(),
       tablet: tabletUI(),
-      desktop: deskTopUI(context),
+      desktop: deskTopUI(),
     );
   }
 
-  Widget deskTopUI(BuildContext context) {
+  Widget deskTopUI() {
     return Scaffold(
         body: Row(
       children: [
@@ -228,7 +246,7 @@ class HomePage extends StatelessWidget {
               key: expScrollKey,
             ),
             Portfolio(
-              smallCard: false,
+              smallCard: true,
               key: portfoScrollKey,
             ),
             Skills(

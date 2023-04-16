@@ -48,17 +48,18 @@ class Skills extends StatelessWidget {
                             height: 210,
                             width: 170,
                             color: Colors.grey.withOpacity(0.6),
-                            child: Column(
-                              children: [
-                                const Icon(
-                                  FontAwesomeIcons.html5,
-                                  size: 100,
-                                  color: Colors.blue,
-                                ),
-                                getTextStyle("${provider.skillData[i]["score"]}", FontWeight.bold, Colors.black, 35),
-                                getTextStyle(
-                                    "${provider.skillData[i]["name"]}", FontWeight.normal, Colors.black, 23)
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset("${provider.skillData[i]["icon"]}", height: 70, width: 70,),
+                                  getTextStyle("${provider.skillData[i]["score"]}", FontWeight.bold, Colors.black, 35),
+                                  getTextStyle(
+                                      "${provider.skillData[i]["name"]}", FontWeight.normal, Colors.black, 23)
+                                ],
+                              ),
                             ),
                           ),
                         ),

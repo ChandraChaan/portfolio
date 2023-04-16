@@ -3,11 +3,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_info.dart';
-import '../utils/dynamic_size.dart';
+import 'dart:html' as html;
 import '../utils/font_style.dart';
 
 class About extends StatefulWidget {
-   const About({Key? key}) : super(key: key);
+  const About({Key? key}) : super(key: key);
 
   @override
   State<About> createState() => _AboutState();
@@ -25,11 +25,11 @@ class _AboutState extends State<About> {
         height: MediaQuery.of(context).size.height,
         width: double.infinity,
         decoration: const BoxDecoration(
-          // borderRadius: BorderRadius.all(Radius.circular(100)),
+            // borderRadius: BorderRadius.all(Radius.circular(100)),
             image: DecorationImage(
-              image: AssetImage("assets/backGround-image.jpg"),
-              fit: BoxFit.cover,
-            )),
+          image: AssetImage("assets/backGround-image.jpg"),
+          fit: BoxFit.cover,
+        )),
         child: Padding(
           padding: const EdgeInsets.only(left: 40.0),
           child: Column(
@@ -70,17 +70,14 @@ class _AboutState extends State<About> {
                     const SizedBox(
                       width: 5,
                     ),
-                    getTextStyle(
-                        provider.user.split(' ').last.toUpperCase(), FontWeight.bold, Colors.blue, 70),
+                    getTextStyle(provider.user.split(' ').last.toUpperCase(),
+                        FontWeight.bold, Colors.blue, 70),
                   ],
                 ),
               ),
               FittedBox(
                 child: getTextStyle(
-                    provider.smallTagline,
-                    FontWeight.bold,
-                    Colors.white54,
-                    20),
+                    provider.smallTagline, FontWeight.bold, Colors.white54, 20),
               ),
               const SizedBox(
                 height: 30,
@@ -90,11 +87,8 @@ class _AboutState extends State<About> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: getTextStyle(
-                      provider.bigTagline,
-                        FontWeight.normal,
-                        Colors.white38,
-                        20),
+                    child: getTextStyle(provider.bigTagline, FontWeight.normal,
+                        Colors.white38, 20),
                   ),
                   Expanded(
                     flex: 1,
@@ -109,66 +103,89 @@ class _AboutState extends State<About> {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: const FaIcon(FontAwesomeIcons.facebook),
-                      iconSize: 40,
-                      onPressed: () {
-                        setState(
-                              () {
-                            Navigator.pop(context);
-                            isSearching = false;
-                            searchTerm = "";
-                          },
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    IconButton(
-                      iconSize: 40,
-                      icon: const FaIcon(FontAwesomeIcons.twitter),
-                      onPressed: () {
-                        setState(
-                              () {
-                            Navigator.pop(context);
-                            isSearching = false;
-                            searchTerm = "";
-                          },
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    IconButton(
-                      iconSize: 40,
-                      icon: const FaIcon(FontAwesomeIcons.linkedin),
-                      onPressed: () {
-                        setState(
-                              () {
-                            Navigator.pop(context);
-                            isSearching = false;
-                            searchTerm = "";
-                          },
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    IconButton(
-                      iconSize: 40,
                       icon: const FaIcon(FontAwesomeIcons.github),
+                      iconSize: 40,
                       onPressed: () {
-                        setState(
-                              () {
-                            Navigator.pop(context);
-                            isSearching = false;
-                            searchTerm = "";
-                          },
-                        );
+                        html.window
+                            .open('https://github.com/ChandraChaan', 'new tab');
+
+                        // https://github.com/ChandraChaan
                       },
                     ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    IconButton(
+                        icon: const FaIcon(FontAwesomeIcons.linkedin),
+                        iconSize: 40,
+                        onPressed: () {
+                          html.window.open(
+                              'https://www.linkedin.com/in/chandra-obul-reddy-dumpala-a7ba6415a/',
+                              'new tab');
+                        }
+                        // https://www.linkedin.com/in/chandra-obul-reddy-dumpala-a7ba6415a/                      },
+                        ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    IconButton(
+                        icon: const FaIcon(FontAwesomeIcons.stackOverflow),
+                        iconSize: 40,
+                        onPressed: () {
+                          html.window.open(
+                              'https://stackoverflow.com/users/16990621/chandra-chaan',
+                              'new tab');
+                        }
+                        // https://www.linkedin.com/in/chandra-obul-reddy-dumpala-a7ba6415a/                      },
+                        ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    // IconButton(
+                    //   iconSize: 40,
+                    //   icon: const FaIcon(FontAwesomeIcons.twitter),
+                    //   onPressed: () {
+                    //     setState(
+                    //           () {
+                    //         Navigator.pop(context);
+                    //         isSearching = false;
+                    //         searchTerm = "";
+                    //       },
+                    //     );
+                    //   },
+                    // ),
+                    // const SizedBox(
+                    //   width: 20,
+                    // ),
+                    // IconButton(
+                    //   iconSize: 40,
+                    //   icon: const FaIcon(FontAwesomeIcons.linkedin),
+                    //   onPressed: () {
+                    //     setState(
+                    //           () {
+                    //         Navigator.pop(context);
+                    //         isSearching = false;
+                    //         searchTerm = "";
+                    //       },
+                    //     );
+                    //   },
+                    // ),
+                    // const SizedBox(
+                    //   width: 20,
+                    // ),
+                    // IconButton(
+                    //   iconSize: 40,
+                    //   icon: const FaIcon(FontAwesomeIcons.github),
+                    //   onPressed: () {
+                    //     setState(
+                    //           () {
+                    //         Navigator.pop(context);
+                    //         isSearching = false;
+                    //         searchTerm = "";
+                    //       },
+                    //     );
+                    //   },
+                    // ),
                   ],
                 ),
               )

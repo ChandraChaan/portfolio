@@ -144,39 +144,49 @@ class UserInfo extends ChangeNotifier {
     {
       "name": "Flutter",
       "score": "100%",
+      "icon":"assets/skills/flutter.png",
     },
     {
       "name": "Java",
       "score": "80%",
+      "icon":"assets/skills/java.png",
     },
     {
       "name": "Dart",
       "score": "100%",
+      "icon":"assets/skills/dart.png",
     },
     {
       "name": "JavaScript",
       "score": "94%",
+      "icon":"assets/skills/js.png",
     },
     {
       "name": "HTML",
       "score": "74%",
+      "icon":"assets/skills/html.png",
+    },
+    {
+      "name": "CSS",
+      "score": "61%",
+      "icon":"assets/skills/css.png",
     },
     {
       "name": "FIREBASE",
       "score": "74%",
+      "icon":"assets/skills/firebase.png",
     },
     {
       "name": "PYTHON",
       "score": "84%",
+      "icon":"assets/skills/python.png",
     },
     {
       "name": "PHP",
       "score": "94%",
+      "icon":"assets/skills/php.png",
     },
-    {
-      "name": "HTML",
-      "score": "74%",
-    },
+
   ];
 
   Map imagesMap = {
