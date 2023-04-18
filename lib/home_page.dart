@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:portfoli_web/providers/user_info.dart';
 import 'package:portfoli_web/ui/responsive_ui.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:provider/provider.dart';
 import '../projects/projects.dart';
 import '../contact/contact.dart';
 import '../experience/experience.dart';
@@ -11,14 +12,14 @@ import '../utils/font_style.dart';
 import 'about/about.dart';
 
 class HomePage extends StatefulWidget {
-   HomePage({super.key});
+  HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
- final scrollControllerLocal = ScrollController();
+  final scrollControllerLocal = ScrollController();
 
   final aboutScrollKey = GlobalKey();
 
@@ -32,7 +33,6 @@ class _HomePageState extends State<HomePage> {
 
   final contactScrollKey = GlobalKey();
 
-
   @override
   void initState() {
     // scrollControllerLocal.addListener(() {
@@ -41,18 +41,20 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return ResponsiveHome(
-      mobile: mobileUI(),
-      tablet: tabletUI(),
-      desktop: deskTopUI(),
+      mobile: mobileUI(context),
+      tablet: tabletUI(context),
+      desktop: deskTopUI(context),
     );
   }
 
-  Widget deskTopUI() {
+  Widget deskTopUI(BuildContext context) {
+    TextStyle styl = TextStyle(
+        color: Theme.of(context).primaryColor,
+        fontSize: 20,
+        fontWeight: FontWeight.w500);
     return Scaffold(
         body: Row(
       children: [
@@ -66,6 +68,29 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Consumer<UserInfo>(
+                  builder: (context, provider, child) {
+                    return Column(
+                      children: [
+                        Transform.scale(
+                            scale: 1,
+                            child: Switch(
+                              onChanged: (bool newVal) {
+                                provider.changeThemeMode();
+                              },
+                              value: provider.themeLightMode,
+                              activeColor: Colors.blue,
+                              activeTrackColor: Colors.yellow,
+                              inactiveThumbColor: Colors.redAccent,
+                              inactiveTrackColor: Colors.orange,
+                            )),
+                        Text('Theme was : ${provider.themeLightMode ? 'Light mode':'Dark mode'}',style: styl)
+                      ],
+                    );
+                  },
+                ),
+
+                SizedBox(height: 50,),
                 Container(
                   height: 160,
                   width: 140,
@@ -92,8 +117,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     srollSmooth(aboutScrollKey.currentContext!);
                   },
-                  child:
-                      getTextStyle("ABOUT", FontWeight.w500, Colors.white, 20),
+                  child: Text("ABOUT", style: styl),
                 ),
                 const SizedBox(
                   height: 10,
@@ -102,8 +126,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     srollSmooth(expScrollKey.currentContext!);
                   },
-                  child: getTextStyle(
-                      "EXPERIENCE", FontWeight.w500, Colors.white, 20),
+                  child: Text("EXPERIENCE", style: styl),
                 ),
                 const SizedBox(
                   height: 10,
@@ -112,8 +135,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     srollSmooth(portfoScrollKey.currentContext!);
                   },
-                  child: getTextStyle(
-                      "PORTFOLIO", FontWeight.w500, Colors.white, 20),
+                  child: Text("PORTFOLIO", style: styl),
                 ),
                 const SizedBox(
                   height: 10,
@@ -122,29 +144,24 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     srollSmooth(skillScrollKey.currentContext!);
                   },
-                  child:
-                      getTextStyle("SKILLS", FontWeight.w500, Colors.white, 20),
+                  child: Text("SKILLS", style: styl),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 TextButton(
                     onPressed: () {
-                      srollSmooth(
-                          projectsScrollKey.currentContext!);
+                      srollSmooth(projectsScrollKey.currentContext!);
                     },
-                    child: getTextStyle(
-                        "PROJECTS", FontWeight.w500, Colors.white, 20)),
+                    child: Text("PROJECTS", style: styl)),
                 const SizedBox(
                   height: 10,
                 ),
                 TextButton(
                     onPressed: () {
-                      srollSmooth(
-                          contactScrollKey.currentContext!);
+                      srollSmooth(contactScrollKey.currentContext!);
                     },
-                    child: getTextStyle(
-                        "CONTACT", FontWeight.w500, Colors.white, 20)),
+                    child: Text("CONTACT", style: styl)),
               ],
             ),
           ),
@@ -186,14 +203,18 @@ class _HomePageState extends State<HomePage> {
     ));
   }
 
-  Widget tabletUI() {
+  Widget tabletUI(BuildContext context) {
+    TextStyle styl = TextStyle(
+        color: Theme.of(context).primaryColor,
+        fontSize: 20,
+        fontWeight: FontWeight.w500);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      drawer: drawerMobile(),
+      drawer: drawerMobile(context),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -226,14 +247,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget mobileUI() {
+  Widget mobileUI(BuildContext context) {
+    // TextStyle? styl = Theme.of(context).textTheme.bodyLarge?.color;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      drawer: drawerMobile(),
+      drawer: drawerMobile(context),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -266,7 +289,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Drawer drawerMobile() {
+  Drawer drawerMobile(BuildContext context) {
+    TextStyle styl = TextStyle(
+        color: Theme.of(context).primaryColor,
+        fontSize: 20,
+        fontWeight: FontWeight.w500);
     return Drawer(
       child: SafeArea(
         child: Padding(
@@ -304,8 +331,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     srollSmooth(aboutScrollKey.currentContext!);
                   },
-                  child:
-                      getTextStyle("ABOUT", FontWeight.w500, Colors.white, 20),
+                  child: Text("ABOUT", style: styl),
                 ),
                 const SizedBox(
                   height: 10,
@@ -314,8 +340,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     srollSmooth(expScrollKey.currentContext!);
                   },
-                  child: getTextStyle(
-                      "EXPERIENCE", FontWeight.w500, Colors.white, 20),
+                  child: Text("EXPERIENCE", style: styl),
                 ),
                 const SizedBox(
                   height: 10,
@@ -324,8 +349,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     srollSmooth(portfoScrollKey.currentContext!);
                   },
-                  child: getTextStyle(
-                      "PORTFOLIO", FontWeight.w500, Colors.white, 20),
+                  child: Text("PORTFOLIO", style: styl),
                 ),
                 const SizedBox(
                   height: 10,
@@ -334,29 +358,24 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     srollSmooth(skillScrollKey.currentContext!);
                   },
-                  child:
-                      getTextStyle("SKILLS", FontWeight.w500, Colors.white, 20),
+                  child: Text("SKILLS", style: styl),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 TextButton(
                     onPressed: () {
-                      srollSmooth(
-                          projectsScrollKey.currentContext!);
+                      srollSmooth(projectsScrollKey.currentContext!);
                     },
-                    child: getTextStyle(
-                        "PROJECTS", FontWeight.w500, Colors.white, 20)),
+                    child: Text("PROJECTS", style: styl)),
                 const SizedBox(
                   height: 10,
                 ),
                 TextButton(
                     onPressed: () {
-                      srollSmooth(
-                          contactScrollKey.currentContext!);
+                      srollSmooth(contactScrollKey.currentContext!);
                     },
-                    child: getTextStyle(
-                        "CONTACT", FontWeight.w500, Colors.white, 20)),
+                    child: Text("CONTACT", style: styl)),
               ],
             ),
           ),

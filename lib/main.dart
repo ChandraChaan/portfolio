@@ -11,40 +11,37 @@ import 'home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AwesomeNotifications().initialize(
-      'resource://drawable/notification_icon',
-      [            // notification icon
-        NotificationChannel(
-          channelGroupKey: 'basic_test',
-          channelKey: 'basic',
-          channelName: 'Basic notifications',
-          channelDescription: 'Notification channel for basic tests',
-          channelShowBadge: true,
-          importance: NotificationImportance.High,
-          enableVibration: true,
-        ),
+  AwesomeNotifications().initialize('resource://drawable/notification_icon', [
+    // notification icon
+    NotificationChannel(
+      channelGroupKey: 'basic_test',
+      channelKey: 'basic',
+      channelName: 'Basic notifications',
+      channelDescription: 'Notification channel for basic tests',
+      channelShowBadge: true,
+      importance: NotificationImportance.High,
+      enableVibration: true,
+    ),
 
-        NotificationChannel(
-            channelGroupKey: 'image_test',
-            channelKey: 'image',
-            channelName: 'image notifications',
-            channelDescription: 'Notification channel for image tests',
-            defaultColor: Colors.redAccent,
-            ledColor: Colors.white,
-            channelShowBadge: true,
-            importance: NotificationImportance.High
-        )
+    NotificationChannel(
+        channelGroupKey: 'image_test',
+        channelKey: 'image',
+        channelName: 'image notifications',
+        channelDescription: 'Notification channel for image tests',
+        defaultColor: Colors.redAccent,
+        ledColor: Colors.white,
+        channelShowBadge: true,
+        importance: NotificationImportance.High)
 
-        //add more notification type with different configuration
+    //add more notification type with different configuration
+  ]);
 
-      ]
-  );
-
-
-  runApp(const RoleApp());
+  // runApp(const RoleApp());
+  return runApp(ChangeNotifierProvider<UserInfo>(
+    create: (_) => UserInfo(),
+    child: const RoleApp(),
+  ));
 }
-
-
 
 class RoleApp extends StatelessWidget {
   const RoleApp({super.key});
@@ -52,21 +49,16 @@ class RoleApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Sizer(builder : (context,orientation, deviceType){
-
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: ((_) => UserInfo())),
-      ],
-      child: MaterialApp(
-        title: 'Curriculum Vitae',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        debugShowCheckedModeBanner: false,
-        home: HomePage(),
+    final themeMode = Provider.of<UserInfo>(context);
+    return MaterialApp(
+      title: 'Curriculum Vitae',
+      theme: ThemeData(
+        primaryColor: themeMode.themeLightMode ? Colors.black : Colors.white,
+        primarySwatch: Colors.blue,
       ),
+      themeMode: ThemeMode.dark,
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
     );
-  });
   }
 }

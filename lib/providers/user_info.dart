@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserInfo extends ChangeNotifier {
+  bool themeLightMode = false;
   String user = 'Chandra Obul Reddy';
   String userFirstName = '';
   String imageFilterString = 'all';
@@ -21,6 +22,11 @@ class UserInfo extends ChangeNotifier {
     } else {
       return true;
     }
+  }
+
+  changeThemeMode(){
+    themeLightMode = !themeLightMode;
+    notifyListeners();
   }
 
   // it will remove last name for highlighting it on UI
