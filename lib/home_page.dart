@@ -56,7 +56,9 @@ class _HomePageState extends State<HomePage> {
         fontSize: 20,
         fontWeight: FontWeight.w500);
     return Scaffold(
-        body: Row(
+      backgroundColor:Theme.of(context).backgroundColor,
+
+    body: Row(
       children: [
         // side menu
         Expanded(
@@ -79,17 +81,16 @@ class _HomePageState extends State<HomePage> {
                                 provider.changeThemeMode();
                               },
                               value: provider.themeLightMode,
-                              activeColor: Colors.blue,
+                              activeColor: Colors.pink,
                               activeTrackColor: Colors.yellow,
-                              inactiveThumbColor: Colors.redAccent,
-                              inactiveTrackColor: Colors.orange,
+                              inactiveThumbColor: Colors.black87,
+                              inactiveTrackColor: Colors.purple,
                             )),
                         Text('Theme was : ${provider.themeLightMode ? 'Light mode':'Dark mode'}',style: styl)
                       ],
                     );
                   },
                 ),
-
                 SizedBox(height: 50,),
                 Container(
                   height: 160,

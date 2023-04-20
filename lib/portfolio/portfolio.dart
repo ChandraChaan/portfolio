@@ -27,7 +27,7 @@ class Portfolio extends StatelessWidget {
                 const SizedBox(
                   height: (50),
                 ),
-                getTextStyle("Portfolio", FontWeight.bold, Colors.black, 50),
+                getTextStyle("Portfolio", FontWeight.bold, Theme.of(context).primaryColor, 50),
                 const SizedBox(
                   height: 10,
                 ),

@@ -55,6 +55,9 @@ class RoleApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: themeMode.themeLightMode ? Colors.black : Colors.white,
         primarySwatch: Colors.blue,
+        indicatorColor: Colors.blue,
+        backgroundColor: themeMode.themeLightMode ? Colors.white : Colors.black,
+        cardColor: themeMode.themeLightMode ? Colors.white : Colors.black,
       ),
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,

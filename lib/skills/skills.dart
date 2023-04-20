@@ -6,8 +6,6 @@ import '../providers/user_info.dart';
 import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
 
-
-
 class Skills extends StatelessWidget {
   const Skills({super.key});
 
@@ -21,27 +19,23 @@ class Skills extends StatelessWidget {
             width: double.infinity,
             // height: (1000),
             decoration: const BoxDecoration(
-              // borderRadius: BorderRadius.all(Radius.circular(100)),
+                // borderRadius: BorderRadius.all(Radius.circular(100)),
                 image: DecorationImage(
-                  image: NetworkImage(
-                    'https://images.unsplash.com/photo-1512429234305-12fe5b0b0f07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',),
-                  //AssetImage("assets/skills_images.jpg"),
-                  fit: BoxFit.fill,
-                )),
+              image: NetworkImage(
+                'https://images.unsplash.com/photo-1512429234305-12fe5b0b0f07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
+              ),
+              //AssetImage("assets/skills_images.jpg"),
+              fit: BoxFit.fill,
+            )),
             child: Padding(
               padding: const EdgeInsets.only(top: 48.0),
               child: Column(
                 children: [
-                  const Text(
-                    'CODING SKILLS',
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.bold),
-                  ),
+                  getTextStyle("CODING SKILLS", FontWeight.bold,Theme.of(context).primaryColor, 50),
+
                   Wrap(
                     children: [
-                      for(int i=0; i< provider.skillData.length;i++)
+                      for (int i = 0; i < provider.skillData.length; i++)
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
@@ -51,13 +45,25 @@ class Skills extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(18.0),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Image.asset("${provider.skillData[i]["icon"]}", height: 70, width: 70,),
-                                  getTextStyle("${provider.skillData[i]["score"]}", FontWeight.bold, Colors.black, 35),
+                                  Image.asset(
+                                    "${provider.skillData[i]["icon"]}",
+                                    height: 70,
+                                    width: 70,
+                                  ),
                                   getTextStyle(
-                                      "${provider.skillData[i]["name"]}", FontWeight.normal, Colors.black, 23)
+                                      "${provider.skillData[i]["score"]}",
+                                      FontWeight.bold,
+                                      Theme.of(context).primaryColor,
+                                      35),
+                                  getTextStyle(
+                                      "${provider.skillData[i]["name"]}",
+                                      FontWeight.normal,
+                                      Theme.of(context).primaryColor,
+                                      23)
                                 ],
                               ),
                             ),
@@ -129,7 +135,9 @@ class Skills extends StatelessWidget {
                       // )
                     ],
                   ),
-                  const SizedBox(height: 20,)
+                  const SizedBox(
+                    height: 20,
+                  )
                 ],
               ),
             ),
@@ -138,6 +146,5 @@ class Skills extends StatelessWidget {
         );
       },
     );
-
   }
 }

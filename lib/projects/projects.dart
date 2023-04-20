@@ -19,7 +19,8 @@ class Projects extends StatelessWidget {
       builder: (context, provider, child) {
         provider.imagesListModifiying();
         return Container(
-          color: Colors.grey[200],
+          color:Theme.of(context).backgroundColor,
+
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -27,7 +28,8 @@ class Projects extends StatelessWidget {
                 const SizedBox(
                   height: (100),
                 ),
-                getTextStyle("Projects", FontWeight.bold, Colors.black, 50),
+                getTextStyle("Projects", FontWeight.bold, Theme.of(context).primaryColor,
+                    50),
                 const SizedBox(
                   height: 10,
                 ),
@@ -47,7 +49,11 @@ class Projects extends StatelessWidget {
                           endChild: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Container(
-                              color: Colors.white,
+                              decoration: BoxDecoration(
+                                  color:Theme.of(context).cardColor,
+                                  border: Border.all(color:Theme.of(context).indicatorColor)
+                              ),
+
                               child: Padding(
                                 padding: const EdgeInsets.all(28.0),
                                 child: Column(
@@ -56,14 +62,15 @@ class Projects extends StatelessWidget {
                                   children: [
                                     Text(
                                       "${provider.projectsData[a]['title']}",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 18),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 18, color: Theme.of(context).primaryColor),
                                     ),
                                     const SizedBox(
                                       height: 10,
                                     ),
                                     Text(
                                       "${provider.projectsData[a]['date']}",
+                                      style: TextStyle(color: Theme.of(context).primaryColor),
                                     ),
                                     const SizedBox(
                                       height: 10,
@@ -71,9 +78,9 @@ class Projects extends StatelessWidget {
                                     Text(
                                       "${provider.projectsData[a]['summary']}",
                                       style: GoogleFonts.abyssinicaSil(
-                                        textStyle: const TextStyle(
+                                        textStyle: TextStyle(
                                             fontWeight: FontWeight.normal,
-                                            color: Colors.black45,
+                                            color: Theme.of(context).primaryColor,
                                             fontSize: 19),
                                       ),
                                       textAlign: TextAlign.left,
@@ -92,7 +99,10 @@ class Projects extends StatelessWidget {
                               ? Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Container(
-                              color: Colors.white,
+                              decoration: BoxDecoration(
+                                  color:Theme.of(context).cardColor,
+                                  border: Border.all(color:Theme.of(context).indicatorColor)
+                              ),
                               child: Padding(
                                 padding: const EdgeInsets.all(28.0),
                                 child: Column(
@@ -101,14 +111,15 @@ class Projects extends StatelessWidget {
                                   children: [
                                     Text(
                                       "${provider.projectsData[a]['title']}",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 18),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 18, color: Theme.of(context).primaryColor),
                                     ),
                                     const SizedBox(
                                       height: 10,
                                     ),
                                     Text(
                                       "${provider.projectsData[a]['date']}",
+                                      style: TextStyle(color: Theme.of(context).primaryColor),
                                     ),
                                     const SizedBox(
                                       height: 10,
@@ -116,9 +127,9 @@ class Projects extends StatelessWidget {
                                     Text(
                                       "${provider.projectsData[a]['summary']}",
                                       style: GoogleFonts.abyssinicaSil(
-                                        textStyle: const TextStyle(
+                                        textStyle: TextStyle(
                                             fontWeight: FontWeight.normal,
-                                            color: Colors.black45,
+                                            color: Theme.of(context).primaryColor,
                                             fontSize: 19),
                                       ),
                                       textAlign: TextAlign.right,
@@ -134,7 +145,10 @@ class Projects extends StatelessWidget {
                               ? Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Container(
-                              color: Colors.white,
+                              decoration: BoxDecoration(
+                                  color:Theme.of(context).cardColor,
+                                  border: Border.all(color:Theme.of(context).indicatorColor)
+                              ),
                               child: Padding(
                                 padding: const EdgeInsets.all(28.0),
                                 child: Column(
@@ -143,14 +157,15 @@ class Projects extends StatelessWidget {
                                   children: [
                                     Text(
                                       "${provider.projectsData[a]['title']}",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 18),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 18, color: Theme.of(context).primaryColor),
                                     ),
                                     const SizedBox(
                                       height: 10,
                                     ),
                                     Text(
                                       "${provider.projectsData[a]['date']}",
+                                      style: TextStyle(color: Theme.of(context).primaryColor),
                                     ),
                                     const SizedBox(
                                       height: 10,
@@ -158,9 +173,9 @@ class Projects extends StatelessWidget {
                                     Text(
                                       "${provider.projectsData[a]['summary']}",
                                       style: GoogleFonts.abyssinicaSil(
-                                        textStyle: const TextStyle(
+                                        textStyle: TextStyle(
                                             fontWeight: FontWeight.normal,
-                                            color: Colors.black45,
+                                            color: Theme.of(context).primaryColor,
                                             fontSize: 19),
                                       ),
                                       textAlign: TextAlign.left,

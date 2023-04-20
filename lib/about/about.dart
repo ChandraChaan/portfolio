@@ -66,7 +66,7 @@ class _AboutState extends State<About> {
                 child: Row(
                   children: [
                     getTextStyle(provider.userFirstName.toUpperCase(),
-                        FontWeight.bold, Colors.white, 70),
+                        FontWeight.bold, Theme.of(context).primaryColor, 70),
                     const SizedBox(
                       width: 5,
                     ),
@@ -77,7 +77,7 @@ class _AboutState extends State<About> {
               ),
               FittedBox(
                 child: getTextStyle(
-                    provider.smallTagline, FontWeight.bold, Colors.white54, 20),
+                    provider.smallTagline, FontWeight.bold, Theme.of(context).primaryColor, 20),
               ),
               const SizedBox(
                 height: 30,
@@ -88,7 +88,7 @@ class _AboutState extends State<About> {
                   Expanded(
                     flex: 1,
                     child: getTextStyle(provider.bigTagline, FontWeight.normal,
-                        Colors.white38, 20),
+                        Theme.of(context).primaryColor, 20),
                   ),
                   Expanded(
                     flex: 1,
@@ -103,6 +103,7 @@ class _AboutState extends State<About> {
                 child: Row(
                   children: [
                     IconButton(
+                      color:Theme.of(context).primaryColor,
                       icon: const FaIcon(FontAwesomeIcons.github),
                       iconSize: 40,
                       onPressed: () {
@@ -116,6 +117,7 @@ class _AboutState extends State<About> {
                       width: 20,
                     ),
                     IconButton(
+                        color:Theme.of(context).primaryColor,
                         icon: const FaIcon(FontAwesomeIcons.linkedin),
                         iconSize: 40,
                         onPressed: () {
@@ -129,7 +131,8 @@ class _AboutState extends State<About> {
                       width: 20,
                     ),
                     IconButton(
-                        icon: const FaIcon(FontAwesomeIcons.stackOverflow),
+                        color:Theme.of(context).primaryColor,
+                        icon: const FaIcon(FontAwesomeIcons.stackOverflow,),
                         iconSize: 40,
                         onPressed: () {
                           html.window.open(
