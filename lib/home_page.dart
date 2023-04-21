@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:portfoli_web/ui/responsive_ui.dart';
@@ -11,14 +12,9 @@ import '../utils/font_style.dart';
 
 import 'about/about.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   final scrollControllerLocal = ScrollController();
 
   final aboutScrollKey = GlobalKey();
@@ -32,14 +28,6 @@ class _HomePageState extends State<HomePage> {
   final projectsScrollKey = GlobalKey();
 
   final contactScrollKey = GlobalKey();
-
-  @override
-  void initState() {
-    // scrollControllerLocal.addListener(() {
-    //
-    // });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -386,7 +374,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   srollSmooth(BuildContext context) {
+    AudioPlayer().play(AssetSource('audio/decide.mp3'));
     Scrollable.ensureVisible(context,
-        duration: const Duration(seconds: 1), curve: Curves.easeInOutSine);
+        duration: const Duration(seconds: 1), curve: Curves.easeIn);
   }
 }

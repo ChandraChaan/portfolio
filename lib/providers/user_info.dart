@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserInfo extends ChangeNotifier {
-  bool themeLightMode = false;
+  bool themeLightMode =
+      (DateTime.now().hour > 6 && DateTime.now().hour < 18) ? true : false;
   String user = 'Chandra Obul Reddy';
   String userFirstName = '';
   String imageFilterString = 'all';
@@ -24,7 +25,7 @@ class UserInfo extends ChangeNotifier {
     }
   }
 
-  changeThemeMode(){
+  changeThemeMode() {
     themeLightMode = !themeLightMode;
     notifyListeners();
   }
@@ -150,49 +151,48 @@ class UserInfo extends ChangeNotifier {
     {
       "name": "Flutter",
       "score": "100%",
-      "icon":"assets/skills/flutter.png",
+      "icon": "assets/skills/flutter.png",
     },
     {
       "name": "Java",
       "score": "80%",
-      "icon":"assets/skills/java.png",
+      "icon": "assets/skills/java.png",
     },
     {
       "name": "Dart",
       "score": "100%",
-      "icon":"assets/skills/dart.png",
+      "icon": "assets/skills/dart.png",
     },
     {
       "name": "JavaScript",
       "score": "94%",
-      "icon":"assets/skills/js.png",
+      "icon": "assets/skills/js.png",
     },
     {
       "name": "HTML",
       "score": "74%",
-      "icon":"assets/skills/html.png",
+      "icon": "assets/skills/html.png",
     },
     {
       "name": "CSS",
       "score": "61%",
-      "icon":"assets/skills/css.png",
+      "icon": "assets/skills/css.png",
     },
     {
       "name": "FIREBASE",
       "score": "74%",
-      "icon":"assets/skills/firebase.png",
+      "icon": "assets/skills/firebase.png",
     },
     {
       "name": "PYTHON",
       "score": "84%",
-      "icon":"assets/skills/python.png",
+      "icon": "assets/skills/python.png",
     },
     {
       "name": "PHP",
       "score": "94%",
-      "icon":"assets/skills/php.png",
+      "icon": "assets/skills/php.png",
     },
-
   ];
 
   Map imagesMap = {
@@ -201,7 +201,7 @@ class UserInfo extends ChangeNotifier {
       'assets/portfolio/chandra/arrton1.png',
       'assets/portfolio/chandra/arrton2.png',
       'assets/portfolio/chandra/arrton3.png',
-      ],
+    ],
   };
   List imagesKeys = [];
   List pImages = [];
