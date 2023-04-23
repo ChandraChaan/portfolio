@@ -8,8 +8,6 @@ import '../contact/contact.dart';
 import '../experience/experience.dart';
 import '../portfolio/portfolio.dart';
 import '../skills/skills.dart';
-import '../utils/font_style.dart';
-
 import 'about/about.dart';
 
 class HomePage extends StatelessWidget {
@@ -232,7 +230,8 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ],
-        ));
+        )
+    );
   }
 
   Widget tabletUI(BuildContext context) {
@@ -253,6 +252,8 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             About(
+              mobileImg: true,
+              tabImg: true,
               key: aboutScrollKey,
             ),
             Experience(
@@ -297,6 +298,7 @@ class HomePage extends StatelessWidget {
           children: [
             About(
               key: aboutScrollKey,
+              mobileImg: true,
             ),
             Experience(
               smallCard: true,

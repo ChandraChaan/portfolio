@@ -7,7 +7,10 @@ import 'dart:html' as html;
 import '../utils/font_style.dart';
 
 class About extends StatefulWidget {
-  const About({Key? key}) : super(key: key);
+  final bool mobileImg;
+  final bool tabImg;
+
+  const About({super.key, this.mobileImg = false, this.tabImg = false});
 
   @override
   State<About> createState() => _AboutState();
@@ -24,11 +27,13 @@ class _AboutState extends State<About> {
       return Container(
         height: MediaQuery.of(context).size.height,
         width: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             // borderRadius: BorderRadius.all(Radius.circular(100)),
             image: DecorationImage(
-          image: AssetImage("assets/backGround-image.jpg"),
-          fit: BoxFit.cover,
+          image: AssetImage(widget.mobileImg
+              ? (widget.tabImg ? 'assets/mobile_tab' : 'assets/mobile_bc.jpg')
+              : 'assets/backGround-image.jpg'),
+          fit: /*widget.mobileImg? BoxFit.fitHeight:*/BoxFit.cover,
         )),
         child: Padding(
           padding: const EdgeInsets.only(left: 40.0),
@@ -76,8 +81,8 @@ class _AboutState extends State<About> {
                 ),
               ),
               FittedBox(
-                child: getTextStyle(
-                    provider.smallTagline, FontWeight.bold, Theme.of(context).primaryColor, 20),
+                child: getTextStyle(provider.smallTagline, FontWeight.bold,
+                    Theme.of(context).primaryColor, 20),
               ),
               const SizedBox(
                 height: 30,
@@ -103,7 +108,7 @@ class _AboutState extends State<About> {
                 child: Row(
                   children: [
                     IconButton(
-                      color:Theme.of(context).primaryColor,
+                      color: Theme.of(context).primaryColor,
                       icon: const FaIcon(FontAwesomeIcons.github),
                       iconSize: 40,
                       onPressed: () {
@@ -117,7 +122,7 @@ class _AboutState extends State<About> {
                       width: 20,
                     ),
                     IconButton(
-                        color:Theme.of(context).primaryColor,
+                        color: Theme.of(context).primaryColor,
                         icon: const FaIcon(FontAwesomeIcons.linkedin),
                         iconSize: 40,
                         onPressed: () {
@@ -131,8 +136,10 @@ class _AboutState extends State<About> {
                       width: 20,
                     ),
                     IconButton(
-                        color:Theme.of(context).primaryColor,
-                        icon: const FaIcon(FontAwesomeIcons.stackOverflow,),
+                        color: Theme.of(context).primaryColor,
+                        icon: const FaIcon(
+                          FontAwesomeIcons.stackOverflow,
+                        ),
                         iconSize: 40,
                         onPressed: () {
                           html.window.open(

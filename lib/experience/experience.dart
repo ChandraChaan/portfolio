@@ -39,6 +39,7 @@ class Experience extends StatelessWidget {
                 ? ListView.builder(
                 itemCount: provider.expData.length,
                 shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
