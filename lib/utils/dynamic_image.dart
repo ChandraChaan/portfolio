@@ -1,6 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/user_info.dart';
 
 class ImageDynamic extends StatelessWidget {
   final String img;
@@ -11,7 +14,9 @@ class ImageDynamic extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        AudioPlayer().play(AssetSource('audio/select_denied.mp3'));
+        if(Provider.of<UserInfo>(context, listen: false).musicMode) {
+          AudioPlayer().play(AssetSource('audio/select_denied.mp3'));
+        }
       },
       child: img.contains('assets')
           ? Image.asset(

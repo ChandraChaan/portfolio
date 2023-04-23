@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserInfo extends ChangeNotifier {
+  bool musicMode = false;
   bool themeLightMode =
       (DateTime.now().hour > 6 && DateTime.now().hour < 18) ? true : false;
   String user = 'Chandra Obul Reddy';
@@ -27,6 +28,10 @@ class UserInfo extends ChangeNotifier {
 
   changeThemeMode() {
     themeLightMode = !themeLightMode;
+    notifyListeners();
+  }
+  changeMusicMode() {
+    musicMode = !musicMode;
     notifyListeners();
   }
 
