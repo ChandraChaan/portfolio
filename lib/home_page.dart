@@ -1,7 +1,8 @@
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:portfoli_web/ui/responsive_ui.dart';
+import 'package:portfoli_web/utils/font_style.dart';
 import 'package:provider/provider.dart';
 import '../projects/projects.dart';
 import '../contact/contact.dart';
@@ -147,7 +148,7 @@ class HomePage extends StatelessWidget {
                       onPressed: () {
                         srollSmooth(aboutScrollKey.currentContext!);
                       },
-                      child: Text("ABOUT", style: styl),
+                      child: CommonText(text: 'ABOUT'),
                     ),
                     const SizedBox(
                       height: 10,
@@ -156,7 +157,7 @@ class HomePage extends StatelessWidget {
                       onPressed: () {
                         srollSmooth(expScrollKey.currentContext!);
                       },
-                      child: Text("EXPERIENCE", style: styl),
+                      child: CommonText(text:"EXPERIENCE", ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -165,7 +166,7 @@ class HomePage extends StatelessWidget {
                       onPressed: () {
                         srollSmooth(portfoScrollKey.currentContext!);
                       },
-                      child: Text("PORTFOLIO", style: styl),
+                      child: CommonText(text:"PORTFOLIO",),
                     ),
                     const SizedBox(
                       height: 10,
@@ -174,7 +175,7 @@ class HomePage extends StatelessWidget {
                       onPressed: () {
                         srollSmooth(skillScrollKey.currentContext!);
                       },
-                      child: Text("SKILLS", style: styl),
+                      child: CommonText(text:"SKILLS",),
                     ),
                     const SizedBox(
                       height: 10,
@@ -183,7 +184,7 @@ class HomePage extends StatelessWidget {
                         onPressed: () {
                           srollSmooth(projectsScrollKey.currentContext!);
                         },
-                        child: Text("PROJECTS", style: styl)),
+                        child: CommonText(text:"PROJECTS", )),
                     const SizedBox(
                       height: 10,
                     ),
@@ -191,7 +192,7 @@ class HomePage extends StatelessWidget {
                         onPressed: () {
                           srollSmooth(contactScrollKey.currentContext!);
                         },
-                        child: Text("CONTACT", style: styl)),
+                        child: CommonText(text:"CONTACT",)),
                   ],
                 ),
               ),
@@ -341,65 +342,71 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Consumer<UserInfo>(
-                  builder: (context, provider, child) {
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            provider.themeLightMode
-                                ? const Icon(
-                              Icons.sunny,
-                              color: Colors.white,
-                            )
-                                : const Icon(
-                              Icons.nightlight,
-                              color: Colors.black,
-                            ),
-                            Transform.scale(
-                                scale: 1,
-                                child: Switch(
-                                  onChanged: (bool newVal) {
-                                    provider.changeThemeMode();
-                                  },
-                                  value: provider.themeLightMode,
-                                  activeColor: Colors.white,
-                                  activeTrackColor: Colors.white38,
-                                  inactiveThumbColor: Colors.black,
-                                  inactiveTrackColor: Colors.black38,
-                                )),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            provider.musicMode
-                                ? const Icon(
-                              Icons.add_alert_sharp,
-                              color: Colors.lightGreenAccent  ,
-                            )
-                                : const Icon(
-                              Icons.volume_mute_outlined,
-                              color: Colors.redAccent,
-                            ),
-                            Transform.scale(
-                                scale: 1,
-                                child: Switch(
-                                  onChanged: (bool newVal) {
-                                    provider.changeMusicMode();
-                                  },
-                                  value: provider.musicMode,
-                                  activeColor: Colors.green,
-                                  activeTrackColor: Colors.greenAccent,
-                                  inactiveThumbColor: Colors.redAccent,
-                                  inactiveTrackColor: Colors.red,
-                                )),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
+                SizedBox(
+                  height:80,
+                  child: Consumer<UserInfo>(
+                    builder: (context, provider, child) {
+                      return Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              provider.themeLightMode
+                                  ? const Icon(
+                                Icons.sunny,
+                                color: Colors.white,
+                              )
+                                  : const Icon(
+                                Icons.nightlight,
+                                color: Colors.black,
+                              ),
+                              Transform.scale(
+                                  scale: 1,
+                                  child: Switch(
+                                    onChanged: (bool newVal) {
+                                      provider.changeThemeMode();
+                                    },
+                                    value: provider.themeLightMode,
+                                    activeColor: Colors.white,
+                                    activeTrackColor: Colors.white38,
+                                    inactiveThumbColor: Colors.black,
+                                    inactiveTrackColor: Colors.black38,
+                                  )),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              provider.musicMode
+                                  ? const Icon(
+                                Icons.add_alert_sharp,
+                                color: Colors.lightGreenAccent  ,
+                              )
+                                  : const Icon(
+                                Icons.volume_mute_outlined,
+                                color: Colors.redAccent,
+                              ),
+                              Transform.scale(
+                                  scale: 1,
+                                  child: Switch(
+                                    onChanged: (bool newVal) {
+                                      provider.changeMusicMode();
+                                    },
+                                    value: provider.musicMode,
+                                    activeColor: Colors.green,
+                                    activeTrackColor: Colors.greenAccent,
+                                    inactiveThumbColor: Colors.redAccent,
+                                    inactiveTrackColor: Colors.red,
+                                  )),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 50,
                 ),
                 Container(
                   height: 160,
@@ -413,7 +420,7 @@ class HomePage extends StatelessWidget {
                         width: 130,
                         decoration: const BoxDecoration(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(100)),
+                            BorderRadius.all(Radius.circular(100)),
                             image: DecorationImage(
                               image: AssetImage("assets/profile.jpg"),
                               fit: BoxFit.fill,
@@ -427,7 +434,7 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     srollSmooth(aboutScrollKey.currentContext!);
                   },
-                  child: Text("ABOUT", style: styl),
+                  child: CommonText(text: 'ABOUT'),
                 ),
                 const SizedBox(
                   height: 10,
@@ -436,7 +443,7 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     srollSmooth(expScrollKey.currentContext!);
                   },
-                  child: Text("EXPERIENCE", style: styl),
+                  child: CommonText(text:"EXPERIENCE", ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -445,7 +452,7 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     srollSmooth(portfoScrollKey.currentContext!);
                   },
-                  child: Text("PORTFOLIO", style: styl),
+                  child: CommonText(text:"PORTFOLIO",),
                 ),
                 const SizedBox(
                   height: 10,
@@ -454,7 +461,7 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     srollSmooth(skillScrollKey.currentContext!);
                   },
-                  child: Text("SKILLS", style: styl),
+                  child: CommonText(text:"SKILLS",),
                 ),
                 const SizedBox(
                   height: 10,
@@ -463,7 +470,7 @@ class HomePage extends StatelessWidget {
                     onPressed: () {
                       srollSmooth(projectsScrollKey.currentContext!);
                     },
-                    child: Text("PROJECTS", style: styl)),
+                    child: CommonText(text:"PROJECTS", )),
                 const SizedBox(
                   height: 10,
                 ),
@@ -471,7 +478,7 @@ class HomePage extends StatelessWidget {
                     onPressed: () {
                       srollSmooth(contactScrollKey.currentContext!);
                     },
-                    child: Text("CONTACT", style: styl)),
+                    child: CommonText(text:"CONTACT",)),
               ],
             ),
           ),
@@ -481,9 +488,9 @@ class HomePage extends StatelessWidget {
   }
 
   srollSmooth(BuildContext context) {
-    if(Provider.of<UserInfo>(context, listen: false).musicMode) {
-      AudioPlayer().play(AssetSource('audio/decide.mp3'));
-    }
+    // if(Provider.of<UserInfo>(context, listen: false).musicMode) {
+    //   AudioPlayer().play(AssetSource('audio/decide.mp3'));
+    // }
     Scrollable.ensureVisible(context,
         duration: const Duration(seconds: 1), curve: Curves.easeIn);
   }

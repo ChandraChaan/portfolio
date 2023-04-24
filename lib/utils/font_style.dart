@@ -15,3 +15,19 @@ Widget getTextStyle(
     // stepGranularity: 1.0,
   );
 }
+class CommonText extends StatelessWidget {
+  final String text;
+
+  const CommonText({super.key, required this.text});
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style:
+      Theme.of(context).textTheme.headlineSmall?.copyWith(
+        color: Theme.of(context).primaryColor,
+      ),
+    );
+  }
+}
+

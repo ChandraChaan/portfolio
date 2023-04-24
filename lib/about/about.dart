@@ -31,7 +31,7 @@ class _AboutState extends State<About> {
             // borderRadius: BorderRadius.all(Radius.circular(100)),
             image: DecorationImage(
           image: AssetImage(widget.mobileImg
-              ? (widget.tabImg ? 'assets/mobile_tab' : 'assets/mobile_bc.jpg')
+              ? (widget.tabImg ? 'assets/mobile_tab.jpg' : 'assets/mobile_bc.jpg')
               : 'assets/backGround-image.jpg'),
           fit: /*widget.mobileImg? BoxFit.fitHeight:*/BoxFit.cover,
         )),
