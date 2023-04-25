@@ -1,4 +1,7 @@
-// import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:portfoli_web/ui/responsive_ui.dart';
@@ -10,9 +13,66 @@ import '../experience/experience.dart';
 import '../portfolio/portfolio.dart';
 import '../skills/skills.dart';
 import 'about/about.dart';
+import 'package:http/http.dart' as http;
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  String? _token;
+  Stream<String>? _tokenStream;
+  int notificationCount = 0;
+
+  void setToken(String? token) {
+    print('FCM TokenToken: $token');
+    setState(() {
+      _token = token;
+    });
+  }
+  //send notification
+  sendPushMessageToWeb() async {
+    if (_token == null) {
+      print('Unable to send FCM message, no token exists.');
+      return;
+    }
+    try {
+      await http
+          .post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'key=AAAAy2Awy5M:APA91bHy0D-kVL7hR5vWL8M_56uxq_gpSPP6H29Ez7Goi7wIgm9Q1wGQSaE-fbVyF8F76vmfo1-gXYHVLh0TLW5wt5cgokJApoG2yCxf8qXXWhug_nY6HUrWzrmNk1QKhIq_Ebdme_d_'
+        },
+        body: json.encode({
+          'to': _token,
+          'message': {
+            'token': _token,
+          },
+          "notification": {
+            "title": "Dumpala",
+            "body": "Chandra ObulReddy"
+          }
+        }),
+      )
+          .then((value) => print(value.body));
+      print('FCM request for web sent!');
+    } catch (e) {
+      print(e);
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+    //get token
+    FirebaseMessaging.instance.getToken().then(setToken);
+    _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
+    _tokenStream?.listen(setToken);
+  }
 
   final scrollControllerLocal = ScrollController();
 
@@ -57,7 +117,7 @@ class HomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height:80,
+                      height:110,
                       child: Consumer<UserInfo>(
                         builder: (context, provider, child) {
                           return Column(
@@ -114,6 +174,9 @@ class HomePage extends StatelessWidget {
                                       )),
                                 ],
                               ),
+                              TextButton(onPressed: (){
+                                sendPushMessageToWeb();
+                              }, child:  Text('Notification',style: styl))
                             ],
                           );
                         },
@@ -145,8 +208,10 @@ class HomePage extends StatelessWidget {
                       height: 20,
                     ),
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async{
+                        await Clipboard.setData(ClipboardData(text: _token.toString()));
                         srollSmooth(aboutScrollKey.currentContext!);
+
                       },
                       child: CommonText(text: 'ABOUT'),
                     ),
@@ -343,7 +408,7 @@ class HomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height:80,
+                  height:110,
                   child: Consumer<UserInfo>(
                     builder: (context, provider, child) {
                       return Column(
@@ -400,6 +465,9 @@ class HomePage extends StatelessWidget {
                                   )),
                             ],
                           ),
+                          TextButton(onPressed: (){
+                            sendPushMessageToWeb();
+                          }, child: Text('Notification', style: styl,))
                         ],
                       );
                     },
@@ -488,9 +556,9 @@ class HomePage extends StatelessWidget {
   }
 
   srollSmooth(BuildContext context) {
-    // if(Provider.of<UserInfo>(context, listen: false).musicMode) {
-    //   AudioPlayer().play(AssetSource('audio/decide.mp3'));
-    // }
+    if(Provider.of<UserInfo>(context, listen: false).musicMode) {
+      AudioPlayer().play(AssetSource('audio/decide.mp3'));
+    }
     Scrollable.ensureVisible(context,
         duration: const Duration(seconds: 1), curve: Curves.easeIn);
   }
