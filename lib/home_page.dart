@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:portfoli_web/ui/responsive_ui.dart';
 import 'package:portfoli_web/utils/font_style.dart';
@@ -176,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               TextButton(onPressed: (){
                                 sendPushMessageToWeb();
-                              }, child:  Text('Notification',style: styl))
+                              }, child:  Text('Notification',style: styl).animate(effects: [const ShakeEffect(duration: Duration(minutes: 2), delay: Duration(seconds: 5))]))
                             ],
                           );
                         },

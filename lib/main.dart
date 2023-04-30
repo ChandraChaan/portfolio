@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
@@ -5,7 +6,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
 
 import 'home_page.dart';
 
@@ -116,13 +116,27 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
       if (message.notification != null) {
         print(
             'Message also contained a notification: ${message.notification?.body}');
-        showDialog(
-            context: context,
-            builder: ((BuildContext context) {
-              return DynamicDialog(
-                  title: message.notification?.title,
-                  body: message.notification?.body);
-            }));
+        AwesomeDialog(
+                context: context,
+                width: MediaQuery.of(context).size.width/2,
+                animType: AnimType.topSlide,
+                headerAnimationLoop: false,
+                dialogType: DialogType.success,
+                title: message.notification?.title,
+                desc: message.notification?.body,
+                btnOkOnPress: () {
+                  debugPrint('OnClcik');
+                },
+                btnOkIcon: Icons.check_circle,
+                onDismissCallback: (v) {})
+            .show();
+        // showDialog(
+        //     context: context,
+        //     builder: ((BuildContext context) {
+        //       return DynamicDialog(
+        //           title: message.notification?.title,
+        //           body: message.notification?.body);
+        //     }));
       }
     });
   }

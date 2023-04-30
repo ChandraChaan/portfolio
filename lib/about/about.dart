@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -78,11 +83,10 @@ class _AboutState extends State<About> {
                     getTextStyle(provider.user.split(' ').last.toUpperCase(),
                         FontWeight.bold, Colors.blue, 70),
                   ],
-                ),
+                ).animate().flip(duration: const Duration(seconds: 3)).shake().then(),
               ),
               FittedBox(
-                child: getTextStyle(provider.smallTagline, FontWeight.bold,
-                    Theme.of(context).primaryColor, 20),
+                child: Text(provider.smallTagline, style: TextStyle(fontWeight:FontWeight.bold,color: Theme.of(context).primaryColor, fontSize: 20, )).animate().scale(),
               ),
               const SizedBox(
                 height: 30,

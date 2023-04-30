@@ -27,7 +27,8 @@ class Portfolio extends StatelessWidget {
                 const SizedBox(
                   height: (50),
                 ),
-                getTextStyle("Portfolio", FontWeight.bold, Theme.of(context).primaryColor, 50),
+                getTextStyle("Portfolio", FontWeight.bold,
+                    Theme.of(context).primaryColor, 50),
                 const SizedBox(
                   height: 10,
                 ),
@@ -49,16 +50,17 @@ class Portfolio extends StatelessWidget {
                           // width: (36),
                           // height: (40),
                           decoration: BoxDecoration(
-                            color: provider.imageFilterString == '${provider.imagesKeys[c]}' ? Colors.blueAccent : null,
+                            color: provider.imageFilterString ==
+                                    '${provider.imagesKeys[c]}'
+                                ? Colors.blueAccent
+                                : null,
                             border: Border.all(
                               width: 1,
                               color: Colors.blueAccent,
                             ),
                           ),
                           child: TextButton(
-                              onHover: (val) {
-
-                              },
+                              onHover: (val) {},
                               onPressed: () {
                                 provider.imageFilter(provider.imagesKeys[c]);
                               },
@@ -66,7 +68,10 @@ class Portfolio extends StatelessWidget {
                                 '${provider.imagesKeys[c]}'.toUpperCase(),
                                 style: GoogleFonts.abyssinicaSil(
                                     textStyle: TextStyle(
-                                        color: provider.imageFilterString == '${provider.imagesKeys[c]}' ? Colors.white : Colors.blueAccent,
+                                        color: provider.imageFilterString ==
+                                                '${provider.imagesKeys[c]}'
+                                            ? Colors.white
+                                            : Colors.blueAccent,
                                         fontSize: 20)),
                               )),
                         ),
@@ -80,37 +85,75 @@ class Portfolio extends StatelessWidget {
                   padding: const EdgeInsets.all(12.0),
                   child: smallCard
                       ? ListView.builder(
-                      itemCount: provider.pImages.length,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: ImageDynamic(img:"${provider.pImages[index]['img']}"),
-                        );
-                      }) :
-                  GridView.builder(
-                    itemCount: provider.pImages.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 18.0,
-                            childAspectRatio: 2,
-                            mainAxisSpacing: 18.0),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        height: 170,
-                        // width: 120,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(10.0),
+                          itemCount: provider.pImages.length,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: ImageDynamic(
+                                  img: "${provider.pImages[index]['img']}"),
+                            );
+                          })
+                      : GridView.builder(
+                          itemCount: provider.pImages.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 18.0,
+                                  childAspectRatio: 2,
+                                  mainAxisSpacing: 18.0),
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              onTap: () {
+                                // this is start the code
+                                showDialog(
+                                    barrierDismissible: true,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return StatefulBuilder(
+                                          builder: (context, setState) {
+                                        return AlertDialog(
+                                            insetPadding: EdgeInsets.zero,
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10.0))),
+                                            content: Row(
+                                              children: const <Widget>[
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    "Sample type",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight
+                                                                .w700),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child:
+                                                        Text(""))
+                                              ],
+                                            ));
+                                      });
+                                    });
+                                // this is ending the code
+                              },
+                              child: Container(
+                                height: 170,
+                                // width: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: ImageDynamic(
+                                    img: "${provider.pImages[index]['img']}"),
+                              ),
+                            );
+                          },
                         ),
-                        child: ImageDynamic(img:"${provider.pImages[index]['img']}"),
-
-                      );
-                    },
-                  ),
                 ),
                 const SizedBox(
                   height: 50,
