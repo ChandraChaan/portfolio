@@ -138,7 +138,8 @@ class Portfolio extends StatelessWidget {
                                               ],
                                             ));
                                       });
-                                    });
+                                    }
+                                    );
                                 // this is ending the code
                               },
                               child: Container(

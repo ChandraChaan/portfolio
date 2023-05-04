@@ -10,7 +10,7 @@ body {
 }
 
 .heart {
-  background-color: red;
+  background-color: gold;
   height: 100px;
   width: 100px;
   transform: rotate(-45deg);
@@ -22,7 +22,7 @@ body {
 .heart::before,
 .heart::after {
   content: "";
-  background-color: red;
+  background-color: gold;
   height: 100px;
   width: 100px;
   position: absolute;
