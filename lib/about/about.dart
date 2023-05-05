@@ -111,7 +111,7 @@ class _AboutState extends State<About> {
                         style: TextStyle(
                             color: Theme.of(context).primaryColor,fontSize: 11),
                       textAlign: TextAlign.start,
-                      textScaleFactor: ScaleSize.textScaleFactor(context),
+                      // textScaleFactor: ScaleSize.textScaleFactor(context),
                     ),
                   ),
                   Expanded(
