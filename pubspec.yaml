@@ -47,7 +47,7 @@ dependencies:
   cached_network_image: ^3.2.3
   scrollable_positioned_list: ^0.3.5
   animated_toggle_switch: ^0.6.2
-  audioplayers: ^1.0.1
+#  audioplayers: ^1.0.1
   flutter_local_notifications:
   firebase_core:
   firebase_messaging:

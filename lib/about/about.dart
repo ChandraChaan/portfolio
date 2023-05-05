@@ -36,9 +36,11 @@ class _AboutState extends State<About> {
             // borderRadius: BorderRadius.all(Radius.circular(100)),
             image: DecorationImage(
           image: AssetImage(widget.mobileImg
-              ? (widget.tabImg ? 'assets/mobile_tab.jpg' : 'assets/mobile_bc.jpg')
+              ? (widget.tabImg
+                  ? 'assets/mobile_tab.jpg'
+                  : 'assets/mobile_bc.jpg')
               : 'assets/backGround-image.jpg'),
-          fit: /*widget.mobileImg? BoxFit.fitHeight:*/BoxFit.cover,
+          fit: /*widget.mobileImg? BoxFit.fitHeight:*/ BoxFit.cover,
         )),
         child: Padding(
           padding: const EdgeInsets.only(left: 40.0),
@@ -83,10 +85,19 @@ class _AboutState extends State<About> {
                     getTextStyle(provider.user.split(' ').last.toUpperCase(),
                         FontWeight.bold, Colors.blue, 70),
                   ],
-                ).animate().flip(duration: const Duration(seconds: 3)).shake().then(),
+                )
+                    .animate()
+                    .flip(duration: const Duration(seconds: 3))
+                    .shake()
+                    .then(),
               ),
               FittedBox(
-                child: Text(provider.smallTagline, style: TextStyle(fontWeight:FontWeight.bold,color: Theme.of(context).primaryColor, fontSize: 20, )).animate().scale(),
+                child: Text(provider.smallTagline,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 20,
+                    )).animate().scale(),
               ),
               const SizedBox(
                 height: 30,
@@ -96,8 +107,12 @@ class _AboutState extends State<About> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: getTextStyle(provider.bigTagline, FontWeight.normal,
-                        Theme.of(context).primaryColor, 20),
+                    child: Text(provider.bigTagline,
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,fontSize: 11),
+                      textAlign: TextAlign.start,
+                      textScaleFactor: ScaleSize.textScaleFactor(context),
+                    ),
                   ),
                   Expanded(
                     flex: 1,
