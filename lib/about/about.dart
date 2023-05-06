@@ -70,8 +70,7 @@ class _AboutState extends State<About> {
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).primaryColor,
                       fontSize: 22,
-                      // fontFamily: 'FrederickatheGreat',
-                      fontFamily: 'SerenityMomentRegular'
+                      fontFamily: CommonFonts.frederickatheGreat,
                     )).animate().scale(),
               ),
               const SizedBox(

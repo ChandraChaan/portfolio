@@ -36,9 +36,25 @@ class CommonText extends StatelessWidget {
 }
 
 class ScaleSize {
-  static double textScaleFactor(BuildContext context, {double maxTextScaleFactor = 2}) {
+  static double textScaleFactor(BuildContext context,
+      {double maxTextScaleFactor = 2}) {
     final width = MediaQuery.of(context).size.width;
     double val = (width / 1400) * maxTextScaleFactor;
     return max(1, min(val, maxTextScaleFactor));
   }
+}
+
+class CommonFonts {
+  static String baroneysSolid = 'BaroneysSolid';
+  static String baroneysTextured = 'BaroneysTextured';
+  static String diamondaRegular = 'DiamondaRegular';
+  static String frederickatheGreat = 'FrederickatheGreat';
+  static String goldentext = 'goldentext';
+  static String holystaindemo = 'Holystaindemo';
+  static String holystainOutline = 'HolystainOutline';
+  static String natureBeauty = 'NatureBeauty';
+  static String roosterF = 'RoosterF';
+  static String serenityMomentRegular = 'SerenityMomentRegular';
+  static String stonedpersonaluseBold = 'StonedpersonaluseBold';
+  static String theWeddingSignatureRegular = 'TheWeddingSignatureRegular';
 }
