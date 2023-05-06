@@ -7,6 +7,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
+
 import '../providers/user_info.dart';
 import 'dart:html' as html;
 import '../utils/font_style.dart';
@@ -24,6 +25,7 @@ class About extends StatefulWidget {
 class _AboutState extends State<About> {
   var searchTerm = "";
   var isSearching = false;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -170,6 +172,8 @@ class _AboutState extends State<About> {
                     const SizedBox(
                       width: 20,
                     ),
+
+
                     // IconButton(
                     //   iconSize: 40,
                     //   icon: const FaIcon(FontAwesomeIcons.twitter),
@@ -217,11 +221,22 @@ class _AboutState extends State<About> {
                     // ),
                   ],
                 ),
-              )
-            ],
+              ),
+          SizedBox(
+            width: 250,
+            height: 20,
+            child: LinearProgressIndicator(
+              backgroundColor: Colors.cyan[100],
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
+            ),
+          ),
+
+          ],
           ),
         ),
+
       );
     });
   }
 }
+
