@@ -102,9 +102,33 @@ flutter:
   # example:
 
   fonts:
+    - family: BaroneysSolid
+      fonts:
+        - asset: fonts/BaroneysSolid.otf
+
+    - family: BaroneysTextured
+      fonts:
+        - asset: fonts/BaroneysTextured.otf
+
+    - family: DiamondaRegular
+      fonts:
+        - asset: fonts/DiamondaRegular.ttf
+
+    - family: FrederickatheGreat
+      fonts:
+        - asset: fonts/FrederickatheGreat.ttf
+
     - family: goldentext
       fonts:
         - asset: fonts/Goldenbeach.otf
+
+    - family: Holystaindemo
+      fonts:
+        - asset: fonts/Holystaindemo.ttf
+
+    - family: HolystainOutline
+      fonts:
+        - asset: fonts/HolystainOutline.ttf
 
     - family: NatureBeauty
       fonts:
@@ -114,9 +138,21 @@ flutter:
       fonts:
         - asset: fonts/RoosterF.ttf
 
-    - family: FrederickatheGreat
+    - family: SerenityMomentRegular
       fonts:
-        - asset: fonts/FrederickatheGreat.ttf
+        - asset: fonts/SerenityMomentRegular.ttf
+
+    - family: StonedpersonaluseBold
+      fonts:
+        - asset: fonts/StonedpersonaluseBold.otf
+
+    - family: TheWeddingSignatureRegular
+      fonts:
+        - asset: fonts/TheWeddingSignatureRegular.ttf
+
+
+
+
 
 
 

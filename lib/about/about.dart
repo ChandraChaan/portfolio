@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -48,29 +44,6 @@ class _AboutState extends State<About> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // FittedBox(
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.start,
-              //     children: [
-              //       Container(
-              //         height: 100,
-              //         width: 40,
-              //         decoration: const BoxDecoration(
-              //           // borderRadius: BorderRadius.all(Radius.circular(100)),
-              //             image: DecorationImage(
-              //               image:
-              //               AssetImage("assets/profile_logo.jpg"),
-              //               fit: BoxFit.fill,
-              //             )),
-              //       ),
-              //       const SizedBox(
-              //         width: 3,
-              //       ),
-              //       getTextStyle("profile", FontWeight.bold,
-              //           Colors.blue, 50),
-              //     ],
-              //   ),
-              // ),
               const SizedBox(
                 height: 30,
               ),
@@ -96,7 +69,9 @@ class _AboutState extends State<About> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).primaryColor,
-                      fontSize: 20,
+                      fontSize: 22,
+                      // fontFamily: 'FrederickatheGreat',
+                      fontFamily: 'SerenityMomentRegular'
                     )).animate().scale(),
               ),
               const SizedBox(
