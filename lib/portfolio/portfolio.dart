@@ -112,32 +112,12 @@ class Portfolio extends StatelessWidget {
                                     barrierDismissible: true,
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return StatefulBuilder(
-                                          builder: (context, setState) {
-                                        return AlertDialog(
-                                            insetPadding: EdgeInsets.zero,
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0))),
-                                            content: Row(
-                                              children: const <Widget>[
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Text(
-                                                    "Sample type",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight
-                                                                .w700),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child:
-                                                        Text(""))
-                                              ],
-                                            ));
-                                      });
+                                      return SizedBox(
+                                        // color: Colors.red,
+                                        width: MediaQuery.of(context).size.width/2,
+                                        height: MediaQuery.of(context).size.height/2,
+                                        child: const Center(child: Text('Sample')),
+                                      );
                                     }
                                     );
                                 // this is ending the code
