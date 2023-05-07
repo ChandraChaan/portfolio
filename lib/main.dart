@@ -37,8 +37,8 @@ class RoleApp extends StatelessWidget {
       title: 'Curriculum Vitae',
       theme: ThemeData(
         primaryColor: themeMode.themeLightMode ? Colors.black : Colors.white,
-        primarySwatch: Colors.blue,
-        indicatorColor: Colors.blue,
+        // primarySwatch: themeMode.themeColor,
+        indicatorColor: themeMode.themeColor,
         backgroundColor: themeMode.themeLightMode ? Colors.white : Colors.black,
         cardColor: themeMode.themeLightMode ? Colors.white : Colors.black,
       ),

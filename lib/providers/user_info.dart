@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class UserInfo extends ChangeNotifier {
   bool musicMode = false;
+  Color themeColor = Colors.blue;
   bool themeLightMode =
       (DateTime.now().hour > 6 && DateTime.now().hour < 18) ? true : false;
   String user = 'Chandra Obul Reddy';
@@ -230,6 +231,10 @@ class UserInfo extends ChangeNotifier {
     imageFilterString = typ;
     pImages = pImages.where((o) => o['type'] == typ).toList();
     imageLoaded = true;
+    notifyListeners();
+  }
+  themeColorChange(Color cl){
+    themeColor = cl;
     notifyListeners();
   }
 }

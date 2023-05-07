@@ -1,5 +1,6 @@
 // import 'package:audioplayers/audioplayers.dart';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,9 @@ class _HomePageState extends State<HomePage> {
     Colors.blueGrey,
   ];
 
-  void changeColor(Color color) => setState(() => currentColor = color);
+   changeColor(Color color){
+     Provider.of<UserInfo>(context).themeColorChange(color);
+}
 
   void changeColors(List<Color> colors) =>
       setState(() => currentColors = colors);
@@ -122,6 +125,59 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget scrolIndicator() {
+    return GestureDetector(
+      onDoubleTap: () {
+        Navigator.of(context).push(SecondPageRoute());
+      },
+      child: SizedBox(
+        height: 20,
+        child: LinearProgressIndicator(
+          backgroundColor: Colors.cyan[100],
+          value: 0.7,
+          // valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
+        ),
+      ),
+    );
+  }
+
+  Widget themeCOlorChange(){
+    return Align(
+      alignment: Alignment.topRight,
+      child: TextButton(
+        onPressed: () => showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Choose Color'),
+            // content: const Text('AlertDialog description'),
+            content: Container(
+              // height: 100,
+              child: Expanded(
+                child: BlockPicker(
+                    availableColors: currentColors,
+                    pickerColor: currentColor,
+                    onColorChanged: changeColor),
+              ),
+            ),
+
+            actions: <Widget>[
+              TextButton(
+                onPressed: () =>
+                    Navigator.pop(context, 'Cancel'),
+                child: const Text('Close'),
+              ),
+            ],
+          ),
+        ),
+        child: Icon(
+          Icons.settings,
+          color: Theme.of(context).primaryColor,
+          size: 30.0,
+        ),
+      ),
+    );
+  }
+
   Widget deskTopUI(BuildContext context) {
     TextStyle styl = TextStyle(
         color: Theme.of(context).primaryColor,
@@ -131,15 +187,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).backgroundColor,
         body: Column(
           children: [
-            SizedBox(
-              // width: 250,
-              height: 20,
-              child: LinearProgressIndicator(
-                backgroundColor: Colors.cyan[100],
-                value: 0.7,
-                // valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
-              ),
-            ),
+            scrolIndicator(),
             Expanded(
               child: Row(
                 children: [
@@ -147,46 +195,13 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      color: currentColor,
+                      color: Theme.of(context).indicatorColor,
                       width: double.infinity,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: TextButton(
-                              onPressed: () => showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  title: const Text('Choose Color'),
-                                  // content: const Text('AlertDialog description'),
-                                  content: Container(
-                                    // height: 100,
-                                    child: Expanded(
-                                      child: BlockPicker(
-                                          availableColors: currentColors,
-                                          pickerColor: currentColor,
-                                          onColorChanged: changeColor),
-                                    ),
-                                  ),
-
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'Cancel'),
-                                      child: const Text('Close'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              child: Icon(
-                                Icons.settings,
-                                color: Theme.of(context).primaryColor,
-                                size: 30.0,
-                              ),
-                            ),
-                          ),
+                          themeCOlorChange(),
                           SizedBox(
                             height: 110,
                             child: Consumer<UserInfo>(
@@ -194,7 +209,8 @@ class _HomePageState extends State<HomePage> {
                                 return Column(
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         provider.themeLightMode
                                             ? const Icon(
@@ -215,12 +231,14 @@ class _HomePageState extends State<HomePage> {
                                               activeColor: Colors.white,
                                               activeTrackColor: Colors.white38,
                                               inactiveThumbColor: Colors.black,
-                                              inactiveTrackColor: Colors.black38,
+                                              inactiveTrackColor:
+                                                  Colors.black38,
                                             )),
                                       ],
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         provider.musicMode
                                             ? const Icon(
@@ -239,8 +257,10 @@ class _HomePageState extends State<HomePage> {
                                               },
                                               value: provider.musicMode,
                                               activeColor: Colors.green,
-                                              activeTrackColor: Colors.greenAccent,
-                                              inactiveThumbColor: Colors.redAccent,
+                                              activeTrackColor:
+                                                  Colors.greenAccent,
+                                              inactiveThumbColor:
+                                                  Colors.redAccent,
                                               inactiveTrackColor: Colors.red,
                                             )),
                                       ],
@@ -268,14 +288,15 @@ class _HomePageState extends State<HomePage> {
                             width: 140,
                             decoration: const BoxDecoration(
                                 color: Colors.lightBlueAccent,
-                                borderRadius: BorderRadius.all(Radius.circular(100))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(100))),
                             child: Center(
                               child: Container(
                                   height: 150,
                                   width: 130,
                                   decoration: const BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(100)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100)),
                                       image: DecorationImage(
                                         image: AssetImage("assets/profile.jpg"),
                                         fit: BoxFit.fill,
@@ -396,43 +417,53 @@ class _HomePageState extends State<HomePage> {
         fontSize: 20,
         fontWeight: FontWeight.w500);
     return Scaffold(
-      backgroundColor: Theme.of(context).cardColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-      ),
-      drawer: drawerMobile(context),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            About(
-              mobileImg: true,
-              tabImg: true,
-              key: aboutScrollKey,
+      body: Column(
+        children: [
+          scrolIndicator(),
+          Expanded(
+            child: Scaffold(
+              backgroundColor: Theme.of(context).cardColor,
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+              ),
+              drawer: drawerMobile(context),
+              body: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+
+                    About(
+                      mobileImg: true,
+                      tabImg: true,
+                      key: aboutScrollKey,
+                    ),
+                    Experience(
+                      smallCard: false,
+                      key: expScrollKey,
+                    ),
+                    Portfolio(
+                      smallCard: false,
+                      key: portfoScrollKey,
+                    ),
+                    Skills(
+                      key: skillScrollKey,
+                    ),
+                    Projects(
+                      smallCard: false,
+                      key: projectsScrollKey,
+                    ),
+                    Contact(
+                      isWeb: true,
+                      key: contactScrollKey,
+                    ),
+                  ],
+                ),
+              ),
             ),
-            Experience(
-              smallCard: false,
-              key: expScrollKey,
-            ),
-            Portfolio(
-              smallCard: false,
-              key: portfoScrollKey,
-            ),
-            Skills(
-              key: skillScrollKey,
-            ),
-            Projects(
-              smallCard: false,
-              key: projectsScrollKey,
-            ),
-            Contact(
-              isWeb: true,
-              key: contactScrollKey,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -441,42 +472,51 @@ class _HomePageState extends State<HomePage> {
     // TextStyle? styl = Theme.of(context).textTheme.bodyLarge?.color;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).cardColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-      ),
-      drawer: drawerMobile(context),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            About(
-              key: aboutScrollKey,
-              mobileImg: true,
+      body: Column(
+        children: [
+          scrolIndicator(),
+          Expanded(
+            child: Scaffold(
+              backgroundColor: Theme.of(context).cardColor,
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+              ),
+              drawer: drawerMobile(context),
+              body: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    About(
+                      key: aboutScrollKey,
+                      mobileImg: true,
+                    ),
+                    Experience(
+                      smallCard: true,
+                      key: expScrollKey,
+                    ),
+                    Portfolio(
+                      smallCard: true,
+                      key: portfoScrollKey,
+                    ),
+                    Skills(
+                      key: skillScrollKey,
+                    ),
+                    Projects(
+                      smallCard: true,
+                      key: projectsScrollKey,
+                    ),
+                    Contact(
+                      isWeb: false,
+                      key: contactScrollKey,
+                    ),
+                  ],
+                ),
+              ),
             ),
-            Experience(
-              smallCard: true,
-              key: expScrollKey,
-            ),
-            Portfolio(
-              smallCard: true,
-              key: portfoScrollKey,
-            ),
-            Skills(
-              key: skillScrollKey,
-            ),
-            Projects(
-              smallCard: true,
-              key: projectsScrollKey,
-            ),
-            Contact(
-              isWeb: false,
-              key: contactScrollKey,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -498,11 +538,12 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 110,
+                  height: 150,
                   child: Consumer<UserInfo>(
                     builder: (context, provider, child) {
                       return Column(
                         children: [
+                          themeCOlorChange(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -562,7 +603,11 @@ class _HomePageState extends State<HomePage> {
                               child: Text(
                                 'Notification',
                                 style: styl,
-                              )),
+                              ).animate(effects: [
+                                const ShakeEffect(
+                                    duration: Duration(minutes: 2),
+                                    delay: Duration(seconds: 5))
+                              ])),
                         ],
                       );
                     },
@@ -666,5 +711,43 @@ class _HomePageState extends State<HomePage> {
     // }
     Scrollable.ensureVisible(context,
         duration: const Duration(seconds: 1), curve: Curves.easeIn);
+  }
+}
+
+class SecondPageRoute extends CupertinoPageRoute {
+  SecondPageRoute() : super(builder: (BuildContext context) => SecondPage());
+
+  // OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    return RotationTransition(
+        turns: animation,
+        child: ScaleTransition(
+          scale: animation,
+          child: FadeTransition(
+            opacity: animation,
+            child: SecondPage(),
+          ),
+        ));
+  }
+}
+
+class SecondPage extends StatefulWidget {
+  @override
+  _SecondPageState createState() => _SecondPageState();
+}
+
+class _SecondPageState extends State<SecondPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Second Page'),
+      ),
+      body: Center(
+        child: Text('This is the second page'),
+      ),
+    );
   }
 }
