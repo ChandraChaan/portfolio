@@ -102,7 +102,7 @@ class Experience extends StatelessWidget {
                                 Theme
                                     .of(context)
                                     .primaryColor,
-                                17),
+                                11),
                             const SizedBox(
                               height: 20,
                             ),
@@ -116,7 +116,7 @@ class Experience extends StatelessWidget {
                                       "${provider.expData[index]["startDate"]}",
                                       FontWeight.normal,
                                       Colors.blue,
-                                      18),
+                                      14),
                                   getTextStyle(
                                       " - ${provider.expData[index]["present"] !=
                                           true
@@ -124,7 +124,7 @@ class Experience extends StatelessWidget {
                                           : 'Present'}",
                                       FontWeight.normal,
                                       Colors.blue,
-                                      18),
+                                      14),
                                 ],
                               ),
                             )
@@ -204,7 +204,7 @@ class Experience extends StatelessWidget {
                             Theme
                                 .of(context)
                                 .primaryColor,
-                            17),
+                            12),
                         const SizedBox(
                           height: 20,
                         ),
@@ -218,7 +218,7 @@ class Experience extends StatelessWidget {
                                   "${provider.expData[index]["startDate"]}",
                                   FontWeight.normal,
                                   Colors.blue,
-                                  18),
+                                  14),
                               getTextStyle(
                                   " - ${provider.expData[index]["present"] !=
                                       true
@@ -226,7 +226,7 @@ class Experience extends StatelessWidget {
                                       : 'Present'}",
                                   FontWeight.normal,
                                   Colors.blue,
-                                  18),
+                                  14),
                             ],
                           ),
                         )

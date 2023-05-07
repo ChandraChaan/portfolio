@@ -196,15 +196,6 @@ class _AboutState extends State<About> {
                   ],
                 ),
               ),
-          SizedBox(
-            width: 250,
-            height: 20,
-            child: LinearProgressIndicator(
-              backgroundColor: Colors.cyan[100],
-              valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
-            ),
-          ),
-
           ],
           ),
         ),

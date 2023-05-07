@@ -129,246 +129,261 @@ class _HomePageState extends State<HomePage> {
         fontWeight: FontWeight.w500);
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
-        body: Row(
+        body: Column(
           children: [
-            // side menu
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: currentColor,
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                        onPressed: () => showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Choose Color'),
-                            // content: const Text('AlertDialog description'),
-                            content: Container(
-                              // height: 100,
-                              child: Expanded(
-                                child: BlockPicker(
-                                    availableColors: currentColors,
-                                    pickerColor: currentColor,
-                                    onColorChanged: changeColor),
-                              ),
-                            ),
-
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'Cancel'),
-                                child: const Text('Close'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.settings,
-                          color: Theme.of(context).primaryColor,
-                          size: 30.0,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 110,
-                      child: Consumer<UserInfo>(
-                        builder: (context, provider, child) {
-                          return Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  provider.themeLightMode
-                                      ? const Icon(
-                                          Icons.sunny,
-                                          color: Colors.white,
-                                        )
-                                      : const Icon(
-                                          Icons.nightlight,
-                                          color: Colors.black,
-                                        ),
-                                  Transform.scale(
-                                      scale: 1,
-                                      child: Switch(
-                                        onChanged: (bool newVal) {
-                                          provider.changeThemeMode();
-                                        },
-                                        value: provider.themeLightMode,
-                                        activeColor: Colors.white,
-                                        activeTrackColor: Colors.white38,
-                                        inactiveThumbColor: Colors.black,
-                                        inactiveTrackColor: Colors.black38,
-                                      )),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  provider.musicMode
-                                      ? const Icon(
-                                          Icons.add_alert_sharp,
-                                          color: Colors.lightGreenAccent,
-                                        )
-                                      : const Icon(
-                                          Icons.volume_mute_outlined,
-                                          color: Colors.redAccent,
-                                        ),
-                                  Transform.scale(
-                                      scale: 1,
-                                      child: Switch(
-                                        onChanged: (bool newVal) {
-                                          provider.changeMusicMode();
-                                        },
-                                        value: provider.musicMode,
-                                        activeColor: Colors.green,
-                                        activeTrackColor: Colors.greenAccent,
-                                        inactiveThumbColor: Colors.redAccent,
-                                        inactiveTrackColor: Colors.red,
-                                      )),
-                                ],
-                              ),
-                              TextButton(
-                                  onPressed: () {
-                                    sendPushMessageToWeb();
-                                  },
-                                  child: Text('Notification', style: styl)
-                                      .animate(effects: [
-                                    const ShakeEffect(
-                                        duration: Duration(minutes: 2),
-                                        delay: Duration(seconds: 5))
-                                  ])),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    Container(
-                      height: 160,
-                      width: 140,
-                      decoration: const BoxDecoration(
-                          color: Colors.lightBlueAccent,
-                          borderRadius: BorderRadius.all(Radius.circular(100))),
-                      child: Center(
-                        child: Container(
-                            height: 150,
-                            width: 130,
-                            decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(100)),
-                                image: DecorationImage(
-                                  image: AssetImage("assets/profile.jpg"),
-                                  fit: BoxFit.fill,
-                                ))),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        await Clipboard.setData(
-                            ClipboardData(text: _token.toString()));
-                        srollSmooth(aboutScrollKey.currentContext!);
-                      },
-                      child: CommonText(text: 'ABOUT'),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        srollSmooth(expScrollKey.currentContext!);
-                      },
-                      child: CommonText(
-                        text: "EXPERIENCE",
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        srollSmooth(portfoScrollKey.currentContext!);
-                      },
-                      child: CommonText(
-                        text: "PORTFOLIO",
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        srollSmooth(skillScrollKey.currentContext!);
-                      },
-                      child: CommonText(
-                        text: "SKILLS",
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          srollSmooth(projectsScrollKey.currentContext!);
-                        },
-                        child: CommonText(
-                          text: "PROJECTS",
-                        )),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          srollSmooth(contactScrollKey.currentContext!);
-                        },
-                        child: CommonText(
-                          text: "CONTACT",
-                        )),
-                  ],
-                ),
+            SizedBox(
+              // width: 250,
+              height: 20,
+              child: LinearProgressIndicator(
+                backgroundColor: Colors.cyan[100],
+                value: 0.7,
+                // valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
               ),
             ),
-            // body
             Expanded(
-              flex: 4,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    About(
-                      key: aboutScrollKey,
+              child: Row(
+                children: [
+                  // side menu
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      color: currentColor,
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: TextButton(
+                              onPressed: () => showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Choose Color'),
+                                  // content: const Text('AlertDialog description'),
+                                  content: Container(
+                                    // height: 100,
+                                    child: Expanded(
+                                      child: BlockPicker(
+                                          availableColors: currentColors,
+                                          pickerColor: currentColor,
+                                          onColorChanged: changeColor),
+                                    ),
+                                  ),
+
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'Cancel'),
+                                      child: const Text('Close'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.settings,
+                                color: Theme.of(context).primaryColor,
+                                size: 30.0,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 110,
+                            child: Consumer<UserInfo>(
+                              builder: (context, provider, child) {
+                                return Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        provider.themeLightMode
+                                            ? const Icon(
+                                                Icons.sunny,
+                                                color: Colors.white,
+                                              )
+                                            : const Icon(
+                                                Icons.nightlight,
+                                                color: Colors.black,
+                                              ),
+                                        Transform.scale(
+                                            scale: 1,
+                                            child: Switch(
+                                              onChanged: (bool newVal) {
+                                                provider.changeThemeMode();
+                                              },
+                                              value: provider.themeLightMode,
+                                              activeColor: Colors.white,
+                                              activeTrackColor: Colors.white38,
+                                              inactiveThumbColor: Colors.black,
+                                              inactiveTrackColor: Colors.black38,
+                                            )),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        provider.musicMode
+                                            ? const Icon(
+                                                Icons.add_alert_sharp,
+                                                color: Colors.lightGreenAccent,
+                                              )
+                                            : const Icon(
+                                                Icons.volume_mute_outlined,
+                                                color: Colors.redAccent,
+                                              ),
+                                        Transform.scale(
+                                            scale: 1,
+                                            child: Switch(
+                                              onChanged: (bool newVal) {
+                                                provider.changeMusicMode();
+                                              },
+                                              value: provider.musicMode,
+                                              activeColor: Colors.green,
+                                              activeTrackColor: Colors.greenAccent,
+                                              inactiveThumbColor: Colors.redAccent,
+                                              inactiveTrackColor: Colors.red,
+                                            )),
+                                      ],
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          sendPushMessageToWeb();
+                                        },
+                                        child: Text('Notification', style: styl)
+                                            .animate(effects: [
+                                          const ShakeEffect(
+                                              duration: Duration(minutes: 2),
+                                              delay: Duration(seconds: 5))
+                                        ])),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 50,
+                          ),
+                          Container(
+                            height: 160,
+                            width: 140,
+                            decoration: const BoxDecoration(
+                                color: Colors.lightBlueAccent,
+                                borderRadius: BorderRadius.all(Radius.circular(100))),
+                            child: Center(
+                              child: Container(
+                                  height: 150,
+                                  width: 130,
+                                  decoration: const BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(100)),
+                                      image: DecorationImage(
+                                        image: AssetImage("assets/profile.jpg"),
+                                        fit: BoxFit.fill,
+                                      ))),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              await Clipboard.setData(
+                                  ClipboardData(text: _token.toString()));
+                              srollSmooth(aboutScrollKey.currentContext!);
+                            },
+                            child: CommonText(text: 'ABOUT'),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              srollSmooth(expScrollKey.currentContext!);
+                            },
+                            child: CommonText(
+                              text: "EXPERIENCE",
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              srollSmooth(portfoScrollKey.currentContext!);
+                            },
+                            child: CommonText(
+                              text: "PORTFOLIO",
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              srollSmooth(skillScrollKey.currentContext!);
+                            },
+                            child: CommonText(
+                              text: "SKILLS",
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                srollSmooth(projectsScrollKey.currentContext!);
+                              },
+                              child: CommonText(
+                                text: "PROJECTS",
+                              )),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                srollSmooth(contactScrollKey.currentContext!);
+                              },
+                              child: CommonText(
+                                text: "CONTACT",
+                              )),
+                        ],
+                      ),
                     ),
-                    Experience(
-                      smallCard: false,
-                      key: expScrollKey,
+                  ),
+                  // body
+                  Expanded(
+                    flex: 4,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          About(
+                            key: aboutScrollKey,
+                          ),
+                          Experience(
+                            smallCard: false,
+                            key: expScrollKey,
+                          ),
+                          Portfolio(
+                            smallCard: false,
+                            key: portfoScrollKey,
+                          ),
+                          Skills(
+                            key: skillScrollKey,
+                          ),
+                          Projects(
+                            smallCard: false,
+                            key: projectsScrollKey,
+                          ),
+                          Contact(
+                            isWeb: true,
+                            key: contactScrollKey,
+                          ),
+                        ],
+                      ),
                     ),
-                    Portfolio(
-                      smallCard: false,
-                      key: portfoScrollKey,
-                    ),
-                    Skills(
-                      key: skillScrollKey,
-                    ),
-                    Projects(
-                      smallCard: false,
-                      key: projectsScrollKey,
-                    ),
-                    Contact(
-                      isWeb: true,
-                      key: contactScrollKey,
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],

@@ -88,10 +88,26 @@ class Portfolio extends StatelessWidget {
                           itemCount: provider.pImages.length,
                           shrinkWrap: true,
                           itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: ImageDynamic(
-                                  img: "${provider.pImages[index]['img']}"),
+                            return InkWell(
+                              onTap: () {
+                                showDialog(
+                                    barrierDismissible: true,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      final longList = List<Widget>.generate(
+                                          100, (i) => Text("Item $i"));
+                                      return Dialog(
+                                        child: ImageDynamic(
+                                            img:
+                                                "${provider.pImages[index]['img']}"),
+                                      );
+                                    });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: ImageDynamic(
+                                    img: "${provider.pImages[index]['img']}"),
+                              ),
                             );
                           })
                       : GridView.builder(
@@ -112,14 +128,14 @@ class Portfolio extends StatelessWidget {
                                     barrierDismissible: true,
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return SizedBox(
-                                        // color: Colors.red,
-                                        width: MediaQuery.of(context).size.width/2,
-                                        height: MediaQuery.of(context).size.height/2,
-                                        child: const Center(child: Text('Sample')),
+                                      final longList = List<Widget>.generate(
+                                          100, (i) => Text("Item $i"));
+                                      return Dialog(
+                                        child: ImageDynamic(
+                                            img:
+                                                "${provider.pImages[index]['img']}"),
                                       );
-                                    }
-                                    );
+                                    });
                                 // this is ending the code
                               },
                               child: Container(

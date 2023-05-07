@@ -53,10 +53,7 @@ class UserInfo extends ChangeNotifier {
       "summary": "Here I am team lead, we are working on sprint wise features, and DDD"
           "architecture and GetX, Bloc, providers state management we are using. Kotlin"
           "  for android native payment integration purpose we are used. Swift for IOS"
-          "Native feature development we are used."
-          "Flutter web also we are done here, flutter web very fast code, functionality will"
-          "be same mobile and web, UI will do difference so fast code we will make for"
-          "flutter web",
+          "Native feature development we are used.",
       "startDate": "Feb 2021",
       "endDate": "",
       "present": true,
