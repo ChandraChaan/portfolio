@@ -234,8 +234,7 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_colorpicker
-      sha256: "3410869743dc4e4493a0a865c119b091452f5ea5d93e703f62415a320625e871"
-      url: "https://pub.dev"
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.0"
   flutter_lints:

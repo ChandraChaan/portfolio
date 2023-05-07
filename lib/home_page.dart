@@ -25,14 +25,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Color currentColor = Colors.green;
-  List<Color> currentColors = [Colors.yellow, Colors.red];
+  Color currentColor = Colors.blue;
+  List<Color> currentColors = [
+    Colors.deepPurple,
+    Colors.indigo,
+    Colors.blue,
+    Colors.lightBlue,
+    Colors.cyan,
+    Colors.teal,
+    Colors.green,
+    Colors.lightGreen,
+    Colors.lime,
+    Colors.yellow,
+    Colors.amber,
+    Colors.orange,
+    Colors.brown,
+    Colors.grey,
+    Colors.blueGrey,
+  ];
 
   void changeColor(Color color) => setState(() => currentColor = color);
+
   void changeColors(List<Color> colors) =>
       setState(() => currentColors = colors);
-
-
 
   String? _token;
   Stream<String>? _tokenStream;
@@ -44,6 +59,7 @@ class _HomePageState extends State<HomePage> {
       _token = token;
     });
   }
+
   //send notification
   sendPushMessageToWeb() async {
     if (_token == null) {
@@ -53,28 +69,27 @@ class _HomePageState extends State<HomePage> {
     try {
       await http
           .post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Authorization': 'key=AAAAy2Awy5M:APA91bHy0D-kVL7hR5vWL8M_56uxq_gpSPP6H29Ez7Goi7wIgm9Q1wGQSaE-fbVyF8F76vmfo1-gXYHVLh0TLW5wt5cgokJApoG2yCxf8qXXWhug_nY6HUrWzrmNk1QKhIq_Ebdme_d_'
-        },
-        body: json.encode({
-          'to': _token,
-          'message': {
-            'token': _token,
-          },
-          "notification": {
-            "title": "Dumpala",
-            "body": "Chandra ObulReddy"
-          }
-        }),
-      )
+            Uri.parse('https://fcm.googleapis.com/fcm/send'),
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+              'Authorization':
+                  'key=AAAAy2Awy5M:APA91bHy0D-kVL7hR5vWL8M_56uxq_gpSPP6H29Ez7Goi7wIgm9Q1wGQSaE-fbVyF8F76vmfo1-gXYHVLh0TLW5wt5cgokJApoG2yCxf8qXXWhug_nY6HUrWzrmNk1QKhIq_Ebdme_d_'
+            },
+            body: json.encode({
+              'to': _token,
+              'message': {
+                'token': _token,
+              },
+              "notification": {"title": "Dumpala", "body": "Chandra ObulReddy"}
+            }),
+          )
           .then((value) => print(value.body));
       print('FCM request for web sent!');
     } catch (e) {
       print(e);
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -126,8 +141,42 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: TextButton(
+                        onPressed: () => showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Choose Color'),
+                            // content: const Text('AlertDialog description'),
+                            content: Container(
+                              // height: 100,
+                              child: Expanded(
+                                child: BlockPicker(
+                                    availableColors: currentColors,
+                                    pickerColor: currentColor,
+                                    onColorChanged: changeColor),
+                              ),
+                            ),
+
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: const Text('Close'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.settings,
+                          color: Theme.of(context).primaryColor,
+                          size: 30.0,
+                        ),
+                      ),
+                    ),
                     SizedBox(
-                      height:110,
+                      height: 110,
                       child: Consumer<UserInfo>(
                         builder: (context, provider, child) {
                           return Column(
@@ -156,42 +205,7 @@ class _HomePageState extends State<HomePage> {
                                         inactiveThumbColor: Colors.black,
                                         inactiveTrackColor: Colors.black38,
                                       )),
-                                  TextButton(
-
-                                    onPressed: () => showDialog<String>(
-                                      context: context,
-                                      builder: (BuildContext context) => AlertDialog(
-                                        title: const Text('Choose Color'),
-                                        // content: const Text('AlertDialog description'),
-                                        content:  Container(
-                                          // height: 100,
-                                          child: Expanded(
-                                            child: BlockPicker(
-                                                pickerColor: currentColor, onColorChanged: changeColor),
-                                          ),
-                                        ),
-
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(context, 'Cancel'),
-                                            child: const Text('Cancel'),
-                                          ),
-                                          // TextButton(
-                                          //   onPressed: () => Navigator.pop(context, 'OK'),
-                                          //   child: const Text('OK'),
-                                          // ),
-                                        ],
-                                      ),
-                                    ),
-                                    child: Icon(
-                                      Icons.settings,
-                                      color: Theme.of(context).primaryColor,
-                                      size: 30.0,
-                                    ),
-                                  ),
-
                                 ],
-
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -199,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                                   provider.musicMode
                                       ? const Icon(
                                           Icons.add_alert_sharp,
-                                          color: Colors.lightGreenAccent  ,
+                                          color: Colors.lightGreenAccent,
                                         )
                                       : const Icon(
                                           Icons.volume_mute_outlined,
@@ -219,10 +233,16 @@ class _HomePageState extends State<HomePage> {
                                       )),
                                 ],
                               ),
-                              TextButton(onPressed: (){
-                                sendPushMessageToWeb();
-                              }, child:  Text('Notification',style: styl).animate(effects: [const ShakeEffect(duration: Duration(minutes: 2), delay: Duration(seconds: 5))])),
-
+                              TextButton(
+                                  onPressed: () {
+                                    sendPushMessageToWeb();
+                                  },
+                                  child: Text('Notification', style: styl)
+                                      .animate(effects: [
+                                    const ShakeEffect(
+                                        duration: Duration(minutes: 2),
+                                        delay: Duration(seconds: 5))
+                                  ])),
                             ],
                           );
                         },
@@ -254,10 +274,10 @@ class _HomePageState extends State<HomePage> {
                       height: 20,
                     ),
                     TextButton(
-                      onPressed: () async{
-                        await Clipboard.setData(ClipboardData(text: _token.toString()));
+                      onPressed: () async {
+                        await Clipboard.setData(
+                            ClipboardData(text: _token.toString()));
                         srollSmooth(aboutScrollKey.currentContext!);
-
                       },
                       child: CommonText(text: 'ABOUT'),
                     ),
@@ -268,7 +288,9 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         srollSmooth(expScrollKey.currentContext!);
                       },
-                      child: CommonText(text:"EXPERIENCE", ),
+                      child: CommonText(
+                        text: "EXPERIENCE",
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -277,7 +299,9 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         srollSmooth(portfoScrollKey.currentContext!);
                       },
-                      child: CommonText(text:"PORTFOLIO",),
+                      child: CommonText(
+                        text: "PORTFOLIO",
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -286,7 +310,9 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         srollSmooth(skillScrollKey.currentContext!);
                       },
-                      child: CommonText(text:"SKILLS",),
+                      child: CommonText(
+                        text: "SKILLS",
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -295,7 +321,9 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           srollSmooth(projectsScrollKey.currentContext!);
                         },
-                        child: CommonText(text:"PROJECTS", )),
+                        child: CommonText(
+                          text: "PROJECTS",
+                        )),
                     const SizedBox(
                       height: 10,
                     ),
@@ -303,7 +331,9 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           srollSmooth(contactScrollKey.currentContext!);
                         },
-                        child: CommonText(text:"CONTACT",)),
+                        child: CommonText(
+                          text: "CONTACT",
+                        )),
                   ],
                 ),
               ),
@@ -342,8 +372,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ],
-        )
-    );
+        ));
   }
 
   Widget tabletUI(BuildContext context) {
@@ -401,7 +430,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        iconTheme:  IconThemeData(color: Theme.of(context).primaryColor),
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
       ),
       drawer: drawerMobile(context),
       body: SingleChildScrollView(
@@ -454,7 +483,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height:110,
+                  height: 110,
                   child: Consumer<UserInfo>(
                     builder: (context, provider, child) {
                       return Column(
@@ -464,13 +493,13 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               provider.themeLightMode
                                   ? const Icon(
-                                Icons.sunny,
-                                color: Colors.white,
-                              )
+                                      Icons.sunny,
+                                      color: Colors.white,
+                                    )
                                   : const Icon(
-                                Icons.nightlight,
-                                color: Colors.black,
-                              ),
+                                      Icons.nightlight,
+                                      color: Colors.black,
+                                    ),
                               Transform.scale(
                                   scale: 1,
                                   child: Switch(
@@ -490,13 +519,13 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               provider.musicMode
                                   ? const Icon(
-                                Icons.add_alert_sharp,
-                                color: Colors.lightGreenAccent  ,
-                              )
+                                      Icons.add_alert_sharp,
+                                      color: Colors.lightGreenAccent,
+                                    )
                                   : const Icon(
-                                Icons.volume_mute_outlined,
-                                color: Colors.redAccent,
-                              ),
+                                      Icons.volume_mute_outlined,
+                                      color: Colors.redAccent,
+                                    ),
                               Transform.scale(
                                   scale: 1,
                                   child: Switch(
@@ -511,17 +540,19 @@ class _HomePageState extends State<HomePage> {
                                   )),
                             ],
                           ),
-                          TextButton(onPressed: (){
-                            sendPushMessageToWeb();
-                          }, child: Text('Notification', style: styl,)),
-
-
+                          TextButton(
+                              onPressed: () {
+                                sendPushMessageToWeb();
+                              },
+                              child: Text(
+                                'Notification',
+                                style: styl,
+                              )),
                         ],
                       );
                     },
                   ),
                 ),
-
                 const SizedBox(
                   height: 50,
                 ),
@@ -537,7 +568,7 @@ class _HomePageState extends State<HomePage> {
                         width: 130,
                         decoration: const BoxDecoration(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(100)),
+                                BorderRadius.all(Radius.circular(100)),
                             image: DecorationImage(
                               image: AssetImage("assets/profile.jpg"),
                               fit: BoxFit.fill,
@@ -553,7 +584,6 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: CommonText(text: 'ABOUT'),
                 ),
-
                 const SizedBox(
                   height: 10,
                 ),
@@ -561,7 +591,9 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     srollSmooth(expScrollKey.currentContext!);
                   },
-                  child: CommonText(text:"EXPERIENCE", ),
+                  child: CommonText(
+                    text: "EXPERIENCE",
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -570,7 +602,9 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     srollSmooth(portfoScrollKey.currentContext!);
                   },
-                  child: CommonText(text:"PORTFOLIO",),
+                  child: CommonText(
+                    text: "PORTFOLIO",
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -579,7 +613,9 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     srollSmooth(skillScrollKey.currentContext!);
                   },
-                  child: CommonText(text:"SKILLS",),
+                  child: CommonText(
+                    text: "SKILLS",
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -588,7 +624,9 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       srollSmooth(projectsScrollKey.currentContext!);
                     },
-                    child: CommonText(text:"PROJECTS", )),
+                    child: CommonText(
+                      text: "PROJECTS",
+                    )),
                 const SizedBox(
                   height: 10,
                 ),
@@ -596,7 +634,9 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       srollSmooth(contactScrollKey.currentContext!);
                     },
-                    child: CommonText(text:"CONTACT",)),
+                    child: CommonText(
+                      text: "CONTACT",
+                    )),
               ],
             ),
           ),
@@ -611,7 +651,5 @@ class _HomePageState extends State<HomePage> {
     // }
     Scrollable.ensureVisible(context,
         duration: const Duration(seconds: 1), curve: Curves.easeIn);
-
   }
-
 }
