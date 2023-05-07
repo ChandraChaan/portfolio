@@ -44,7 +44,7 @@ class RoleApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      home: const PushNotificationApp(),
+      home:  HomePage(),
     );
   }
 }

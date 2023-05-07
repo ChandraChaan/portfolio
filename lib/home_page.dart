@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:portfoli_web/ui/responsive_ui.dart';
 import 'package:portfoli_web/utils/font_style.dart';
@@ -24,6 +25,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Color currentColor = Colors.green;
+  List<Color> currentColors = [Colors.yellow, Colors.red];
+
+  void changeColor(Color color) => setState(() => currentColor = color);
+  void changeColors(List<Color> colors) =>
+      setState(() => currentColors = colors);
+
+
 
   String? _token;
   Stream<String>? _tokenStream;
@@ -111,7 +120,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               flex: 1,
               child: Container(
-                color: Colors.blue,
+                color: currentColor,
                 width: double.infinity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -147,7 +156,42 @@ class _HomePageState extends State<HomePage> {
                                         inactiveThumbColor: Colors.black,
                                         inactiveTrackColor: Colors.black38,
                                       )),
+                                  TextButton(
+
+                                    onPressed: () => showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) => AlertDialog(
+                                        title: const Text('Choose Color'),
+                                        // content: const Text('AlertDialog description'),
+                                        content:  Container(
+                                          // height: 100,
+                                          child: Expanded(
+                                            child: BlockPicker(
+                                                pickerColor: currentColor, onColorChanged: changeColor),
+                                          ),
+                                        ),
+
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                                            child: const Text('Cancel'),
+                                          ),
+                                          // TextButton(
+                                          //   onPressed: () => Navigator.pop(context, 'OK'),
+                                          //   child: const Text('OK'),
+                                          // ),
+                                        ],
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.settings,
+                                      color: Theme.of(context).primaryColor,
+                                      size: 30.0,
+                                    ),
+                                  ),
+
                                 ],
+
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -177,7 +221,8 @@ class _HomePageState extends State<HomePage> {
                               ),
                               TextButton(onPressed: (){
                                 sendPushMessageToWeb();
-                              }, child:  Text('Notification',style: styl).animate(effects: [const ShakeEffect(duration: Duration(minutes: 2), delay: Duration(seconds: 5))]))
+                              }, child:  Text('Notification',style: styl).animate(effects: [const ShakeEffect(duration: Duration(minutes: 2), delay: Duration(seconds: 5))])),
+
                             ],
                           );
                         },
@@ -468,12 +513,15 @@ class _HomePageState extends State<HomePage> {
                           ),
                           TextButton(onPressed: (){
                             sendPushMessageToWeb();
-                          }, child: Text('Notification', style: styl,))
+                          }, child: Text('Notification', style: styl,)),
+
+
                         ],
                       );
                     },
                   ),
                 ),
+
                 const SizedBox(
                   height: 50,
                 ),
@@ -505,6 +553,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: CommonText(text: 'ABOUT'),
                 ),
+
                 const SizedBox(
                   height: 10,
                 ),
@@ -562,5 +611,7 @@ class _HomePageState extends State<HomePage> {
     // }
     Scrollable.ensureVisible(context,
         duration: const Duration(seconds: 1), curve: Curves.easeIn);
+
   }
+
 }
