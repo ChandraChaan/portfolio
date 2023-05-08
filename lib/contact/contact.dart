@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/user_info.dart';
 import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
 
@@ -17,7 +19,7 @@ class Contact extends StatelessWidget {
         color: Theme.of(context).cardColor,
         border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).indicatorColor,
+            color: Provider.of<UserInfo>(context).themeColor,
             width: 50,
           ),
         ),
@@ -27,7 +29,7 @@ class Contact extends StatelessWidget {
           Container(
             height: (6),
             width: (120),
-            color: Theme.of(context).indicatorColor,
+            color: Provider.of<UserInfo>(context).themeColor,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

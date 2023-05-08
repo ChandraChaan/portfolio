@@ -18,6 +18,8 @@ import '../skills/skills.dart';
 import 'about/about.dart';
 import 'package:http/http.dart' as http;
 
+import 'animation_route/navigate_newpage.dart';
+
 class HomePage extends StatefulWidget {
   HomePage({super.key});
 
@@ -195,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      color: Theme.of(context).indicatorColor,
+                      color: Provider.of<UserInfo>(context).themeColor,
                       width: double.infinity,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -531,7 +533,7 @@ class _HomePageState extends State<HomePage> {
         child: Padding(
           padding: const EdgeInsets.all(18.0),
           child: Container(
-            color: Colors.blue,
+            color: Provider.of<UserInfo>(context).themeColor,
             width: double.infinity,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -714,40 +716,4 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class SecondPageRoute extends CupertinoPageRoute {
-  SecondPageRoute() : super(builder: (BuildContext context) => SecondPage());
 
-  // OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
-  @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
-    return RotationTransition(
-        turns: animation,
-        child: ScaleTransition(
-          scale: animation,
-          child: FadeTransition(
-            opacity: animation,
-            child: SecondPage(),
-          ),
-        ));
-  }
-}
-
-class SecondPage extends StatefulWidget {
-  @override
-  _SecondPageState createState() => _SecondPageState();
-}
-
-class _SecondPageState extends State<SecondPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Second Page'),
-      ),
-      body: Center(
-        child: Text('This is the second page'),
-      ),
-    );
-  }
-}

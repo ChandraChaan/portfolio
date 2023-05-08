@@ -51,7 +51,7 @@ class Projects extends StatelessWidget {
                             child: Container(
                               decoration: BoxDecoration(
                                   color:Theme.of(context).cardColor,
-                                  border: Border.all(color:Theme.of(context).indicatorColor)
+                                  border: Border.all(color:provider.themeColor)
                               ),
 
                               child: Padding(
@@ -101,7 +101,7 @@ class Projects extends StatelessWidget {
                             child: Container(
                               decoration: BoxDecoration(
                                   color:Theme.of(context).cardColor,
-                                  border: Border.all(color:Theme.of(context).indicatorColor)
+                                  border: Border.all(color:provider.themeColor)
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(28.0),
@@ -147,7 +147,7 @@ class Projects extends StatelessWidget {
                             child: Container(
                               decoration: BoxDecoration(
                                   color:Theme.of(context).cardColor,
-                                  border: Border.all(color:Theme.of(context).indicatorColor)
+                                  border: Border.all(color:provider.themeColor)
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(28.0),
