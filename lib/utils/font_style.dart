@@ -12,7 +12,7 @@ Widget getTextStyle(
       textStyle:
           TextStyle(fontWeight: fontWeight, color: color, fontSize: fontSizes),
     ),
-    // maxLines: 4,
+    maxLines: 4,
     // minFontSize: 10.0,
     // stepGranularity: 1.0,
   );

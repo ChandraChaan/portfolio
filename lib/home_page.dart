@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
         child: Icon(
           Icons.settings,
           color: Theme.of(context).primaryColor,
-          size: 30.0,
+          size: 24.0,
         ),
       ),
     );
@@ -282,9 +282,9 @@ class _HomePageState extends State<HomePage> {
                               },
                             ),
                           ),
-                          const SizedBox(
-                            height: 50,
-                          ),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
                           Container(
                             height: 160,
                             width: 140,
