@@ -47,9 +47,9 @@ class _HomePageState extends State<HomePage> {
     Colors.blueGrey,
   ];
 
-   changeColor(Color color){
-     Provider.of<UserInfo>(context).themeColorChange(color);
-}
+  changeColor(Color color) {
+    Provider.of<UserInfo>(context).themeColorChange(color);
+  }
 
   void changeColors(List<Color> colors) =>
       setState(() => currentColors = colors);
@@ -95,6 +95,22 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  ScrollController? _scrollController;
+  double? _scrollPosition;
+  double? _maxscroll;
+  double? _maxscrollpercentage;
+
+  _scrollListener() {
+    setState(() {
+      _scrollPosition = _scrollController?.position.pixels;
+      _maxscroll = _scrollController?.position.maxScrollExtent;
+      // _scrollController?.toString();
+      _maxscrollpercentage =
+          double.parse((_scrollPosition! / _maxscroll! * 1).toStringAsFixed(1));
+      // print(_maxscrollpercentage?.toStringAsFixed(1)! + 'ha');
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -102,9 +118,9 @@ class _HomePageState extends State<HomePage> {
     FirebaseMessaging.instance.getToken().then(setToken);
     _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
     _tokenStream?.listen(setToken);
+    _scrollController = ScrollController();
+    _scrollController?.addListener(_scrollListener);
   }
-
-  final scrollControllerLocal = ScrollController();
 
   final aboutScrollKey = GlobalKey();
 
@@ -128,22 +144,24 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget scrolIndicator() {
-    return GestureDetector(
-      onDoubleTap: () {
-        Navigator.of(context).push(SecondPageRoute());
-      },
-      child: SizedBox(
-        height: 20,
-        child: LinearProgressIndicator(
-          backgroundColor: Colors.cyan[100],
-          value: 0.7,
-          // valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
-        ),
-      ),
-    );
+    return _maxscrollpercentage != null && _maxscrollpercentage != 0.00
+        ? GestureDetector(
+            onDoubleTap: () {
+              Navigator.of(context).push(SecondPageRoute());
+            },
+            child: SizedBox(
+              height: 20,
+              child: LinearProgressIndicator(
+                backgroundColor: Colors.cyan[100],
+                value: _maxscrollpercentage,
+                // valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
+              ),
+            ),
+          )
+        : const SizedBox();
   }
 
-  Widget themeCOlorChange(){
+  Widget themeCOlorChange() {
     return Align(
       alignment: Alignment.topRight,
       child: TextButton(
@@ -164,8 +182,7 @@ class _HomePageState extends State<HomePage> {
 
             actions: <Widget>[
               TextButton(
-                onPressed: () =>
-                    Navigator.pop(context, 'Cancel'),
+                onPressed: () => Navigator.pop(context, 'Cancel'),
                 child: const Text('Close'),
               ),
             ],
@@ -377,6 +394,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     flex: 4,
                     child: SingleChildScrollView(
+                      controller: _scrollController,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -432,10 +450,10 @@ class _HomePageState extends State<HomePage> {
               ),
               drawer: drawerMobile(context),
               body: SingleChildScrollView(
+                controller: _scrollController,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-
                     About(
                       mobileImg: true,
                       tabImg: true,
@@ -487,6 +505,7 @@ class _HomePageState extends State<HomePage> {
               ),
               drawer: drawerMobile(context),
               body: SingleChildScrollView(
+                controller: _scrollController,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -715,5 +734,3 @@ class _HomePageState extends State<HomePage> {
         duration: const Duration(seconds: 1), curve: Curves.easeIn);
   }
 }
-
-
