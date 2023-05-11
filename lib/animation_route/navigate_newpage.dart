@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'gaming_page.dart';
 
 class SecondPageRoute extends CupertinoPageRoute {
-  SecondPageRoute() : super(builder: (BuildContext context) => WhatsAppChatUI());
+  SecondPageRoute() : super(builder: (BuildContext context) => WhatsAppChat());
 
   // OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
   @override
@@ -15,7 +15,7 @@ class SecondPageRoute extends CupertinoPageRoute {
           scale: animation,
           child: FadeTransition(
             opacity: animation,
-            child: WhatsAppChatUI(),
+            child: WhatsAppChat(),
           ),
         ));
   }
