@@ -10,6 +10,13 @@ class Secondpage extends StatefulWidget {
 class _SecondpageState extends State<Secondpage> {
   TextEditingController inputController = new TextEditingController();
   String _text = "hello";
+  String replytest = "hello";
+
+  getReply() {
+    setState(() {
+      replytest = 'ok';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,33 +35,32 @@ class _SecondpageState extends State<Secondpage> {
                   child: ListView(
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
                     children: [
-                    Align(
-
-                    alignment: Alignment.bottomRight, child: Container(
-                      margin: EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10),
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                          color:  Colors.greenAccent,
-                          borderRadius: BorderRadius.circular(20),),
-
-                          height: 50,
-                          width: 150,
-                          child: Center(child: Text(_text)))),
-                    Align(
-
-                    alignment: Alignment.bottomLeft, child: Container(
-                      margin: EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10),
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                          color:  Colors.grey,
-                          borderRadius: BorderRadius.circular(20),),
-
-                          height: 50,
-                          width: 150,
-                          child: Center(child: Text(_text)))),
-
+                      Align(
+                          alignment: Alignment.bottomRight,
+                          child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: Colors.greenAccent,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              height: 50,
+                              width: 150,
+                              child: Center(child: Text(_text)))),
+                      Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              height: 50,
+                              width: 150,
+                              child: Center(child: Text(replytest)))),
                     ],
                   ),
                 ),
@@ -81,11 +87,14 @@ class _SecondpageState extends State<Secondpage> {
                       ),
                       IconButton(
                         onPressed: () {
-                          if (inputController.text.isNotEmpty)
+                          if (inputController.text.isNotEmpty) {
+                            getReply();
+
                             setState(() {
                               _text = inputController.text;
                               inputController.clear();
                             });
+                          }
                         },
                         icon: const Icon(Icons.send_sharp),
                       ),
@@ -107,4 +116,3 @@ class _SecondpageState extends State<Secondpage> {
     );
   }
 }
-
