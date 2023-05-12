@@ -10,14 +10,23 @@ class Secondpage extends StatefulWidget {
 class _SecondpageState extends State<Secondpage> {
   TextEditingController inputController = TextEditingController();
   String _text = "Type Something";
-  String replytest = "See Result";
+  String replyTest = "See The Result";
 
   getReply() {
     String rText = 'ok';
-    if (inputController.text == "inka") {rText= "cheppu";}
-    if (inputController.text == "2") {rText= "cheppu";}
+    if (inputController.text == "Hello!") {rText= "Hi";}
+    if (inputController.text == "How Are You") {rText= "Fine";}
+    if (inputController.text == "Had You Dinner") {rText= "Yes Done";}
+    if (inputController.text == "Where are You") {rText= "Iam At home";}
+    if (inputController.text == "Where are You") {rText= "Iam At home";}
+    if (inputController.text == "Whatsup") {rText= "Nothing";}
+    if (inputController.text == "Whatsup") {rText= "Nothing";}
+    if (inputController.text == "Love You") {rText= "Love You Too";}
+    if (inputController.text == "Are You Working") {rText= "Yes";}
+    if (inputController.text == "What Special Today") {rText= "Chicken";}
+    if (inputController.text == "Do You Have Love") {rText= "Yes";}
     setState(() {
-      replytest = rText;
+      replyTest = rText;
     });
   }
 
@@ -63,7 +72,7 @@ class _SecondpageState extends State<Secondpage> {
                               ),
                               height: 50,
                               width: 150,
-                              child: Center(child: Text(replytest)))),
+                              child: Center(child: Text(replyTest)))),
                     ],
                   ),
                 ),
