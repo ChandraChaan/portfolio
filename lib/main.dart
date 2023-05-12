@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'animation_route/gaming_page.dart';
 import 'home_page.dart';
 
 void main() async {
@@ -44,7 +45,7 @@ class RoleApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      home:  HomePage(),
+      home:  Secondpage(),
     );
   }
 }
