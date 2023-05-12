@@ -76,9 +76,9 @@ class _SecondpageState extends State<Secondpage> {
                       Align(
                           alignment: Alignment.bottomRight,
                           child: Container(
-                              margin: EdgeInsets.symmetric(
+                              margin: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 10),
-                              padding: EdgeInsets.all(15),
+                              padding: const EdgeInsets.all(15),
                               decoration: BoxDecoration(
                                 color: Colors.greenAccent,
                                 borderRadius: BorderRadius.circular(20),
@@ -89,9 +89,9 @@ class _SecondpageState extends State<Secondpage> {
                       Align(
                           alignment: Alignment.bottomLeft,
                           child: Container(
-                              margin: EdgeInsets.symmetric(
+                              margin: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 10),
-                              padding: EdgeInsets.all(15),
+                              padding: const EdgeInsets.all(15),
                               decoration: BoxDecoration(
                                 color: Colors.grey,
                                 borderRadius: BorderRadius.circular(20),
