@@ -8,9 +8,9 @@ class Secondpage extends StatefulWidget {
 }
 
 class _SecondpageState extends State<Secondpage> {
-  TextEditingController inputController = new TextEditingController();
-  String _text = "hello";
-  String replytest = "hello";
+  TextEditingController inputController = TextEditingController();
+  String _text = "Type Something";
+  String replytest = "See Result";
 
   getReply() {
     String rText = 'ok';
