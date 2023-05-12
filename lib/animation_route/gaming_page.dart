@@ -28,25 +28,33 @@ class _SecondpageState extends State<Secondpage> {
                   child: ListView(
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
                     children: [
-                    Alin(
+                    Align(
 
                     alignment: Alignment.bottomRight, child: Container(
                       margin: EdgeInsets.symmetric(
                           vertical: 10, horizontal: 10),
                       padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                          color: isMe ? Colors.blue[200] : Colors.grey[300],
-                          borderRadius: BorderRadius.circular(20),
+                          color:  Colors.greenAccent,
+                          borderRadius: BorderRadius.circular(20),),
 
-                          height: 30,
-                          width: 50,
+                          height: 50,
+                          width: 150,
+                          child: Center(child: Text(_text)))),
+                    Align(
+
+                    alignment: Alignment.bottomLeft, child: Container(
+                      margin: EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          color:  Colors.grey,
+                          borderRadius: BorderRadius.circular(20),),
+
+                          height: 50,
+                          width: 150,
                           child: Center(child: Text(_text)))),
 
-                    Align(
-                        alignment: Alignment.bottomLeft, child: Container(
-
-                        height: 30, width: 50, color: Colors.grey,
-                        child: Center(child: Text(_text)))),
                     ],
                   ),
                 ),
@@ -100,39 +108,3 @@ class _SecondpageState extends State<Secondpage> {
   }
 }
 
-class BubbleChat extends StatelessWidget {
-  final String message;
-  final bool isMe;
-  final String time;
-
-  BubbleChat({required this.message, required this.isMe, required this.time});
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        padding: EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: isMe ? Colors.blue[200] : Colors.grey[300],
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              time,
-              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-            ),
-            SizedBox(height: 5),
-            Text(
-              message,
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
