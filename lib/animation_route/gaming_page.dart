@@ -13,18 +13,44 @@ class _SecondpageState extends State<Secondpage> {
   String replyTest = "See The Result";
 
   getReply() {
-    String rText = 'ok';
-    if (inputController.text == "Hello!") {rText= "Hi";}
-    if (inputController.text == "How Are You") {rText= "Fine";}
-    if (inputController.text == "Had You Dinner") {rText= "Yes Done";}
-    if (inputController.text == "Where are You") {rText= "Iam At home";}
-    if (inputController.text == "Where are You") {rText= "Iam At home";}
-    if (inputController.text == "Whatsup") {rText= "Nothing";}
-    if (inputController.text == "Whatsup") {rText= "Nothing";}
-    if (inputController.text == "Love You") {rText= "Love You Too";}
-    if (inputController.text == "Are You Working") {rText= "Yes";}
-    if (inputController.text == "What Special Today") {rText= "Chicken";}
-    if (inputController.text == "Do You Have Love") {rText= "Yes";}
+    String rText = 'Ok';
+    if (inputController.text.isNumeric) {
+      rText = (2 * int.parse(inputController.text)).toString();
+    } else {
+      if (inputController.text == "Hello!") {
+        rText = "Hi";
+      }
+      if (inputController.text == "How Are You") {
+        rText = "Fine";
+      }
+      if (inputController.text == "Had You Dinner") {
+        rText = "Yes Done";
+      }
+      if (inputController.text == "Where are You") {
+        rText = "Iam At home";
+      }
+      if (inputController.text == "Where are You") {
+        rText = "Iam At home";
+      }
+      if (inputController.text == "Whatsup") {
+        rText = "Nothing";
+      }
+      if (inputController.text == "Whatsup") {
+        rText = "Nothing";
+      }
+      if (inputController.text == "Love You") {
+        rText = "Love You Too";
+      }
+      if (inputController.text == "Are You Working") {
+        rText = "Yes";
+      }
+      if (inputController.text == "What Special Today") {
+        rText = "Chicken";
+      }
+      if (inputController.text == "Do You Have Love") {
+        rText = "Yes";
+      }
+    }
     setState(() {
       replyTest = rText;
     });
@@ -34,7 +60,7 @@ class _SecondpageState extends State<Secondpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wellcome to timepass game'),
+        title: const Text('Welcome to time pass game'),
       ),
       body: Row(
         children: [
@@ -127,4 +153,8 @@ class _SecondpageState extends State<Secondpage> {
       ),
     );
   }
+}
+
+extension Numeric on String {
+  bool get isNumeric => num.tryParse(this) != null ? true : false;
 }
