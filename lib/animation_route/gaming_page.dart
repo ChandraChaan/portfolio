@@ -13,8 +13,11 @@ class _SecondpageState extends State<Secondpage> {
   String replytest = "hello";
 
   getReply() {
+    String rText = 'ok';
+    if (inputController.text == "inka") {rText= "cheppu";}
+    if (inputController.text == "2") {rText= "cheppu";}
     setState(() {
-      replytest = 'ok';
+      replytest = rText;
     });
   }
 
