@@ -45,7 +45,7 @@ class RoleApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      home:  Secondpage(),
+      home: HomePage(),
     );
   }
 }
@@ -119,7 +119,7 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
             'Message also contained a notification: ${message.notification?.body}');
         AwesomeDialog(
                 context: context,
-                width: MediaQuery.of(context).size.width/2,
+                width: MediaQuery.of(context).size.width / 2,
                 animType: AnimType.topSlide,
                 headerAnimationLoop: false,
                 dialogType: DialogType.success,

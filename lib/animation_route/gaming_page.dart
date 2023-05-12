@@ -11,14 +11,47 @@ class _SecondpageState extends State<Secondpage> {
   TextEditingController inputController = TextEditingController();
   String _text = "Type Something";
   String replyTest = "See The Result";
+  bool showTable = false;
+  bool container = false;
+  bool circle = false;
+  int rNumber = 0;
 
   getReply() {
     String rText = 'Ok';
     if (inputController.text.isNumeric) {
-      rText = (2 * int.parse(inputController.text)).toString();
+      rNumber = int.parse(inputController.text);
+      rText = (2 * rNumber).toString();
+      showTable = true;
+       container = false;
+       circle = false;
     } else {
+      showTable = false;
+      List name = inputController.text.split(' ');
+      if (name[0].toString().toLowerCase() == 'create') {
+        if (name[1].toString().toLowerCase() == 'container') {
+          container = true;
+          circle = false;
+        } else if (name[1].toString().toLowerCase() == 'circle') {
+          container = false;
+          circle = true;
+        } else {
+          container = false;
+          circle = false;
+          rText = "I didn\'t get";
+        }
+      }
+      else{
+        container = false;
+        circle = false;
+      }
       if (inputController.text == "Hello!") {
         rText = "Hi";
+      }
+      if (inputController.text == "Inka") {
+        rText = "Cheppu";
+      }
+      if (inputController.text == "yemi") {
+        rText = "yenti yemi";
       }
       if (inputController.text == "How Are You") {
         rText = "Fine";
@@ -29,13 +62,7 @@ class _SecondpageState extends State<Secondpage> {
       if (inputController.text == "Where are You") {
         rText = "Iam At home";
       }
-      if (inputController.text == "Where are You") {
-        rText = "Iam At home";
-      }
-      if (inputController.text == "Whatsup") {
-        rText = "Nothing";
-      }
-      if (inputController.text == "Whatsup") {
+      if (inputController.text == "whats up") {
         rText = "Nothing";
       }
       if (inputController.text == "Love You") {
@@ -48,7 +75,7 @@ class _SecondpageState extends State<Secondpage> {
         rText = "Chicken";
       }
       if (inputController.text == "Do You Have Love") {
-        rText = "Yes";
+        rText = "Your my love";
       }
     }
     setState(() {
@@ -99,6 +126,26 @@ class _SecondpageState extends State<Secondpage> {
                               height: 50,
                               width: 150,
                               child: Center(child: Text(replyTest)))),
+                      if (circle || container)
+                        Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                shape: circle
+                                    ? BoxShape.circle
+                                    : BoxShape.rectangle,
+                                borderRadius: container
+                                    ? BorderRadius.circular(12)
+                                    : null,
+                              ),
+                              height: 150,
+                              width: 150,
+                              // child: Center(child: Text(replyTest))
+                            )),
                     ],
                   ),
                 ),
@@ -142,13 +189,20 @@ class _SecondpageState extends State<Secondpage> {
               ],
             ),
           ),
-
-          // body
-          Expanded(
-              flex: 5,
-              child: Container(
-                color: Colors.red,
-              )),
+          if (showTable)
+            // body
+            Expanded(
+                flex: 5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    for (int a = 1; a < 11; a++)
+                      Text('$_text x $a = ${(a * rNumber).toString()}')
+                    // Text('$_text'
+                    //     'x ${a.toString()} = ${(int.parse(inputController.text) * a).toString()}'),
+                  ],
+                )),
         ],
       ),
     );
