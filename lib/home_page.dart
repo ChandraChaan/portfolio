@@ -188,10 +188,57 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        child: Icon(
-          Icons.settings,
-          color: Theme.of(context).primaryColor,
-          size: 24.0,
+        child: GestureDetector(
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    scrollable: true,
+                    title: Column(
+                      children: [
+                        Text('Settings'),
+                        TextFormField(
+                          decoration: InputDecoration(
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Form(
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Name',
+                                    icon: Icon(Icons.account_box),
+                                  ),
+                                ),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Email',
+                                    icon: Icon(Icons.email),
+                                  ),
+                                ),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Message',
+                                    icon: Icon(Icons.message),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                });
+          },
+          child: Icon(
+            Icons.settings,
+            color: Theme.of(context).primaryColor,
+            size: 24.0,
+          ),
         ),
       ),
     );

@@ -18,6 +18,8 @@ class _SecondpageState extends State<Secondpage> {
 
   getReply() {
     String rText = 'Ok';
+    String userText = inputController.text.toLowerCase();
+
     if (inputController.text.isNumeric) {
       rNumber = int.parse(inputController.text);
       rText = (2 * rNumber).toString();
@@ -44,37 +46,37 @@ class _SecondpageState extends State<Secondpage> {
         container = false;
         circle = false;
       }
-      if (inputController.text == "Hello!") {
+      if (userText == "hello") {
         rText = "Hi";
       }
-      if (inputController.text == "Inka") {
+      if (userText == "inka") {
         rText = "Cheppu";
       }
-      if (inputController.text == "yemi") {
+      if (userText == "yemi") {
         rText = "yenti yemi";
       }
-      if (inputController.text == "How Are You") {
+      if (userText == "how are you") {
         rText = "Fine";
       }
-      if (inputController.text == "Had You Dinner") {
+      if (userText == "had you dinner") {
         rText = "Yes Done";
       }
-      if (inputController.text == "Where are You") {
+      if (userText == "where are you") {
         rText = "Iam At home";
       }
-      if (inputController.text == "whats up") {
+      if (userText == "whats up") {
         rText = "Nothing";
       }
-      if (inputController.text == "Love You") {
+      if (userText == "love you") {
         rText = "Love You Too";
       }
-      if (inputController.text == "Are You Working") {
+      if (userText == "are you working") {
         rText = "Yes";
       }
-      if (inputController.text == "What Special Today") {
+      if (userText == "what special today") {
         rText = "Chicken";
       }
-      if (inputController.text == "Do You Have Love") {
+      if (userText == "do you have love") {
         rText = "Your my love";
       }
     }
