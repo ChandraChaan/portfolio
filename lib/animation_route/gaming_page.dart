@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 class Secondpage extends StatefulWidget {
   const Secondpage({Key? key}) : super(key: key);
@@ -9,14 +10,15 @@ class Secondpage extends StatefulWidget {
 
 class _SecondpageState extends State<Secondpage> {
   TextEditingController inputController = TextEditingController();
-  String _text = "Type Something";
+  String _userText = "Type Something";
   String replyTest = "See The Result";
   bool showTable = false;
   bool container = false;
   bool circle = false;
   int rNumber = 0;
+  List<Messages> ListMesseges = [];
 
-  Map getReplayList = {
+  Map<String, String> getReplayList = {
     "hello": "Hi",
     "hi": "Hello!",
     "hey": "Hey there!",
@@ -510,11 +512,20 @@ class _SecondpageState extends State<Secondpage> {
         "The largest country by land area is Russia, spanning across Eurasia and covering over 17 million square kilometers.",
   };
 
-  _getReply() {
-    final String userGivenText = inputController.text;
+  _getReply() async {
+    final String userGivenText = inputController.text.trim();
+
     if (userGivenText.isNotEmpty) {
-      String rText = '';
+      // this is not mandatory, remove this in the future, please
+      String rText = 'Loading...';
+
+      _userText = userGivenText;
       String userText = userGivenText.toLowerCase();
+      inputController.clear();
+      ListMesseges.add(Messages(msg: _userText, left: false, shape: 'null'));
+      setState(() {
+        replyTest = rText;
+      });
       if (userGivenText.isNumeric) {
         rNumber = int.parse(userGivenText);
         rText = (2 * rNumber).toString();
@@ -525,32 +536,44 @@ class _SecondpageState extends State<Secondpage> {
         showTable = false;
         List name = userGivenText.split(' ');
         if (name[0].toString().toLowerCase() == 'create') {
-          if (name[1].toString().toLowerCase() == 'container') {
+          if (name.toString().toLowerCase().contains('container')) {
             container = true;
             circle = false;
-          } else if (name[1].toString().toLowerCase() == 'circle') {
+            rText = 'Container';
+          } else if (name.toString().toLowerCase().contains('circle')) {
             container = false;
             circle = true;
+            rText = 'Circle';
           } else {
             container = false;
             circle = false;
-            rText = "I didn\'t get";
+            rText = "I didn't get";
           }
         } else {
           container = false;
           circle = false;
         }
         List checkKeyList = getReplayList.keys.toList();
-        for (int a = 0; a < checkKeyList.length; a++) {
-          if (checkKeyList[a].toString().toLowerCase() ==
-              userText.toLowerCase()) {
-            return getReplayList[checkKeyList[a]];
+
+        // Use Future.forEach() to iterate through the list asynchronously
+        await Future.forEach(checkKeyList, (key) async {
+          if (key.toString().toLowerCase() == userText.toLowerCase()) {
+            rText = getReplayList[key].toString();
           }
+        });
+        if (rText == 'Loading...') {
+          rText = 'I didn\'t get';
         }
       }
+      String shape = 'null';
+      if (container) {
+        shape = 'container';
+      } else if (circle) {
+        shape = 'circle';
+      }
+      ListMesseges.add(Messages(msg: rText, left: true, shape: shape));
       setState(() {
         replyTest = rText;
-        inputController.clear();
       });
     }
   }
@@ -572,52 +595,46 @@ class _SecondpageState extends State<Secondpage> {
                   child: ListView(
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
                     children: [
-                      Align(
-                          alignment: Alignment.bottomRight,
-                          child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 10),
-                              padding: const EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                color: Colors.greenAccent,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              height: 50,
-                              width: 150,
-                              child: Center(child: Text(_text)))),
-                      Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 10),
-                              padding: const EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              height: 50,
-                              width: 150,
-                              child: Center(child: Text(replyTest)))),
-                      if (circle || container)
+                      for (int a = 0; a < ListMesseges.length; a++) ...[
                         Align(
-                            alignment: Alignment.center,
+                            alignment: ListMesseges[a].left
+                                ? Alignment.bottomLeft
+                                : Alignment.bottomRight,
                             child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 10),
-                              padding: const EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                color: Colors.redAccent,
-                                shape: circle
-                                    ? BoxShape.circle
-                                    : BoxShape.rectangle,
-                                borderRadius: container
-                                    ? BorderRadius.circular(12)
-                                    : null,
-                              ),
-                              height: 150,
-                              width: 150,
-                              // child: Center(child: Text(replyTest))
-                            )),
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 10),
+                                padding: const EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  color: ListMesseges[a].left
+                                      ? Colors.grey
+                                      : Colors.greenAccent,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                height: 50,
+                                width: 150,
+                                child:
+                                    Center(child: Text(ListMesseges[a].msg)))),
+                        if (ListMesseges[a].shape != 'null')
+                          Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 10),
+                                padding: const EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  color: Colors.redAccent,
+                                  shape: ListMesseges[a].shape == 'circle'
+                                      ? BoxShape.circle
+                                      : BoxShape.rectangle,
+                                  borderRadius: container
+                                      ? BorderRadius.circular(12)
+                                      : null,
+                                ),
+                                height: 150,
+                                width: 150,
+                                // child: Center(child: Text(replyTest))
+                              )),
+                      ],
                     ],
                   ),
                 ),
@@ -663,7 +680,7 @@ class _SecondpageState extends State<Secondpage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     for (int a = 1; a < 11; a++)
-                      Text('$_text x $a = ${(a * rNumber).toString()}')
+                      Text('$_userText x $a = ${(a * rNumber).toString()}')
                     // Text('$_text'
                     //     'x ${a.toString()} = ${(int.parse(inputController.text) * a).toString()}'),
                   ],
@@ -676,4 +693,12 @@ class _SecondpageState extends State<Secondpage> {
 
 extension Numeric on String {
   bool get isNumeric => num.tryParse(this) != null ? true : false;
+}
+
+class Messages {
+  final String msg;
+  final bool left;
+  final String shape;
+
+  Messages({required this.msg, required this.left, required this.shape});
 }
