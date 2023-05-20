@@ -16,7 +16,7 @@ class _SecondpageState extends State<Secondpage> {
   bool container = false;
   bool circle = false;
   int rNumber = 0;
-  List<Messages> ListMesseges = [];
+  List<Messages> listMesseges = [];
 
   Map<String, String> getReplayList = {
     "hello": "Hi",
@@ -572,7 +572,7 @@ class _SecondpageState extends State<Secondpage> {
 
   void addItemToList(Messages message) {
     setState(() {
-      ListMesseges.add(message);
+      listMesseges.add(message);
     });
 
     // Delay the scroll animation slightly
@@ -602,9 +602,9 @@ class _SecondpageState extends State<Secondpage> {
                   child: ListView.builder(
                     controller: _scrollController,
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    itemCount: ListMesseges.length,
+                    itemCount: listMesseges.length,
                     itemBuilder: (context, index) {
-                      final message = ListMesseges[index];
+                      final message = listMesseges[index];
                       return Column(
                         crossAxisAlignment: message.left
                             ? CrossAxisAlignment.start
@@ -620,9 +620,23 @@ class _SecondpageState extends State<Secondpage> {
                                   : Colors.greenAccent,
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            height: 50,
-                            width: 150,
-                            child: Center(child: Text(message.msg)),
+                            child: LayoutBuilder(
+                              builder: (context, constraints) {
+                                return message.left
+                                    ? TypewriterTextAnimation(
+                                        text: message.msg,
+                                        duration:
+                                            const Duration(milliseconds: 500),
+                                        constraints: constraints,
+                                      )
+                                    : Text(
+                                        message.msg,
+                                        style: const TextStyle(fontSize: 16),
+                                        maxLines: null,
+                                        overflow: TextOverflow.clip,
+                                      );
+                              },
+                            ),
                           ),
                           if (message.shape != 'null')
                             Container(
@@ -713,4 +727,58 @@ class Messages {
   final String shape;
 
   Messages({required this.msg, required this.left, required this.shape});
+}
+
+class TypewriterTextAnimation extends StatefulWidget {
+  final String text;
+  final Duration duration;
+  final BoxConstraints? constraints;
+
+  TypewriterTextAnimation({
+    required this.text,
+    required this.duration,
+    this.constraints,
+  });
+
+  @override
+  _TypewriterTextAnimationState createState() =>
+      _TypewriterTextAnimationState();
+}
+
+class _TypewriterTextAnimationState extends State<TypewriterTextAnimation>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<int> _textAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+    );
+    _textAnimation = IntTween(begin: 0, end: widget.text.length)
+        .animate(_animationController);
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _textAnimation,
+      builder: (context, child) {
+        final animatedText = widget.text.substring(0, _textAnimation.value);
+        return Container(
+          constraints: widget.constraints,
+          child: Text(animatedText, style: TextStyle(fontSize: 18)),
+        );
+      },
+    );
+  }
 }
