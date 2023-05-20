@@ -516,16 +516,12 @@ class _SecondpageState extends State<Secondpage> {
     final String userGivenText = inputController.text.trim();
 
     if (userGivenText.isNotEmpty) {
-      // this is not mandatory, remove this in the future, please
-      String rText = 'Loading...';
-
       _userText = userGivenText;
       String userText = userGivenText.toLowerCase();
       inputController.clear();
-      ListMesseges.add(Messages(msg: _userText, left: false, shape: 'null'));
-      setState(() {
-        replyTest = rText;
-      });
+      addItemToList(Messages(msg: _userText, left: false, shape: 'null'));
+
+      String? rText;
       if (userGivenText.isNumeric) {
         rNumber = int.parse(userGivenText);
         rText = (2 * rNumber).toString();
@@ -534,13 +530,13 @@ class _SecondpageState extends State<Secondpage> {
         circle = false;
       } else {
         showTable = false;
-        List name = userGivenText.split(' ');
-        if (name[0].toString().toLowerCase() == 'create') {
-          if (name.toString().toLowerCase().contains('container')) {
+        List<String> name = userGivenText.split(' ');
+        if (name[0] == 'create') {
+          if (name.contains('container')) {
             container = true;
             circle = false;
             rText = 'Container';
-          } else if (name.toString().toLowerCase().contains('circle')) {
+          } else if (name.contains('circle')) {
             container = false;
             circle = true;
             rText = 'Circle';
@@ -553,89 +549,101 @@ class _SecondpageState extends State<Secondpage> {
           container = false;
           circle = false;
         }
-        List checkKeyList = getReplayList.keys.toList();
 
-        // Use Future.forEach() to iterate through the list asynchronously
-        await Future.forEach(checkKeyList, (key) async {
-          if (key.toString().toLowerCase() == userText.toLowerCase()) {
+        List<String> checkKeys = getReplayList.keys.toList();
+
+        await Future.forEach(checkKeys, (key) async {
+          if (key.toLowerCase() == userText) {
             rText = getReplayList[key].toString();
           }
         });
-        if (rText == 'Loading...') {
-          rText = 'I didn\'t get';
-        }
       }
-      String shape = 'null';
-      if (container) {
-        shape = 'container';
-      } else if (circle) {
-        shape = 'circle';
-      }
-      ListMesseges.add(Messages(msg: rText, left: true, shape: shape));
+
+      String shape = container ? 'container' : (circle ? 'circle' : 'null');
+      addItemToList(
+          Messages(msg: rText ?? "I didn't get", left: true, shape: shape));
       setState(() {
-        replyTest = rText;
+        replyTest = rText ?? "I didn't get";
       });
     }
+  }
+
+  ScrollController _scrollController = ScrollController();
+
+  void addItemToList(Messages message) {
+    setState(() {
+      ListMesseges.add(message);
+    });
+
+    // Delay the scroll animation slightly
+    Future.delayed(const Duration(milliseconds: 100), () {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome to time pass game'),
+        title: const Text('Welcome to Time Pass Game'),
+        backgroundColor: Colors.blue, // Set your desired app bar color
       ),
       body: Row(
         children: [
-          // side menu
           Expanded(
             flex: 5,
             child: Column(
               children: [
                 Expanded(
-                  child: ListView(
+                  child: ListView.builder(
+                    controller: _scrollController,
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    children: [
-                      for (int a = 0; a < ListMesseges.length; a++) ...[
-                        Align(
-                            alignment: ListMesseges[a].left
-                                ? Alignment.bottomLeft
-                                : Alignment.bottomRight,
-                            child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 10),
-                                padding: const EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                  color: ListMesseges[a].left
-                                      ? Colors.grey
-                                      : Colors.greenAccent,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                height: 50,
-                                width: 150,
-                                child:
-                                    Center(child: Text(ListMesseges[a].msg)))),
-                        if (ListMesseges[a].shape != 'null')
-                          Align(
-                              alignment: Alignment.center,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 10),
-                                padding: const EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                  color: Colors.redAccent,
-                                  shape: ListMesseges[a].shape == 'circle'
-                                      ? BoxShape.circle
-                                      : BoxShape.rectangle,
-                                  borderRadius: container
-                                      ? BorderRadius.circular(12)
-                                      : null,
-                                ),
-                                height: 150,
-                                width: 150,
-                                // child: Center(child: Text(replyTest))
-                              )),
-                      ],
-                    ],
+                    itemCount: ListMesseges.length,
+                    itemBuilder: (context, index) {
+                      final message = ListMesseges[index];
+                      return Column(
+                        crossAxisAlignment: message.left
+                            ? CrossAxisAlignment.start
+                            : CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: message.left
+                                  ? Colors.grey[300]
+                                  : Colors.greenAccent,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            height: 50,
+                            width: 150,
+                            child: Center(child: Text(message.msg)),
+                          ),
+                          if (message.shape != 'null')
+                            Container(
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                shape: message.shape == 'circle'
+                                    ? BoxShape.circle
+                                    : BoxShape.rectangle,
+                                borderRadius: message.shape == 'container'
+                                    ? BorderRadius.circular(12)
+                                    : null,
+                              ),
+                              height: 150,
+                              width: 150,
+                            ),
+                        ],
+                      );
+                    },
                   ),
                 ),
                 Container(
@@ -664,6 +672,8 @@ class _SecondpageState extends State<Secondpage> {
                       IconButton(
                         onPressed: _getReply,
                         icon: const Icon(Icons.send_sharp),
+                        color:
+                            Colors.blue, // Set your desired send button color
                       ),
                     ],
                   ),
@@ -672,19 +682,21 @@ class _SecondpageState extends State<Secondpage> {
             ),
           ),
           if (showTable)
-            // body
             Expanded(
-                flex: 5,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    for (int a = 1; a < 11; a++)
-                      Text('$_userText x $a = ${(a * rNumber).toString()}')
-                    // Text('$_text'
-                    //     'x ${a.toString()} = ${(int.parse(inputController.text) * a).toString()}'),
-                  ],
-                )),
+              flex: 5,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  for (int a = 1; a < 11; a++)
+                    Text(
+                      '$_userText x $a = ${(a * rNumber).toString()}',
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                ],
+              ),
+            ),
         ],
       ),
     );
