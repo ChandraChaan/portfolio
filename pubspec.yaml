@@ -57,6 +57,8 @@ dependencies:
   awesome_dialog: ^3.0.2
   flutter_colorpicker: ^0.5.0
   chat_bubbles: ^1.4.1
+  geolocator: ^7.0.1
+  geocoding: ^2.0.0
 
 
 

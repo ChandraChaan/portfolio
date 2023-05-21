@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:html' as html;
+import 'package:geolocator/geolocator.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Secondpage extends StatefulWidget {
   const Secondpage({Key? key}) : super(key: key);
@@ -17,6 +21,62 @@ class _SecondpageState extends State<Secondpage> {
   bool circle = false;
   int rNumber = 0;
   List<Messages> listMesseges = [];
+
+  String address = '';
+  double latitude = 0.0;
+  double longitude = 0.0;
+  String systemName = '';
+  String browserName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getUserLocation();
+    getSystemName();
+    getBrowserName();
+  }
+
+  Future<void> getUserLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    setState(() {
+      latitude = position.latitude;
+      longitude = position.longitude;
+    });
+    final addressloc = await getAddress(latitude, longitude);
+    setState(() {
+      address = addressloc;
+    });
+  }
+
+  Future<String> getAddress(double latitude, double longitude) async {
+    final url =
+        'https://nominatim.openstreetmap.org/reverse?format=json&lat=$latitude&lon=$longitude';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body);
+
+      final address = decodedData['display_name'];
+      return address;
+    }
+
+    return 'Address not found';
+  }
+
+  void getSystemName() {
+    setState(() {
+      systemName = html.window.navigator.platform!;
+    });
+  }
+
+  void getBrowserName() {
+    setState(() {
+      browserName = html.window.navigator.userAgent;
+    });
+  }
 
   Map<String, String> getReplayList = {
     "hello": "Hi",
@@ -588,9 +648,12 @@ class _SecondpageState extends State<Secondpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Welcome to Time Pass Game'),
-        backgroundColor: Colors.blue, // Set your desired app bar color
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100.0),
+        child: Center(
+          child: SelectableText(
+              'Welcome to Time Pass Game${(address.isNotEmpty) ? '\nAddress: $address' : ''}, ${(systemName.isNotEmpty) ? '\nSystem name: $systemName' : ''}, ${(browserName.isNotEmpty) ? '\nBrowser name: $browserName' : ''},'),
+        ),
       ),
       body: Row(
         children: [
