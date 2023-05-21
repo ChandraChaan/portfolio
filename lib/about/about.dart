@@ -58,7 +58,7 @@ class _AboutState extends State<About> {
                       width: 5,
                     ),
                     getTextStyle(provider.user.split(' ').last.toUpperCase(),
-                        FontWeight.bold, Colors.blue, 70),
+                        FontWeight.bold, Theme.of(context).indicatorColor, 70),
                   ],
                 )
                     .animate()

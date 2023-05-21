@@ -28,7 +28,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Color currentColor = Colors.blue;
   List<Color> currentColors = [
     Colors.deepPurple,
     Colors.indigo,
@@ -46,10 +45,6 @@ class _HomePageState extends State<HomePage> {
     Colors.grey,
     Colors.blueGrey,
   ];
-
-  changeColor(Color color) {
-    Provider.of<UserInfo>(context).themeColorChange(color);
-  }
 
   void changeColors(List<Color> colors) =>
       setState(() => currentColors = colors);
@@ -153,6 +148,7 @@ class _HomePageState extends State<HomePage> {
               height: 20,
               child: LinearProgressIndicator(
                 backgroundColor: Colors.cyan[100],
+                color: Theme.of(context).indicatorColor,
                 value: _maxscrollpercentage,
                 // valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
               ),
@@ -175,8 +171,11 @@ class _HomePageState extends State<HomePage> {
               child: Expanded(
                 child: BlockPicker(
                     availableColors: currentColors,
-                    pickerColor: currentColor,
-                    onColorChanged: changeColor),
+                    pickerColor: Provider.of<UserInfo>(context, listen: false)
+                        .themeColor,
+                    onColorChanged: (c) =>
+                        Provider.of<UserInfo>(context, listen: false)
+                            .themeColorChange(c)),
               ),
             ),
 
@@ -188,57 +187,9 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        child: GestureDetector(
-          onTap: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    scrollable: true,
-                    title: Column(
-                      children: [
-                        Text('Settings'),
-                        TextFormField(
-                          decoration: InputDecoration(
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Form(
-                            child: Column(
-                              children: <Widget>[
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Name',
-                                    icon: Icon(Icons.account_box),
-                                  ),
-                                ),
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Email',
-                                    icon: Icon(Icons.email),
-                                  ),
-                                ),
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Message',
-                                    icon: Icon(Icons.message),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                });
-          },
-          child: Icon(
-            Icons.settings,
-            color: Theme.of(context).primaryColor,
-            size: 24.0,
-          ),
+        child: Icon(
+          Icons.settings,
+          color: Theme.of(context).primaryColor,
         ),
       ),
     );
