@@ -4,6 +4,8 @@ import 'dart:html' as html;
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:battery_plus/battery_plus.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class Secondpage extends StatefulWidget {
   const Secondpage({Key? key}) : super(key: key);
@@ -34,6 +36,8 @@ class _SecondpageState extends State<Secondpage> {
     getUserLocation();
     getSystemName();
     getBrowserName();
+    getBatteryLevel();
+    getWifiNetworkType();
   }
 
   Future<void> getUserLocation() async {
@@ -571,6 +575,34 @@ class _SecondpageState extends State<Secondpage> {
     "what's the largest country by land area":
         "The largest country by land area is Russia, spanning across Eurasia and covering over 17 million square kilometers.",
   };
+  final Battery _battery = Battery();
+  final Connectivity _connectivity = Connectivity();
+
+  String _chargingStatus = 'Unknown';
+  String _wifiNetworkType = 'Unknown';
+
+  Future<void> getBatteryLevel() async {
+    final battery = Battery();
+    final batteryLevel = await battery.batteryLevel;
+    setState(() {
+      _chargingStatus = '$batteryLevel';
+    });
+  }
+
+  Future<void> getWifiNetworkType() async {
+    final connectivityResult = await _connectivity.checkConnectivity();
+    if (connectivityResult == ConnectivityResult.wifi) {
+      const wifiNetworkType = 'Connected';
+      setState(() {
+        _wifiNetworkType = wifiNetworkType;
+      });
+    } else {
+      const wifiNetworkType = 'Not connected';
+      setState(() {
+        _wifiNetworkType = wifiNetworkType;
+      });
+    }
+  }
 
   _getReply() async {
     final String userGivenText = inputController.text.trim();
@@ -671,6 +703,32 @@ class _SecondpageState extends State<Secondpage> {
                 ),
                 SelectableText(
                     'Welcome to Time Pass Game${(address.isNotEmpty) ? '\nAddress: $address' : ''}, ${(systemName.isNotEmpty) ? '\nSystem name: $systemName' : ''}, ${(browserName.isNotEmpty) ? '\nBrowser name: $browserName' : ''},'),
+                const SizedBox(
+                  width: 18.0,
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.battery_full,
+                      color: Colors.green,
+                    ),
+                    const SizedBox(width: 5),
+                    Text('$_chargingStatus%'),
+                  ],
+                ),
+                const SizedBox(
+                  width: 18.0,
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.wifi,
+                      color: Colors.blue,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(_wifiNetworkType),
+                  ],
+                )
               ],
             ),
           ),
@@ -860,9 +918,10 @@ class _TypewriterTextAnimationState extends State<TypewriterTextAnimation>
         final animatedText = widget.text.substring(0, _textAnimation.value);
         return Container(
           constraints: widget.constraints,
-          child: Text(animatedText, style: TextStyle(fontSize: 18)),
+          child: Text(animatedText, style: const TextStyle(fontSize: 18)),
         );
       },
     );
   }
 }
+

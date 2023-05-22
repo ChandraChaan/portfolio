@@ -17,7 +17,7 @@ import '../portfolio/portfolio.dart';
 import '../skills/skills.dart';
 import 'about/about.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:visibility_detector/visibility_detector.dart';
 import 'animation_route/navigate_newpage.dart';
 
 class HomePage extends StatefulWidget {
@@ -118,16 +118,34 @@ class _HomePageState extends State<HomePage> {
   }
 
   final aboutScrollKey = GlobalKey();
-
+  bool _isAboutVisible = false;
   final expScrollKey = GlobalKey();
+  bool _isExpVisible = false;
 
   final portfoScrollKey = GlobalKey();
+  bool _isPortfoVisible = false;
 
   final skillScrollKey = GlobalKey();
+  bool _isSkillsVisible = false;
 
   final projectsScrollKey = GlobalKey();
+  bool _isProjectsVisible = false;
 
   final contactScrollKey = GlobalKey();
+  bool _isContactVisible = false;
+
+  Color getOppositeColor(Color color) {
+    final int invertedRed = 255 - color.red;
+    final int invertedGreen = 255 - color.green;
+    final int invertedBlue = 255 - color.blue;
+
+    return Color.fromARGB(
+      color.alpha,
+      invertedRed,
+      invertedGreen,
+      invertedBlue,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -329,7 +347,12 @@ class _HomePageState extends State<HomePage> {
                                   ClipboardData(text: _token.toString()));
                               srollSmooth(aboutScrollKey.currentContext!);
                             },
-                            child: CommonText(text: 'ABOUT'),
+                            child: CommonText(
+                                text: 'ABOUT',
+                                color: _isAboutVisible
+                                    ? getOppositeColor(
+                                        Theme.of(context).indicatorColor)
+                                    : null),
                           ),
                           const SizedBox(
                             height: 10,
@@ -339,8 +362,11 @@ class _HomePageState extends State<HomePage> {
                               srollSmooth(expScrollKey.currentContext!);
                             },
                             child: CommonText(
-                              text: "EXPERIENCE",
-                            ),
+                                text: "EXPERIENCE",
+                                color: _isExpVisible
+                                    ? getOppositeColor(
+                                        Theme.of(context).indicatorColor)
+                                    : null),
                           ),
                           const SizedBox(
                             height: 10,
@@ -350,8 +376,11 @@ class _HomePageState extends State<HomePage> {
                               srollSmooth(portfoScrollKey.currentContext!);
                             },
                             child: CommonText(
-                              text: "PORTFOLIO",
-                            ),
+                                text: "PORTFOLIO",
+                                color: _isPortfoVisible
+                                    ? getOppositeColor(
+                                        Theme.of(context).indicatorColor)
+                                    : null),
                           ),
                           const SizedBox(
                             height: 10,
@@ -361,8 +390,11 @@ class _HomePageState extends State<HomePage> {
                               srollSmooth(skillScrollKey.currentContext!);
                             },
                             child: CommonText(
-                              text: "SKILLS",
-                            ),
+                                text: "SKILLS",
+                                color: _isSkillsVisible
+                                    ? getOppositeColor(
+                                        Theme.of(context).indicatorColor)
+                                    : null),
                           ),
                           const SizedBox(
                             height: 10,
@@ -372,8 +404,11 @@ class _HomePageState extends State<HomePage> {
                                 srollSmooth(projectsScrollKey.currentContext!);
                               },
                               child: CommonText(
-                                text: "PROJECTS",
-                              )),
+                                  text: "PROJECTS",
+                                  color: _isProjectsVisible
+                                      ? getOppositeColor(
+                                          Theme.of(context).indicatorColor)
+                                      : null)),
                           const SizedBox(
                             height: 10,
                           ),
@@ -382,6 +417,10 @@ class _HomePageState extends State<HomePage> {
                                 srollSmooth(contactScrollKey.currentContext!);
                               },
                               child: CommonText(
+                                color: _isContactVisible
+                                    ? getOppositeColor(
+                                        Theme.of(context).indicatorColor)
+                                    : null,
                                 text: "CONTACT",
                               )),
                         ],
@@ -396,27 +435,109 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          About(
+                          VisibilityDetector(
                             key: aboutScrollKey,
+                            onVisibilityChanged: (visibilityInfo) {
+                              if (visibilityInfo.visibleFraction == 1) {
+                                setState(() {
+                                  _isAboutVisible = true;
+                                  _isExpVisible = false;
+                                  _isPortfoVisible = false;
+                                  _isSkillsVisible = false;
+                                  _isProjectsVisible = false;
+                                  _isContactVisible = false;
+                                });
+                              }
+                            },
+                            child: const About(),
                           ),
-                          Experience(
-                            smallCard: false,
+                          VisibilityDetector(
                             key: expScrollKey,
+                            onVisibilityChanged: (visibilityInfo) {
+                              if (visibilityInfo.visibleFraction == 1) {
+                                setState(() {
+                                  _isAboutVisible = false;
+                                  _isExpVisible = true;
+                                  _isPortfoVisible = false;
+                                  _isSkillsVisible = false;
+                                  _isProjectsVisible = false;
+                                  _isContactVisible = false;
+                                });
+                              }
+                            },
+                            child: const Experience(
+                              smallCard: false,
+                            ),
                           ),
-                          Portfolio(
-                            smallCard: false,
+                          VisibilityDetector(
                             key: portfoScrollKey,
+                            onVisibilityChanged: (visibilityInfo) {
+                              if (visibilityInfo.visibleFraction == 1) {
+                                setState(() {
+                                  _isAboutVisible = false;
+                                  _isExpVisible = false;
+                                  _isPortfoVisible = true;
+                                  _isSkillsVisible = false;
+                                  _isProjectsVisible = false;
+                                  _isContactVisible = false;
+                                });
+                              }
+                            },
+                            child: const Portfolio(
+                              smallCard: false,
+                            ),
                           ),
-                          Skills(
+                          VisibilityDetector(
                             key: skillScrollKey,
+                            onVisibilityChanged: (visibilityInfo) {
+                              if (visibilityInfo.visibleFraction == 1) {
+                                setState(() {
+                                  _isAboutVisible = false;
+                                  _isExpVisible = false;
+                                  _isPortfoVisible = false;
+                                  _isSkillsVisible = true;
+                                  _isProjectsVisible = false;
+                                  _isContactVisible = false;
+                                });
+                              }
+                            },
+                            child: const Skills(),
                           ),
-                          Projects(
-                            smallCard: false,
+                          VisibilityDetector(
                             key: projectsScrollKey,
+                            onVisibilityChanged: (visibilityInfo) {
+                              if (visibilityInfo.visibleFraction == 1) {
+                                setState(() {
+                                  _isAboutVisible = false;
+                                  _isExpVisible = false;
+                                  _isPortfoVisible = false;
+                                  _isSkillsVisible = false;
+                                  _isProjectsVisible = true;
+                                  _isContactVisible = false;
+                                });
+                              }
+                            },
+                            child: const Projects(
+                              smallCard: false,
+                            ),
                           ),
-                          Contact(
-                            isWeb: true,
+                          VisibilityDetector(
                             key: contactScrollKey,
+                            onVisibilityChanged: (visibilityInfo) {
+                              if (visibilityInfo.visibleFraction == 1) {
+                                setState(() {
+                                  _isAboutVisible = false;
+                                  _isExpVisible = false;
+                                  _isPortfoVisible = false;
+                                  _isSkillsVisible = false;
+                                  _isProjectsVisible = false;
+                                  _isContactVisible = true;
+                                });
+                              }
+                            },
+                            child: const Contact(
+                              isWeb: true,
+                            ),
                           ),
                         ],
                       ),
@@ -452,29 +573,112 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    About(
-                      mobileImg: true,
-                      tabImg: true,
+                    VisibilityDetector(
                       key: aboutScrollKey,
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          setState(() {
+                            _isAboutVisible = true;
+                            _isExpVisible = false;
+                            _isPortfoVisible = false;
+                            _isSkillsVisible = false;
+                            _isProjectsVisible = false;
+                            _isContactVisible = false;
+                          });
+                        }
+                      },
+                      child: const About(
+                        mobileImg: true,
+                        tabImg: true,
+                      ),
                     ),
-                    Experience(
-                      smallCard: false,
+                    VisibilityDetector(
                       key: expScrollKey,
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          setState(() {
+                            _isAboutVisible = false;
+                            _isExpVisible = true;
+                            _isPortfoVisible = false;
+                            _isSkillsVisible = false;
+                            _isProjectsVisible = false;
+                            _isContactVisible = false;
+                          });
+                        }
+                      },
+                      child: const Experience(
+                        smallCard: false,
+                      ),
                     ),
-                    Portfolio(
-                      smallCard: false,
+                    VisibilityDetector(
                       key: portfoScrollKey,
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          setState(() {
+                            _isAboutVisible = false;
+                            _isExpVisible = false;
+                            _isPortfoVisible = true;
+                            _isSkillsVisible = false;
+                            _isProjectsVisible = false;
+                            _isContactVisible = false;
+                          });
+                        }
+                      },
+                      child: const Portfolio(
+                        smallCard: false,
+                      ),
                     ),
-                    Skills(
+                    VisibilityDetector(
                       key: skillScrollKey,
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          setState(() {
+                            _isAboutVisible = false;
+                            _isExpVisible = false;
+                            _isPortfoVisible = false;
+                            _isSkillsVisible = true;
+                            _isProjectsVisible = false;
+                            _isContactVisible = false;
+                          });
+                        }
+                      },
+                      child: const Skills(),
                     ),
-                    Projects(
-                      smallCard: false,
+                    VisibilityDetector(
                       key: projectsScrollKey,
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          setState(() {
+                            _isAboutVisible = false;
+                            _isExpVisible = false;
+                            _isPortfoVisible = false;
+                            _isSkillsVisible = false;
+                            _isProjectsVisible = true;
+                            _isContactVisible = false;
+                          });
+                        }
+                      },
+                      child: const Projects(
+                        smallCard: false,
+                      ),
                     ),
-                    Contact(
-                      isWeb: true,
+                    VisibilityDetector(
                       key: contactScrollKey,
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          setState(() {
+                            _isAboutVisible = false;
+                            _isExpVisible = false;
+                            _isPortfoVisible = false;
+                            _isSkillsVisible = false;
+                            _isProjectsVisible = false;
+                            _isContactVisible = true;
+                          });
+                        }
+                      },
+                      child: const Contact(
+                        isWeb: true,
+                      ),
                     ),
                   ],
                 ),
@@ -507,28 +711,111 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    About(
+                    VisibilityDetector(
                       key: aboutScrollKey,
-                      mobileImg: true,
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          setState(() {
+                            _isAboutVisible = true;
+                            _isExpVisible = false;
+                            _isPortfoVisible = false;
+                            _isSkillsVisible = false;
+                            _isProjectsVisible = false;
+                            _isContactVisible = false;
+                          });
+                        }
+                      },
+                      child: const About(
+                        mobileImg: true,
+                      ),
                     ),
-                    Experience(
-                      smallCard: true,
+                    VisibilityDetector(
                       key: expScrollKey,
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          setState(() {
+                            _isAboutVisible = false;
+                            _isExpVisible = true;
+                            _isPortfoVisible = false;
+                            _isSkillsVisible = false;
+                            _isProjectsVisible = false;
+                            _isContactVisible = false;
+                          });
+                        }
+                      },
+                      child: const Experience(
+                        smallCard: true,
+                      ),
                     ),
-                    Portfolio(
-                      smallCard: true,
+                    VisibilityDetector(
                       key: portfoScrollKey,
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          setState(() {
+                            _isAboutVisible = false;
+                            _isExpVisible = false;
+                            _isPortfoVisible = true;
+                            _isSkillsVisible = false;
+                            _isProjectsVisible = false;
+                            _isContactVisible = false;
+                          });
+                        }
+                      },
+                      child: const Portfolio(
+                        smallCard: true,
+                      ),
                     ),
-                    Skills(
+                    VisibilityDetector(
                       key: skillScrollKey,
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          setState(() {
+                            _isAboutVisible = false;
+                            _isExpVisible = false;
+                            _isPortfoVisible = false;
+                            _isSkillsVisible = true;
+                            _isProjectsVisible = false;
+                            _isContactVisible = false;
+                          });
+                        }
+                      },
+                      child: const Skills(),
                     ),
-                    Projects(
-                      smallCard: true,
+                    VisibilityDetector(
                       key: projectsScrollKey,
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          setState(() {
+                            _isAboutVisible = false;
+                            _isExpVisible = false;
+                            _isPortfoVisible = false;
+                            _isSkillsVisible = false;
+                            _isProjectsVisible = true;
+                            _isContactVisible = false;
+                          });
+                        }
+                      },
+                      child: const Projects(
+                        smallCard: true,
+                      ),
                     ),
-                    Contact(
-                      isWeb: false,
+                    VisibilityDetector(
                       key: contactScrollKey,
+                      onVisibilityChanged: (visibilityInfo) {
+                        if (visibilityInfo.visibleFraction == 1) {
+                          setState(() {
+                            _isAboutVisible = false;
+                            _isExpVisible = false;
+                            _isPortfoVisible = false;
+                            _isSkillsVisible = false;
+                            _isProjectsVisible = false;
+                            _isContactVisible = true;
+                          });
+                        }
+                      },
+                      child: const Contact(
+                        isWeb: false,
+                      ),
                     ),
                   ],
                 ),
@@ -658,10 +945,16 @@ class _HomePageState extends State<HomePage> {
                   height: 20,
                 ),
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await Clipboard.setData(
+                        ClipboardData(text: _token.toString()));
                     srollSmooth(aboutScrollKey.currentContext!);
                   },
-                  child: CommonText(text: 'ABOUT'),
+                  child: CommonText(
+                      text: 'ABOUT',
+                      color: _isAboutVisible
+                          ? getOppositeColor(Theme.of(context).indicatorColor)
+                          : null),
                 ),
                 const SizedBox(
                   height: 10,
@@ -671,8 +964,10 @@ class _HomePageState extends State<HomePage> {
                     srollSmooth(expScrollKey.currentContext!);
                   },
                   child: CommonText(
-                    text: "EXPERIENCE",
-                  ),
+                      text: "EXPERIENCE",
+                      color: _isExpVisible
+                          ? getOppositeColor(Theme.of(context).indicatorColor)
+                          : null),
                 ),
                 const SizedBox(
                   height: 10,
@@ -682,8 +977,10 @@ class _HomePageState extends State<HomePage> {
                     srollSmooth(portfoScrollKey.currentContext!);
                   },
                   child: CommonText(
-                    text: "PORTFOLIO",
-                  ),
+                      text: "PORTFOLIO",
+                      color: _isPortfoVisible
+                          ? getOppositeColor(Theme.of(context).indicatorColor)
+                          : null),
                 ),
                 const SizedBox(
                   height: 10,
@@ -693,8 +990,10 @@ class _HomePageState extends State<HomePage> {
                     srollSmooth(skillScrollKey.currentContext!);
                   },
                   child: CommonText(
-                    text: "SKILLS",
-                  ),
+                      text: "SKILLS",
+                      color: _isSkillsVisible
+                          ? getOppositeColor(Theme.of(context).indicatorColor)
+                          : null),
                 ),
                 const SizedBox(
                   height: 10,
@@ -704,8 +1003,10 @@ class _HomePageState extends State<HomePage> {
                       srollSmooth(projectsScrollKey.currentContext!);
                     },
                     child: CommonText(
-                      text: "PROJECTS",
-                    )),
+                        text: "PROJECTS",
+                        color: _isProjectsVisible
+                            ? getOppositeColor(Theme.of(context).indicatorColor)
+                            : null)),
                 const SizedBox(
                   height: 10,
                 ),
@@ -714,6 +1015,9 @@ class _HomePageState extends State<HomePage> {
                       srollSmooth(contactScrollKey.currentContext!);
                     },
                     child: CommonText(
+                      color: _isContactVisible
+                          ? getOppositeColor(Theme.of(context).indicatorColor)
+                          : null,
                       text: "CONTACT",
                     )),
               ],

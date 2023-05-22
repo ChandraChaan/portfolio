@@ -20,15 +20,16 @@ Widget getTextStyle(
 
 class CommonText extends StatelessWidget {
   final String text;
+  final Color? color;
 
-  const CommonText({super.key, required this.text});
+  const CommonText({super.key, required this.text, this.color});
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
       style: TextStyle(
-          color: Theme.of(context).primaryColor,
+          color: color ?? Theme.of(context).primaryColor,
           fontSize: 20,
           fontFamily: 'FrederickatheGreat'),
     );
