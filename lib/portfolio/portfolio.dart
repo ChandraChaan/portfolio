@@ -35,7 +35,7 @@ class Portfolio extends StatelessWidget {
                 Container(
                   height: (6),
                   width: (120),
-                  color: Colors.blue,
+                  color: Theme.of(context).indicatorColor,
                 ),
                 const SizedBox(
                   height: (50),
@@ -52,11 +52,11 @@ class Portfolio extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: provider.imageFilterString ==
                                     '${provider.imagesKeys[c]}'
-                                ? Colors.blueAccent
+                                ? Theme.of(context).indicatorColor
                                 : null,
                             border: Border.all(
                               width: 1,
-                              color: Colors.blueAccent,
+                              color: Theme.of(context).indicatorColor,
                             ),
                           ),
                           child: TextButton(
@@ -71,7 +71,7 @@ class Portfolio extends StatelessWidget {
                                         color: provider.imageFilterString ==
                                                 '${provider.imagesKeys[c]}'
                                             ? Colors.white
-                                            : Colors.blueAccent,
+                                            : Theme.of(context).indicatorColor,
                                         fontSize: 20)),
                               )),
                         ),

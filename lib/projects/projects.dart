@@ -36,7 +36,7 @@ class Projects extends StatelessWidget {
                 Container(
                   height: (6),
                   width: (120),
-                  color: Colors.blue,
+                  color: Theme.of(context).indicatorColor,
                 ),
                 const SizedBox(
                   height: 70.0,

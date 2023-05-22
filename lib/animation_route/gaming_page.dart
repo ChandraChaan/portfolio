@@ -649,34 +649,30 @@ class _SecondpageState extends State<Secondpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-
-        preferredSize: const Size.fromHeight(180.0),
+        preferredSize: const Size.fromHeight(110.0),
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(8.0),
           child: Center(
-            child: Column(
+            child: Row(
               children: [
-                Align(alignment: Alignment.topLeft,
-                  child: GestureDetector(onTap: (){
-                      Navigator.pop(context);
-
-
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    Navigator.pop(context);
                   },
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                      size: 25.0,
-                    ),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                    size: 35.0,
                   ),
                 ),
-                SizedBox(height: 18.0,),
-
+                const SizedBox(
+                  width: 18.0,
+                ),
                 SelectableText(
                     'Welcome to Time Pass Game${(address.isNotEmpty) ? '\nAddress: $address' : ''}, ${(systemName.isNotEmpty) ? '\nSystem name: $systemName' : ''}, ${(browserName.isNotEmpty) ? '\nBrowser name: $browserName' : ''},'),
-
               ],
             ),
-
           ),
         ),
       ),
