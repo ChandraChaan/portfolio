@@ -9,44 +9,22 @@ body {
   height: 100vh;
 }
 
-.heart {
-  background-color: gold;
-  height: 100px;
-  width: 100px;
-  transform: rotate(-45deg);
+.loading {
+  font-size: 48px;
+  font-weight: bold;
   animation-name: heartbeat;
   animation-duration: 2s;
   animation-iteration-count: infinite;
 }
 
-.heart::before,
-.heart::after {
-  content: "";
-  background-color: gold;
-  height: 100px;
-  width: 100px;
-  position: absolute;
-  border-radius: 50%;
-}
-
-.heart::before {
-  top: -50px;
-  left: 0;
-}
-
-.heart::after {
-  left: 50px;
-  top: 0;
-}
-
 @keyframes heartbeat {
   0% {
-    transform: scale(1) rotate(-45deg);
+    transform: scale(1);
   }
   20% {
-    transform: scale(1.25) rotate(-45deg);
+    transform: scale(1.25);
   }
   40% {
-    transform: scale(1.5) rotate(-45deg);
+    transform: scale(1.5);
   }
 }
