@@ -1,11 +1,11 @@
 // import 'package:audioplayers/audioplayers.dart';
 import 'dart:convert';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:portfoli_web/ui/responsive_ui.dart';
 import 'package:portfoli_web/utils/font_style.dart';
@@ -28,27 +28,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Color> currentColors = [
-    Colors.deepPurple,
-    Colors.indigo,
-    Colors.blue,
-    Colors.lightBlue,
-    Colors.cyan,
-    Colors.teal,
-    Colors.green,
-    Colors.lightGreen,
-    Colors.lime,
-    Colors.yellow,
-    Colors.amber,
-    Colors.orange,
-    Colors.brown,
-    Colors.grey,
-    Colors.blueGrey,
-  ];
-
-  void changeColors(List<Color> colors) =>
-      setState(() => currentColors = colors);
-
   String? _token;
   Stream<String>? _tokenStream;
   int notificationCount = 0;
@@ -179,32 +158,14 @@ class _HomePageState extends State<HomePage> {
     return Align(
       alignment: Alignment.topRight,
       child: TextButton(
-        onPressed: () => showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('Choose Color'),
-            // content: const Text('AlertDialog description'),
-            content: Container(
-              // height: 100,
-              child: Expanded(
-                child: BlockPicker(
-                    availableColors: currentColors,
-                    pickerColor: Provider.of<UserInfo>(context, listen: false)
-                        .themeColor,
-                    onColorChanged: (c) =>
-                        Provider.of<UserInfo>(context, listen: false)
-                            .themeColorChange(c)),
-              ),
-            ),
-
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Close'),
-              ),
-            ],
-          ),
-        ),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SettingsPopup();
+            },
+          );
+        },
         child: Icon(
           Icons.settings,
           color: Theme.of(context).primaryColor,
@@ -1029,10 +990,354 @@ class _HomePageState extends State<HomePage> {
   }
 
   srollSmooth(BuildContext context) {
-    // if(Provider.of<UserInfo>(context, listen: false).musicMode) {
-    //   AudioPlayer().play(AssetSource('audio/decide.mp3'));
-    // }
+    if (Provider.of<UserInfo>(context, listen: false).musicMode) {
+      AudioPlayer().play(AssetSource('audio/decide.mp3'));
+    }
     Scrollable.ensureVisible(context,
         duration: const Duration(seconds: 1), curve: Curves.easeIn);
+  }
+}
+
+class SettingsPopup extends StatefulWidget {
+  @override
+  _SettingsPopupState createState() => _SettingsPopupState();
+}
+
+class _SettingsPopupState extends State<SettingsPopup> {
+  int _selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Theme.of(context).backgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        width: MediaQuery.of(context).size.width / 2,
+        height: MediaQuery.of(context).size.height / 1.5,
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Settings',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              color: Theme.of(context).primaryColor,
+            ),
+            Expanded(
+              flex: 7,
+              child: Row(
+                children: [
+                  // Left Side - Sections
+                  SizedBox(
+                    width: 200.0, // Adjust the width as needed
+                    child: ListView(
+                      children: [
+                        SectionItem(
+                          title: 'Theme',
+                          icon: Icons.color_lens,
+                          index: 0,
+                          selectedIndex: _selectedIndex,
+                          onTap: () {
+                            setState(() {
+                              _selectedIndex = 0;
+                            });
+                          },
+                        ),
+                        SectionItem(
+                          title: 'Data Control',
+                          icon: Icons.data_usage,
+                          index: 1,
+                          selectedIndex: _selectedIndex,
+                          onTap: () {
+                            setState(() {
+                              _selectedIndex = 1;
+                            });
+                          },
+                        ),
+                        SectionItem(
+                          title: 'General Settings',
+                          icon: Icons.settings,
+                          index: 2,
+                          selectedIndex: _selectedIndex,
+                          onTap: () {
+                            setState(() {
+                              _selectedIndex = 2;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 16.0),
+                  // Right Side - Content
+                  Expanded(
+                    child: IndexedStack(
+                      index: _selectedIndex,
+                      children: [
+                        ThemeSection(),
+                        DataControlSection(),
+                        GeneralSettingsSection(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SectionItem extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final int index;
+  final int selectedIndex;
+  final VoidCallback onTap;
+
+  SectionItem({
+    required this.title,
+    required this.icon,
+    required this.index,
+    required this.selectedIndex,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isSelected = index == selectedIndex;
+    final textColor = Theme.of(context).primaryColor;
+    final backgroundColor = Theme.of(context).indicatorColor;
+
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: textColor,
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: textColor,
+        ),
+      ),
+      onTap: onTap,
+      tileColor: isSelected ? backgroundColor.withOpacity(0.2) : null,
+    );
+  }
+}
+
+class ThemeSection extends StatelessWidget {
+  List<Color> currentColors = [
+    Colors.pink,
+    Colors.purple,
+    Colors.deepPurple,
+    Colors.indigo,
+    Colors.blue,
+    Colors.lightBlue,
+    Colors.cyan,
+    Colors.teal,
+    Colors.green,
+    Colors.lightGreen,
+    Colors.lime,
+    Colors.yellow,
+    Colors.amber,
+    Colors.orange,
+    Colors.deepOrange,
+    Colors.brown,
+    Colors.grey,
+    Colors.blueGrey,
+    Colors.red,
+    Colors.deepOrangeAccent,
+    Colors.amberAccent,
+    Colors.yellowAccent,
+    Colors.limeAccent,
+    Colors.greenAccent,
+    Colors.tealAccent,
+    Colors.cyanAccent,
+    Colors.lightBlueAccent,
+    Colors.blueAccent,
+    Colors.indigoAccent,
+    Colors.purpleAccent,
+    Colors.pinkAccent,
+    Colors.redAccent,
+    Colors.orangeAccent,
+    Colors.brown,
+    Colors.grey,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Theme',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          const SizedBox(height: 16.0),
+          Text(
+            'Select theme color',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          const SizedBox(height: 16.0),
+          Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            children: [
+              for (int a = 0; a < currentColors.length; a++)
+                ColorItem(color: currentColors[a]),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DataControlSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Data Control',
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        const SizedBox(height: 16.0),
+        Text(
+          'Data control settings',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        const SizedBox(height: 16.0),
+        Text(
+          'Setting 1',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        Text(
+          'Setting 2',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        // Add more data control settings here
+      ],
+    );
+  }
+}
+
+class GeneralSettingsSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'General Settings',
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        const SizedBox(height: 16.0),
+        Text(
+          'General settings',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        const SizedBox(height: 16.0),
+        Text(
+          'Setting 1',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        Text(
+          'Setting 2',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        // Add more general settings here
+      ],
+    );
+  }
+}
+
+class ColorItem extends StatelessWidget {
+  final Color color;
+
+  ColorItem({required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 50.0,
+      height: 50.0,
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            Provider.of<UserInfo>(context, listen: false)
+                .themeColorChange(color);
+          },
+          borderRadius: BorderRadius.circular(25.0),
+          splashColor: Colors.white.withOpacity(0.5),
+          customBorder: const CircleBorder(),
+          child:
+              Provider.of<UserInfo>(context, listen: false).themeColor == color
+                  ? const Icon(Icons.check)
+                  : null,
+        ),
+      ),
+    );
   }
 }

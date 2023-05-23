@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +44,7 @@ class RoleApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: const PushNotificationApp(),
     );
   }
 }
@@ -64,6 +63,7 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
   @override
   void initState() {
     getPermission();
+    print('message listener running');
     messageListener(context);
     super.initState();
   }
@@ -115,59 +115,76 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
       print('Message data: ${message.data}');
 
       if (message.notification != null) {
+        print('Chandra 4');
         print(
             'Message also contained a notification: ${message.notification?.body}');
-        AwesomeDialog(
-                context: context,
-                width: MediaQuery.of(context).size.width / 2,
-                animType: AnimType.topSlide,
-                headerAnimationLoop: false,
-                dialogType: DialogType.success,
-                title: message.notification?.title,
-                desc: message.notification?.body,
-                btnOkOnPress: () {
-                  debugPrint('OnClcik');
-                },
-                btnOkIcon: Icons.check_circle,
-                onDismissCallback: (v) {})
-            .show();
-        // showDialog(
-        //     context: context,
-        //     builder: ((BuildContext context) {
-        //       return DynamicDialog(
-        //           title: message.notification?.title,
-        //           body: message.notification?.body);
-        //     }));
+        showDialog(
+            context: context,
+            builder: ((BuildContext context) {
+              return NotificationDialog(
+                  title: (message.notification?.title).toString(),
+                  message: (message.notification?.body).toString());
+            }));
       }
     });
   }
 }
 
 //push notification dialog for foreground
-class DynamicDialog extends StatefulWidget {
-  final title;
-  final body;
+class NotificationDialog extends StatelessWidget {
+  final String title;
+  final String message;
 
-  const DynamicDialog({this.title, this.body});
+  const NotificationDialog(
+      {super.key, required this.title, required this.message});
 
-  @override
-  _DynamicDialogState createState() => _DynamicDialogState();
-}
-
-class _DynamicDialogState extends State<DynamicDialog> {
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(widget.title),
-      actions: <Widget>[
-        OutlinedButton.icon(
-            label: const Text('Close'),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.close))
-      ],
-      content: Text(widget.body),
+    return Dialog(
+      backgroundColor: Theme.of(context).cardColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.notifications,
+              color: Theme.of(context).indicatorColor,
+              size: 48.0,
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              title,
+              style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor),
+            ),
+            const SizedBox(height: 8.0),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 16.0, color: Theme.of(context).primaryColor),
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context)
+                    .indicatorColor, // Change the button color here
+              ),
+              child: Text('Close',
+                  style: TextStyle(color: Theme.of(context).backgroundColor)),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
