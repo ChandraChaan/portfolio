@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
+import 'navigate_newpage.dart';
+
 class Secondpage extends StatefulWidget {
   const Secondpage({Key? key}) : super(key: key);
 
@@ -656,6 +658,7 @@ class _SecondpageState extends State<Secondpage> {
         } else if (name[0] == 'open') {
           if (name.contains('admin')) {
             rText = 'Opening...';
+            Navigator.of(context).push(AdminPageRoot());
           } else {
             rText = "I didn't get";
           }

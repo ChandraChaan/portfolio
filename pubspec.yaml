@@ -43,7 +43,7 @@ dependencies:
   provider: ^6.0.5
   sizer: ^2.0.15
   cached_network_image: ^3.2.3
-#  audioplayers: ^1.0.1
+  audioplayers: ^1.0.1
   flutter_local_notifications:
   firebase_core:
   firebase_messaging:
