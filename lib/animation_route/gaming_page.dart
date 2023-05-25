@@ -653,6 +653,12 @@ class _SecondpageState extends State<Secondpage> {
             circle = false;
             rText = "I didn't get";
           }
+        } else if (name[0] == 'open') {
+          if (name.contains('admin')) {
+            rText = 'Opening...';
+          } else {
+            rText = "I didn't get";
+          }
         } else {
           container = false;
           circle = false;
