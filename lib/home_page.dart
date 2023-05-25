@@ -1316,8 +1316,8 @@ class ColorItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 50.0,
-      height: 50.0,
+      width: 30.0,
+      height: 30.0,
       decoration: BoxDecoration(
         color: color,
         shape: BoxShape.circle,
