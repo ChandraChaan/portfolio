@@ -77,9 +77,25 @@ class _SecondpageState extends State<Secondpage> {
   }
 
   void getBrowserName() {
-    setState(() {
-      browserName = html.window.navigator.userAgent;
-    });
+    String userAgent = html.window.navigator.userAgent;
+
+    if (userAgent.contains('Chrome')) {
+      browserName = 'Chrome';
+    } else if (userAgent.contains('Firefox')) {
+      browserName = 'Firefox';
+    } else if (userAgent.contains('Safari')) {
+      browserName = 'Safari';
+    } else if (userAgent.contains('Opera') || userAgent.contains('OPR')) {
+      browserName = 'Opera';
+    } else if (userAgent.contains('Edge')) {
+      browserName = 'Edge';
+    } else if (userAgent.contains('MSIE') || userAgent.contains('Trident/')) {
+      browserName = 'Internet Explorer';
+    } else {
+      browserName = userAgent;
+    }
+
+    setState(() {});
   }
 
   Map<String, String> getReplayList = {
@@ -924,4 +940,3 @@ class _TypewriterTextAnimationState extends State<TypewriterTextAnimation>
     );
   }
 }
-
