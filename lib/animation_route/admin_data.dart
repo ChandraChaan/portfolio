@@ -20,6 +20,7 @@ class AdminData extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: 7,
+        shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return  UserDataScreen(
             address: '123 Main St',

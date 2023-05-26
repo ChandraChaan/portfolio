@@ -36,6 +36,43 @@ class _HomePageState extends State<HomePage> {
     Provider.of<UserInfo>(context, listen: false).insertToeken(token);
   }
 
+  showDeniedPopUp() {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Permission Disabled'),
+          content: const Text('Notification permission has been disabled'),
+          actions: [
+            TextButton(
+              child: const Text('Ask Again'),
+              onPressed: () async{
+                await Provider.of<UserInfo>(context, listen: false).getPermission();
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Close'),
+              onPressed: () {
+                Navigator.pop(context);
+                // Perform any additional logic or call your provider method to close the application.
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  sendNotificationThis() {
+    if (Provider.of<UserInfo>(context, listen: false).grantedPermission != 1) {
+      showDeniedPopUp();
+    } else {
+      Provider.of<UserInfo>(context, listen: false).sendNotification();
+    }
+  }
+
   ScrollController? _scrollController;
   double? _scrollPosition;
   double? _maxscroll;
@@ -231,7 +268,7 @@ class _HomePageState extends State<HomePage> {
                                     TextButton(
                                         onPressed: provider.nLoading == false
                                             ? () {
-                                                provider.sendNotification();
+                                                sendNotificationThis();
                                               }
                                             : null,
                                         child: provider.nLoading
@@ -841,7 +878,7 @@ class _HomePageState extends State<HomePage> {
                           TextButton(
                               onPressed: provider.nLoading == false
                                   ? () {
-                                      provider.sendNotification();
+                                      sendNotificationThis();
                                     }
                                   : null,
                               child: provider.nLoading

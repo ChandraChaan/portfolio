@@ -243,7 +243,7 @@ class UserInfo extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool grantedPermission = false;
+  int grantedPermission = 0;
   bool nLoading = false;
   String? tokenFirebqse;
 
@@ -266,22 +266,23 @@ class UserInfo extends ChangeNotifier {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      grantedPermission = true;
+      grantedPermission = 1;
     } else {
       // Permission denied
       print('Web push permission denied');
-      grantedPermission = false;
+      grantedPermission = 2;
     }
     notifyListeners();
   }
 
   sendNotification() async {
     nLoading = true;
-    if (grantedPermission) {
+    if (grantedPermission == 1) {
       if (tokenFirebqse == null) {
         print('Unable to send FCM message, no token exists.');
         return;
-      } else {
+      }
+      else {
         try {
           await http
               .post(
@@ -309,11 +310,6 @@ class UserInfo extends ChangeNotifier {
           print(e);
         }
       }
-    }
-    else {
-
-      getPermission();
-      print('Web push permission denied');
     }
     nLoading = false;
   }
