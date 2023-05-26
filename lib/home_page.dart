@@ -33,39 +33,7 @@ class _HomePageState extends State<HomePage> {
 
   void setToken(String? token) {
     print('FCM TokenToken: $token');
-    setState(() {
-      _token = token;
-    });
-  }
-
-  //send notification
-  sendPushMessageToWeb() async {
-    if (_token == null) {
-      print('Unable to send FCM message, no token exists.');
-      return;
-    }
-    try {
-      await http
-          .post(
-            Uri.parse('https://fcm.googleapis.com/fcm/send'),
-            headers: <String, String>{
-              'Content-Type': 'application/json',
-              'Authorization':
-                  'key=AAAAy2Awy5M:APA91bHy0D-kVL7hR5vWL8M_56uxq_gpSPP6H29Ez7Goi7wIgm9Q1wGQSaE-fbVyF8F76vmfo1-gXYHVLh0TLW5wt5cgokJApoG2yCxf8qXXWhug_nY6HUrWzrmNk1QKhIq_Ebdme_d_'
-            },
-            body: json.encode({
-              'to': _token,
-              'message': {
-                'token': _token,
-              },
-              "notification": {"title": "Dumpala", "body": "Chandra ObulReddy"}
-            }),
-          )
-          .then((value) => print(value.body));
-      print('FCM request for web sent!');
-    } catch (e) {
-      print(e);
-    }
+    Provider.of<UserInfo>(context, listen: false).insertToeken(token);
   }
 
   ScrollController? _scrollController;
@@ -261,15 +229,23 @@ class _HomePageState extends State<HomePage> {
                                       ],
                                     ),
                                     TextButton(
-                                        onPressed: () {
-                                          sendPushMessageToWeb();
-                                        },
-                                        child: Text('Notification', style: styl)
-                                            .animate(effects: [
-                                          const ShakeEffect(
-                                              duration: Duration(minutes: 2),
-                                              delay: Duration(seconds: 5))
-                                        ])),
+                                        onPressed: provider.nLoading == false
+                                            ? () {
+                                                provider.sendNotification();
+                                              }
+                                            : null,
+                                        child: provider.nLoading
+                                            ? Text(
+                                                'Loading...',
+                                                style: styl,
+                                              )
+                                            : Text('Notification', style: styl)
+                                                .animate(effects: [
+                                                const ShakeEffect(
+                                                    duration:
+                                                        Duration(minutes: 2),
+                                                    delay: Duration(seconds: 5))
+                                              ])),
                                   ],
                                 );
                               },
@@ -863,17 +839,21 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                           TextButton(
-                              onPressed: () {
-                                sendPushMessageToWeb();
-                              },
-                              child: Text(
-                                'Notification',
-                                style: styl,
-                              ).animate(effects: [
-                                const ShakeEffect(
-                                    duration: Duration(minutes: 2),
-                                    delay: Duration(seconds: 5))
-                              ])),
+                              onPressed: provider.nLoading == false
+                                  ? () {
+                                      provider.sendNotification();
+                                    }
+                                  : null,
+                              child: provider.nLoading
+                                  ? Text('Loading...', style: styl)
+                                  : Text(
+                                      'Notification',
+                                      style: styl,
+                                    ).animate(effects: [
+                                      const ShakeEffect(
+                                          duration: Duration(minutes: 2),
+                                          delay: Duration(seconds: 5))
+                                    ])),
                         ],
                       );
                     },

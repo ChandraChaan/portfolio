@@ -63,7 +63,7 @@ class PushNotificationApp extends StatefulWidget {
 class _PushNotificationAppState extends State<PushNotificationApp> {
   @override
   void initState() {
-    getPermission();
+    Provider.of<UserInfo>(context, listen: false).getPermission();
     print('message listener running');
     messageListener(context);
     super.initState();
@@ -71,6 +71,7 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder(
       // Initialize FlutterFire
       future: Firebase.initializeApp(),
@@ -94,60 +95,12 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
     );
   }
 
-  Future<void> getPermission() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    if (defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.android) {
-      // Request permission for iOS and Android platforms
-      await messaging.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true,
-      );
-    }
-
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      // Request permission for Android web
-      await messaging.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true,
-        // vibrate: true,
-      );
-    }
-
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      // Request permission for iOS web
-      await messaging.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true,
-      );
-    }
-
-    print('Permission granted for push notifications');
-  }
-
   void messageListener(BuildContext context) {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
 
       if (message.notification != null) {
-        print('Chandra 4');
         print(
             'Message also contained a notification: ${message.notification?.body}');
         showDialog(

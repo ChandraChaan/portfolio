@@ -1,5 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class UserInfo extends ChangeNotifier {
   bool musicMode = false;
@@ -31,6 +34,7 @@ class UserInfo extends ChangeNotifier {
     themeLightMode = !themeLightMode;
     notifyListeners();
   }
+
   changeMusicMode() {
     musicMode = !musicMode;
     notifyListeners();
@@ -233,8 +237,84 @@ class UserInfo extends ChangeNotifier {
     imageLoaded = true;
     notifyListeners();
   }
-  themeColorChange(Color cl){
+
+  themeColorChange(Color cl) {
     themeColor = cl;
     notifyListeners();
+  }
+
+  bool grantedPermission = false;
+  bool nLoading = false;
+  String? tokenFirebqse;
+
+  insertToeken(String? tok) {
+    tokenFirebqse = tok;
+    notifyListeners();
+  }
+
+  Future<void> getPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      grantedPermission = true;
+    } else {
+      // Permission denied
+      print('Web push permission denied');
+      grantedPermission = false;
+    }
+    notifyListeners();
+  }
+
+  sendNotification() async {
+    nLoading = true;
+    if (grantedPermission) {
+      if (tokenFirebqse == null) {
+        print('Unable to send FCM message, no token exists.');
+        return;
+      } else {
+        try {
+          await http
+              .post(
+                Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                headers: <String, String>{
+                  'Content-Type': 'application/json',
+                  'Authorization':
+                      'key=AAAAy2Awy5M:APA91bHy0D-kVL7hR5vWL8M_56uxq_gpSPP6H29Ez7Goi7wIgm9Q1wGQSaE-fbVyF8F76vmfo1-gXYHVLh0TLW5wt5cgokJApoG2yCxf8qXXWhug_nY6HUrWzrmNk1QKhIq_Ebdme_d_'
+                },
+                body: json.encode({
+                  'to': tokenFirebqse.toString(),
+                  'message': {
+                    'token': tokenFirebqse.toString(),
+                  },
+                  "notification": {
+                    "title": "Portfolio Showcase",
+                    "body":
+                        "Check out the latest additions to my portfolio! Explore my creative projects and professional work."
+                  }
+                }),
+              )
+              .then((value) => print(value.body));
+          print('FCM request for web sent!');
+        } catch (e) {
+          print(e);
+        }
+      }
+    }
+    else {
+
+      getPermission();
+      print('Web push permission denied');
+    }
+    nLoading = false;
   }
 }
