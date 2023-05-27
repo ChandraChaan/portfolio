@@ -47,8 +47,9 @@ class _HomePageState extends State<HomePage> {
           actions: [
             TextButton(
               child: const Text('Ask Again'),
-              onPressed: () async{
-                await Provider.of<UserInfo>(context, listen: false).getPermission();
+              onPressed: () async {
+                await Provider.of<UserInfo>(context, listen: false)
+                    .getPermission();
                 Navigator.pop(context);
               },
             ),
@@ -202,92 +203,7 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           themeCOlorChange(),
-                          SizedBox(
-                            height: 110,
-                            child: Consumer<UserInfo>(
-                              builder: (context, provider, child) {
-                                return Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        provider.themeLightMode
-                                            ? const Icon(
-                                                Icons.sunny,
-                                                color: Colors.white,
-                                              )
-                                            : const Icon(
-                                                Icons.nightlight,
-                                                color: Colors.black,
-                                              ),
-                                        Transform.scale(
-                                            scale: 1,
-                                            child: Switch(
-                                              onChanged: (bool newVal) {
-                                                provider.changeThemeMode();
-                                              },
-                                              value: provider.themeLightMode,
-                                              activeColor: Colors.white,
-                                              activeTrackColor: Colors.white38,
-                                              inactiveThumbColor: Colors.black,
-                                              inactiveTrackColor:
-                                                  Colors.black38,
-                                            )),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        provider.musicMode
-                                            ? const Icon(
-                                                Icons.add_alert_sharp,
-                                                color: Colors.lightGreenAccent,
-                                              )
-                                            : const Icon(
-                                                Icons.volume_mute_outlined,
-                                                color: Colors.redAccent,
-                                              ),
-                                        Transform.scale(
-                                            scale: 1,
-                                            child: Switch(
-                                              onChanged: (bool newVal) {
-                                                provider.changeMusicMode();
-                                              },
-                                              value: provider.musicMode,
-                                              activeColor: Colors.green,
-                                              activeTrackColor:
-                                                  Colors.greenAccent,
-                                              inactiveThumbColor:
-                                                  Colors.redAccent,
-                                              inactiveTrackColor: Colors.red,
-                                            )),
-                                      ],
-                                    ),
-                                    TextButton(
-                                        onPressed: provider.nLoading == false
-                                            ? () {
-                                                sendNotificationThis();
-                                              }
-                                            : null,
-                                        child: provider.nLoading
-                                            ? Text(
-                                                'Loading...',
-                                                style: styl,
-                                              )
-                                            : Text('Notification', style: styl)
-                                                .animate(effects: [
-                                                const ShakeEffect(
-                                                    duration:
-                                                        Duration(minutes: 2),
-                                                    delay: Duration(seconds: 5))
-                                              ])),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
+
                           // const SizedBox(
                           //   height: 10,
                           // ),
@@ -816,86 +732,87 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 150,
-                  child: Consumer<UserInfo>(
-                    builder: (context, provider, child) {
-                      return Column(
-                        children: [
-                          themeCOlorChange(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              provider.themeLightMode
-                                  ? const Icon(
-                                      Icons.sunny,
-                                      color: Colors.white,
-                                    )
-                                  : const Icon(
-                                      Icons.nightlight,
-                                      color: Colors.black,
-                                    ),
-                              Transform.scale(
-                                  scale: 1,
-                                  child: Switch(
-                                    onChanged: (bool newVal) {
-                                      provider.changeThemeMode();
-                                    },
-                                    value: provider.themeLightMode,
-                                    activeColor: Colors.white,
-                                    activeTrackColor: Colors.white38,
-                                    inactiveThumbColor: Colors.black,
-                                    inactiveTrackColor: Colors.black38,
-                                  )),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              provider.musicMode
-                                  ? const Icon(
-                                      Icons.add_alert_sharp,
-                                      color: Colors.lightGreenAccent,
-                                    )
-                                  : const Icon(
-                                      Icons.volume_mute_outlined,
-                                      color: Colors.redAccent,
-                                    ),
-                              Transform.scale(
-                                  scale: 1,
-                                  child: Switch(
-                                    onChanged: (bool newVal) {
-                                      provider.changeMusicMode();
-                                    },
-                                    value: provider.musicMode,
-                                    activeColor: Colors.green,
-                                    activeTrackColor: Colors.greenAccent,
-                                    inactiveThumbColor: Colors.redAccent,
-                                    inactiveTrackColor: Colors.red,
-                                  )),
-                            ],
-                          ),
-                          TextButton(
-                              onPressed: provider.nLoading == false
-                                  ? () {
-                                      sendNotificationThis();
-                                    }
-                                  : null,
-                              child: provider.nLoading
-                                  ? Text('Loading...', style: styl)
-                                  : Text(
-                                      'Notification',
-                                      style: styl,
-                                    ).animate(effects: [
-                                      const ShakeEffect(
-                                          duration: Duration(minutes: 2),
-                                          delay: Duration(seconds: 5))
-                                    ])),
-                        ],
-                      );
-                    },
-                  ),
-                ),
+                // SizedBox(
+                //   height: 150,
+                //   child: Consumer<UserInfo>(
+                //     builder: (context, provider, child) {
+                //       return Column(
+                //         children: [
+                //           themeCOlorChange(),
+                //           Row(
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               provider.themeLightMode
+                //                   ? const Icon(
+                //                       Icons.sunny,
+                //                       color: Colors.white,
+                //                     )
+                //                   : const Icon(
+                //                       Icons.nightlight,
+                //                       color: Colors.black,
+                //                     ),
+                //               Transform.scale(
+                //                   scale: 1,
+                //                   child: Switch(
+                //                     onChanged: (bool newVal) {
+                //                       provider.changeThemeMode();
+                //                     },
+                //                     value: provider.themeLightMode,
+                //                     activeColor: Colors.white,
+                //                     activeTrackColor: Colors.white38,
+                //                     inactiveThumbColor: Colors.black,
+                //                     inactiveTrackColor: Colors.black38,
+                //                   )),
+                //             ],
+                //           ),
+                //           Row(
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               provider.musicMode
+                //                   ? const Icon(
+                //                       Icons.add_alert_sharp,
+                //                       color: Colors.lightGreenAccent,
+                //                     )
+                //                   : const Icon(
+                //                       Icons.volume_mute_outlined,
+                //                       color: Colors.redAccent,
+                //                     ),
+                //               Transform.scale(
+                //                   scale: 1,
+                //                   child: Switch(
+                //                     onChanged: (bool newVal) {
+                //                       provider.changeMusicMode();
+                //                     },
+                //                     value: provider.musicMode,
+                //                     activeColor: Colors.green,
+                //                     activeTrackColor: Colors.greenAccent,
+                //                     inactiveThumbColor: Colors.redAccent,
+                //                     inactiveTrackColor: Colors.red,
+                //                   )),
+                //             ],
+                //           ),
+                //           TextButton(
+                //               onPressed: provider.nLoading == false
+                //                   ? () {
+                //                       sendNotificationThis();
+                //                     }
+                //                   : null,
+                //               child: provider.nLoading
+                //                   ? Text('Loading...', style: styl)
+                //                   : Text(
+                //                       'Notification',
+                //                       style: styl,
+                //                     ).animate(effects: [
+                //                       const ShakeEffect(
+                //                           duration: Duration(minutes: 2),
+                //                           delay: Duration(seconds: 5))
+                //                     ])),
+                //         ],
+                //       );
+                //     },
+                //   ),
+                // ),
+                themeCOlorChange(),
                 const SizedBox(
                   height: 50,
                 ),
@@ -1024,20 +941,19 @@ class _SettingsPopupState extends State<SettingsPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Theme.of(context).backgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        width: MediaQuery.of(context).size.width / 2,
-        height: MediaQuery.of(context).size.height / 1.5,
-        child: Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Row(
+    return ResponsiveHome(
+      mobile: Dialog(
+        backgroundColor: Theme.of(context).backgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          width: MediaQuery.of(context).size.width / 2,
+          height: MediaQuery.of(context).size.height / 1.5,
+          child: Column(
+            children: [
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -1060,71 +976,239 @@ class _SettingsPopupState extends State<SettingsPopup> {
                   ),
                 ],
               ),
-            ),
-            Divider(
-              color: Theme.of(context).primaryColor,
-            ),
-            Expanded(
-              flex: 7,
-              child: Row(
-                children: [
-                  // Left Side - Sections
-                  SizedBox(
-                    width: 200.0, // Adjust the width as needed
-                    child: ListView(
-                      children: [
-                        SectionItem(
-                          title: 'Theme',
-                          icon: Icons.color_lens,
-                          index: 0,
-                          selectedIndex: _selectedIndex,
-                          onTap: () {
-                            setState(() {
-                              _selectedIndex = 0;
-                            });
-                          },
-                        ),
-                        SectionItem(
-                          title: 'Data Control',
-                          icon: Icons.data_usage,
-                          index: 1,
-                          selectedIndex: _selectedIndex,
-                          onTap: () {
-                            setState(() {
-                              _selectedIndex = 1;
-                            });
-                          },
-                        ),
-                        SectionItem(
-                          title: 'General Settings',
-                          icon: Icons.settings,
-                          index: 2,
-                          selectedIndex: _selectedIndex,
-                          onTap: () {
-                            setState(() {
-                              _selectedIndex = 2;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 16.0),
-                  // Right Side - Content
-                  Expanded(
-                    child: IndexedStack(
-                      index: _selectedIndex,
-                      children: [
-                        ThemeSection(),
-                        DataControlSection(),
-                        GeneralSettingsSection(),
-                      ],
-                    ),
-                  ),
-                ],
+              Divider(
+                color: Theme.of(context).primaryColor,
               ),
-            ),
-          ],
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ThemeSection(),
+                      const SizedBox(height: 20,),
+                      Divider(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      DataControlSection(),
+                      const SizedBox(height: 20,),
+
+                      Divider(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      GeneralSettingsSection(),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      tablet: Dialog(
+        backgroundColor: Theme.of(context).backgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          width: MediaQuery.of(context).size.width / 1.5,
+          height: MediaQuery.of(context).size.height / 1.5,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Settings',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(
+                        Icons.close,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                color: Theme.of(context).primaryColor,
+              ),
+              Expanded(
+                flex: 7,
+                child: Row(
+                  children: [
+                    // Left Side - Sections
+                    SizedBox(
+                      width: 200.0, // Adjust the width as needed
+                      child: ListView(
+                        children: [
+                          SectionItem(
+                            title: 'Theme',
+                            icon: Icons.color_lens,
+                            index: 0,
+                            selectedIndex: _selectedIndex,
+                            onTap: () {
+                              setState(() {
+                                _selectedIndex = 0;
+                              });
+                            },
+                          ),
+                          SectionItem(
+                            title: 'Data Control',
+                            icon: Icons.data_usage,
+                            index: 1,
+                            selectedIndex: _selectedIndex,
+                            onTap: () {
+                              setState(() {
+                                _selectedIndex = 1;
+                              });
+                            },
+                          ),
+                          SectionItem(
+                            title: 'General Settings',
+                            icon: Icons.settings,
+                            index: 2,
+                            selectedIndex: _selectedIndex,
+                            onTap: () {
+                              setState(() {
+                                _selectedIndex = 2;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 16.0),
+                    // Right Side - Content
+                    Expanded(
+                      child: IndexedStack(
+                        index: _selectedIndex,
+                        children: [
+                          ThemeSection(),
+                          DataControlSection(),
+                          GeneralSettingsSection(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      desktop: Dialog(
+        backgroundColor: Theme.of(context).backgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          width: MediaQuery.of(context).size.width / 1.7,
+          height: MediaQuery.of(context).size.height / 1.5,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Settings',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(
+                        Icons.close,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                color: Theme.of(context).primaryColor,
+              ),
+              Expanded(
+                flex: 7,
+                child: Row(
+                  children: [
+                    // Left Side - Sections
+                    SizedBox(
+                      width: 200.0, // Adjust the width as needed
+                      child: ListView(
+                        children: [
+                          SectionItem(
+                            title: 'Theme',
+                            icon: Icons.color_lens,
+                            index: 0,
+                            selectedIndex: _selectedIndex,
+                            onTap: () {
+                              setState(() {
+                                _selectedIndex = 0;
+                              });
+                            },
+                          ),
+                          SectionItem(
+                            title: 'Data Control',
+                            icon: Icons.data_usage,
+                            index: 1,
+                            selectedIndex: _selectedIndex,
+                            onTap: () {
+                              setState(() {
+                                _selectedIndex = 1;
+                              });
+                            },
+                          ),
+                          SectionItem(
+                            title: 'General Settings',
+                            icon: Icons.settings,
+                            index: 2,
+                            selectedIndex: _selectedIndex,
+                            onTap: () {
+                              setState(() {
+                                _selectedIndex = 2;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 16.0),
+                    // Right Side - Content
+                    Expanded(
+                      child: IndexedStack(
+                        index: _selectedIndex,
+                        children: [
+                          ThemeSection(),
+                          DataControlSection(),
+                          GeneralSettingsSection(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1205,7 +1289,6 @@ class ThemeSection extends StatelessWidget {
     Colors.redAccent,
     Colors.orangeAccent,
     Colors.brown,
-    Colors.grey,
   ];
 
   @override
@@ -1285,8 +1368,13 @@ class DataControlSection extends StatelessWidget {
 }
 
 class GeneralSettingsSection extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    TextStyle styl = TextStyle(
+        color: Theme.of(context).primaryColor,
+        fontSize: 20,
+        fontWeight: FontWeight.w500);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1299,23 +1387,93 @@ class GeneralSettingsSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16.0),
-        Text(
-          'General settings',
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
-        const SizedBox(height: 16.0),
-        Text(
-          'Setting 1',
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
-        Text(
-          'Setting 2',
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
+        SizedBox(
+          height: 110,
+          child: Consumer<UserInfo>(
+            builder: (context, provider, child) {
+              return Column(
+                children: [
+                  Container(
+                    color:Theme.of(context).indicatorColor,
+                    child: Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: [
+                        provider.themeLightMode
+                            ? const Icon(
+                          Icons.sunny,
+                          color: Colors.white,
+                        )
+                            : const Icon(
+                          Icons.nightlight,
+                          color: Colors.black,
+                        ),
+                        Transform.scale(
+                            scale: 1,
+                            child: Switch(
+                              onChanged: (bool newVal) {
+                                provider.changeThemeMode();
+                              },
+                              value: provider.themeLightMode,
+                              activeColor: Colors.white,
+                              activeTrackColor: Colors.white38,
+                              inactiveThumbColor: Colors.black,
+                              inactiveTrackColor:
+                              Colors.black38,
+                            )),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment.center,
+                    children: [
+                      provider.musicMode
+                          ? const Icon(
+                        Icons.add_alert_sharp,
+                        color: Colors.lightGreenAccent,
+                      )
+                          : const Icon(
+                        Icons.volume_mute_outlined,
+                        color: Colors.redAccent,
+                      ),
+                      Transform.scale(
+                          scale: 1,
+                          child: Switch(
+                            onChanged: (bool newVal) {
+                              provider.changeMusicMode();
+                            },
+                            value: provider.musicMode,
+                            activeColor: Colors.green,
+                            activeTrackColor:
+                            Colors.greenAccent,
+                            inactiveThumbColor:
+                            Colors.redAccent,
+                            inactiveTrackColor: Colors.red,
+                          )),
+                    ],
+                  ),
+                  TextButton(
+                      onPressed: provider.nLoading == false
+                          ? () {
+                        // sendNotificationThis();
+                      }
+                          : null,
+                      child: provider.nLoading
+                          ? Text(
+                        'Loading...',
+                        style: styl,
+                      )
+                          : Text('Notification', style: styl)
+                          .animate(effects: [
+                        const ShakeEffect(
+                            duration:
+                            Duration(minutes: 2),
+                            delay: Duration(seconds: 5))
+                      ])),
+                ],
+              );
+            },
           ),
         ),
         // Add more general settings here
