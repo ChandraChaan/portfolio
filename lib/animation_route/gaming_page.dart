@@ -706,56 +706,67 @@ class _SecondpageState extends State<Secondpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(110.0),
+        preferredSize: const Size.fromHeight(130.0),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Row(
-              children: [
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.black,
-                    size: 35.0,
-                  ),
-                ),
-                const SizedBox(
-                  width: 18.0,
-                ),
-                SelectableText(
-                    'Welcome to Time Pass Game${(address.isNotEmpty) ? '\nAddress: $address' : ''}, ${(systemName.isNotEmpty) ? '\nSystem name: $systemName' : ''}, ${(browserName.isNotEmpty) ? '\nBrowser name: $browserName' : ''},'),
-                const SizedBox(
-                  width: 18.0,
-                ),
-                Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Center(
+                child: Row(
                   children: [
-                    const Icon(
-                      Icons.battery_full,
-                      color: Colors.green,
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.black,
+                        size: 35.0,
+                      ),
                     ),
-                    const SizedBox(width: 5),
-                    Text('$_chargingStatus%'),
+                    const SizedBox(
+                      width: 18.0,
+                    ),
+                    SelectableText(
+                        'Welcome to Time Pass Game ${(systemName.isNotEmpty) ? '\nSystem name: $systemName' : ''}, ${(browserName.isNotEmpty) ? '\nBrowser name: $browserName' : ''},'),
+
+                    const SizedBox(
+                      width: 18.0,
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.battery_full,
+                          color: Colors.green,
+                        ),
+                        const SizedBox(width: 5),
+                        Text('$_chargingStatus%'),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 18.0,
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.wifi,
+                          color: Colors.blue,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(_wifiNetworkType),
+                      ],
+                    )
                   ],
                 ),
-                const SizedBox(
-                  width: 18.0,
-                ),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.wifi,
-                      color: Colors.blue,
-                    ),
-                    const SizedBox(width: 5),
-                    Text(_wifiNetworkType),
-                  ],
-                )
-              ],
-            ),
+              ),
+              SelectableText(
+                '${(address.isNotEmpty) ? '\nAddress: $address' : ''}',
+                style: const TextStyle(overflow: TextOverflow.ellipsis),
+              ),
+            ],
           ),
         ),
       ),
