@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -92,6 +92,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    print('hellooooo                                                                                                         ');
     super.initState();
     //get token
     FirebaseMessaging.instance.getToken().then(setToken);
@@ -923,9 +924,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   srollSmooth(BuildContext context) {
-    if (Provider.of<UserInfo>(context, listen: false).musicMode) {
-      AudioPlayer().play(AssetSource('audio/decide.mp3'));
-    }
+    // if (Provider.of<UserInfo>(context, listen: false).musicMode) {
+    //   AudioPlayer().play(AssetSource('audio/decide.mp3'));
+    // }
     Scrollable.ensureVisible(context,
         duration: const Duration(seconds: 1), curve: Curves.easeIn);
   }
