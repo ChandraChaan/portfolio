@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    print('hellooooo                                                                                                         ');
+
     super.initState();
     //get token
     FirebaseMessaging.instance.getToken().then(setToken);

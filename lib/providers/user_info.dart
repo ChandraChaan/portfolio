@@ -3,6 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:html' as html;
+import 'package:geolocator/geolocator.dart';
+import 'package:battery_plus/battery_plus.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class UserInfo extends ChangeNotifier {
   bool musicMode = false;
@@ -281,8 +285,7 @@ class UserInfo extends ChangeNotifier {
       if (tokenFirebqse == null) {
         print('Unable to send FCM message, no token exists.');
         return;
-      }
-      else {
+      } else {
         try {
           await http
               .post(
@@ -312,5 +315,144 @@ class UserInfo extends ChangeNotifier {
       }
     }
     nLoading = false;
+  }
+
+  String address = '';
+  double latitude = 0.0;
+  double longitude = 0.0;
+  String systemName = '';
+  String browserName = '';
+
+  Future<void> getUserLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    latitude = position.latitude;
+    longitude = position.longitude;
+
+    final addressloc = await getAddress(latitude, longitude);
+
+    address = addressloc;
+  }
+
+  Future<String> getAddress(double latitude, double longitude) async {
+    final url =
+        'https://nominatim.openstreetmap.org/reverse?format=json&lat=$latitude&lon=$longitude';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body);
+
+      final address = decodedData['display_name'];
+      return address;
+    }
+
+    return 'Address not found';
+  }
+
+  getSystemName() {
+    systemName = html.window.navigator.platform!;
+  }
+
+  getBrowserName() {
+    String userAgent = html.window.navigator.userAgent;
+
+    if (userAgent.contains('Chrome')) {
+      browserName = 'Chrome';
+    } else if (userAgent.contains('Firefox')) {
+      browserName = 'Firefox';
+    } else if (userAgent.contains('Safari')) {
+      browserName = 'Safari';
+    } else if (userAgent.contains('Opera') || userAgent.contains('OPR')) {
+      browserName = 'Opera';
+    } else if (userAgent.contains('Edge')) {
+      browserName = 'Edge';
+    } else if (userAgent.contains('MSIE') || userAgent.contains('Trident/')) {
+      browserName = 'Internet Explorer';
+    } else {
+      browserName = userAgent;
+    }
+  }
+
+  final Battery _battery = Battery();
+  final Connectivity _connectivity = Connectivity();
+
+  String chargingStatus = 'Unknown';
+  String wifiNetworkTypeLoc = 'Unknown';
+
+  Future<void> getBatteryLevel() async {
+    final battery = Battery();
+    final batteryLevel = await battery.batteryLevel;
+
+    chargingStatus = '$batteryLevel';
+  }
+
+  Future<void> getWifiNetworkType() async {
+    final connectivityResult = await _connectivity.checkConnectivity();
+    if (connectivityResult == ConnectivityResult.wifi) {
+      const wifiNetworkType = 'Connected';
+
+      wifiNetworkTypeLoc = wifiNetworkType;
+    } else {
+      const wifiNetworkType = 'Not connected';
+
+      wifiNetworkTypeLoc = wifiNetworkType;
+    }
+  }
+
+  // api call
+
+  Future<void> postData() async {
+    print('post api calling step 1');
+    const apiUrl = 'https://chandrachaan.in/randac/item/role_app_users';
+    print('$apiUrl');
+    final requestBody = {
+      'system_name': systemName,
+      'browser_name': browserName,
+      'token_fcm': '$tokenFirebqse'.toString(),
+      'address': address,
+      'battery': chargingStatus,
+      'wifi': wifiNetworkTypeLoc,
+      'sound': '$musicMode'.toString(),
+      'dark_theme': '${!themeLightMode}'.toString(),
+      'color_theme': '$themeColor'.toString(),
+      'seen_chat_screen': '',
+      'seen_full_resume': '',
+    };
+    print('$requestBody');
+    try {
+      print('post api step 2');
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestBody),
+      );
+      print('post api step 3');
+      if (response.statusCode == 200) {
+        // Request successful
+        print('API response: ${response.body}');
+      } else {
+        // Request failed
+        print('Error - Response Code: ${response.statusCode}');
+      }
+      print('post api step 4');
+    } catch (e) {
+      // Exception occurred during API call
+      print('post api error');
+      print('Exception: $e');
+    }
+  }
+
+  initFun() async {
+    await getPermission();
+    await getUserLocation();
+    await getSystemName();
+    await getBrowserName();
+    await getBatteryLevel();
+    await getWifiNetworkType();
+    postData();
   }
 }

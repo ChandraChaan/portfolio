@@ -63,7 +63,7 @@ class PushNotificationApp extends StatefulWidget {
 class _PushNotificationAppState extends State<PushNotificationApp> {
   @override
   void initState() {
-    Provider.of<UserInfo>(context, listen: false).getPermission();
+    Provider.of<UserInfo>(context, listen: false).initFun();
     print('message listener running');
     messageListener(context);
     super.initState();
