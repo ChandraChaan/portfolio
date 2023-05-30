@@ -1,10 +1,12 @@
 import 'dart:convert';
+
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:portfoli_web/ui/responsive_ui.dart';
 import 'package:portfoli_web/utils/font_style.dart';
@@ -92,7 +94,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-
     super.initState();
     //get token
     FirebaseMessaging.instance.getToken().then(setToken);
@@ -985,13 +986,16 @@ class _SettingsPopupState extends State<SettingsPopup> {
                   child: Column(
                     children: [
                       ThemeSection(),
-                      const SizedBox(height: 20,),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Divider(
                         color: Theme.of(context).primaryColor,
                       ),
                       DataControlSection(),
-                      const SizedBox(height: 20,),
-
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Divider(
                         color: Theme.of(context).primaryColor,
                       ),
@@ -1350,18 +1354,12 @@ class DataControlSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16.0),
-        Text(
-          'Setting 1',
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
-        Text(
-          'Setting 2',
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
+        ElevatedButton(
+          onPressed: () async {
+            DefaultCacheManager().emptyCache();
+          },
+          child: const Text('Clear Cache'),
+        )
         // Add more data control settings here
       ],
     );
@@ -1369,7 +1367,6 @@ class DataControlSection extends StatelessWidget {
 }
 
 class GeneralSettingsSection extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     TextStyle styl = TextStyle(
@@ -1395,20 +1392,19 @@ class GeneralSettingsSection extends StatelessWidget {
               return Column(
                 children: [
                   Container(
-                    color:Theme.of(context).indicatorColor,
+                    color: Theme.of(context).indicatorColor,
                     child: Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         provider.themeLightMode
                             ? const Icon(
-                          Icons.sunny,
-                          color: Colors.white,
-                        )
+                                Icons.sunny,
+                                color: Colors.white,
+                              )
                             : const Icon(
-                          Icons.nightlight,
-                          color: Colors.black,
-                        ),
+                                Icons.nightlight,
+                                color: Colors.black,
+                              ),
                         Transform.scale(
                             scale: 1,
                             child: Switch(
@@ -1419,25 +1415,23 @@ class GeneralSettingsSection extends StatelessWidget {
                               activeColor: Colors.white,
                               activeTrackColor: Colors.white38,
                               inactiveThumbColor: Colors.black,
-                              inactiveTrackColor:
-                              Colors.black38,
+                              inactiveTrackColor: Colors.black38,
                             )),
                       ],
                     ),
                   ),
                   Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       provider.musicMode
                           ? const Icon(
-                        Icons.add_alert_sharp,
-                        color: Colors.lightGreenAccent,
-                      )
+                              Icons.add_alert_sharp,
+                              color: Colors.lightGreenAccent,
+                            )
                           : const Icon(
-                        Icons.volume_mute_outlined,
-                        color: Colors.redAccent,
-                      ),
+                              Icons.volume_mute_outlined,
+                              color: Colors.redAccent,
+                            ),
                       Transform.scale(
                           scale: 1,
                           child: Switch(
@@ -1446,10 +1440,8 @@ class GeneralSettingsSection extends StatelessWidget {
                             },
                             value: provider.musicMode,
                             activeColor: Colors.green,
-                            activeTrackColor:
-                            Colors.greenAccent,
-                            inactiveThumbColor:
-                            Colors.redAccent,
+                            activeTrackColor: Colors.greenAccent,
+                            inactiveThumbColor: Colors.redAccent,
                             inactiveTrackColor: Colors.red,
                           )),
                     ],
@@ -1457,21 +1449,19 @@ class GeneralSettingsSection extends StatelessWidget {
                   TextButton(
                       onPressed: provider.nLoading == false
                           ? () {
-                        // sendNotificationThis();
-                      }
+                              // sendNotificationThis();
+                            }
                           : null,
                       child: provider.nLoading
                           ? Text(
-                        'Loading...',
-                        style: styl,
-                      )
-                          : Text('Notification', style: styl)
-                          .animate(effects: [
-                        const ShakeEffect(
-                            duration:
-                            Duration(minutes: 2),
-                            delay: Duration(seconds: 5))
-                      ])),
+                              'Loading...',
+                              style: styl,
+                            )
+                          : Text('Notification', style: styl).animate(effects: [
+                              const ShakeEffect(
+                                  duration: Duration(minutes: 2),
+                                  delay: Duration(seconds: 5))
+                            ])),
                 ],
               );
             },

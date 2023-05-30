@@ -55,6 +55,8 @@ dependencies:
   battery_plus: ^2.0.2
   connectivity_plus: ^2.0.2
   visibility_detector: ^0.2.0
+  flutter_cache_manager: ^3.3.0
+  intl: ^0.18.1
 
 
 

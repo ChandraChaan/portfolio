@@ -11,6 +11,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class UserInfo extends ChangeNotifier {
   bool musicMode = false;
   Color themeColor = Colors.blue;
+  int deviceId = -1;
   bool themeLightMode =
       (DateTime.now().hour > 6 && DateTime.now().hour < 18) ? true : false;
   String user = 'Chandra Obul Reddy';
@@ -36,11 +37,13 @@ class UserInfo extends ChangeNotifier {
 
   changeThemeMode() {
     themeLightMode = !themeLightMode;
+    updateData();
     notifyListeners();
   }
 
   changeMusicMode() {
     musicMode = !musicMode;
+    updateData();
     notifyListeners();
   }
 
@@ -244,6 +247,7 @@ class UserInfo extends ChangeNotifier {
 
   themeColorChange(Color cl) {
     themeColor = cl;
+    updateData();
     notifyListeners();
   }
 
@@ -279,7 +283,7 @@ class UserInfo extends ChangeNotifier {
     notifyListeners();
   }
 
-  sendNotification() async {
+  sendNotification({String? title, String? dec}) async {
     nLoading = true;
     if (grantedPermission == 1) {
       if (tokenFirebqse == null) {
@@ -301,9 +305,9 @@ class UserInfo extends ChangeNotifier {
                     'token': tokenFirebqse.toString(),
                   },
                   "notification": {
-                    "title": "Portfolio Showcase",
+                    "title": title ?? "Portfolio Showcase",
                     "body":
-                        "Check out the latest additions to my portfolio! Explore my creative projects and professional work."
+                        dec ?? "Check out the latest additions to my portfolio! Explore my creative projects and professional work."
                   }
                 }),
               )
@@ -403,6 +407,18 @@ class UserInfo extends ChangeNotifier {
 
   // api call
 
+  Color getColorFromColorRepresentation(String colorRepresentation) {
+    // Remove unnecessary parts from the string
+    String colorValueString =
+        colorRepresentation.replaceAll(RegExp(r'[^0-9a-fA-F]'), '');
+
+    // Convert the color value string to an integer
+    int colorValue = int.parse(colorValueString, radix: 16);
+
+    // Create and return the Color object
+    return Color(colorValue);
+  }
+
   Future<void> postData() async {
     print('post api calling step 1');
     const apiUrl = 'https://chandrachaan.in/randac/item/role_app_users';
@@ -432,7 +448,57 @@ class UserInfo extends ChangeNotifier {
       );
       print('post api step 3');
       if (response.statusCode == 200) {
-        // Request successful
+        Map<String, dynamic> jsonData = json.decode(response.body);
+        Map<String, dynamic> apiResponse = jsonData['data'];
+        Color tcolor =
+            getColorFromColorRepresentation(apiResponse['color_theme']);
+        deviceId = apiResponse['id'];
+        musicMode = apiResponse['sound'].toString() == '0' ? false : true;
+        themeLightMode =
+            apiResponse['dark_theme'].toString() == '0' ? true : false;
+        themeColor = tcolor;
+      } else {
+        // Request failed
+        print('Error - Response Code: ${response.statusCode}');
+      }
+      print('post api step 4');
+    } catch (e) {
+      // Exception occurred during API call
+      print('post api error');
+      print('Exception: $e');
+    }
+  }
+
+  Future<void> updateData() async {
+    print('post api calling step 1');
+    const apiUrl = 'https://chandrachaan.in/randac/item/role_app_users';
+    print('$apiUrl');
+    final requestBody = {
+      'id': deviceId,
+      'system_name': systemName,
+      'browser_name': browserName,
+      'token_fcm': '$tokenFirebqse'.toString(),
+      'address': address,
+      'battery': chargingStatus,
+      'wifi': wifiNetworkTypeLoc,
+      'sound': '$musicMode'.toString(),
+      'dark_theme': '${!themeLightMode}'.toString(),
+      'color_theme': '$themeColor'.toString(),
+      'seen_chat_screen': '',
+      'seen_full_resume': '',
+    };
+    print('$requestBody');
+    try {
+      print('post api step 2');
+      final response = await http.put(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestBody),
+      );
+      print('post api step 3');
+      if (response.statusCode == 200) {
         print('API response: ${response.body}');
       } else {
         // Request failed
