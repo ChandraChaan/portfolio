@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../providers/user_info.dart';
 
@@ -305,6 +306,48 @@ class SendNotificationPopup extends StatelessWidget {
           child: const Text('Cancel'),
         ),
       ],
+    );
+  }
+}
+
+
+class VisitorScreen extends StatefulWidget {
+  @override
+  _VisitorScreenState createState() => _VisitorScreenState();
+}
+
+class _VisitorScreenState extends State<VisitorScreen> {
+  CollectionReference visitorsCollection =
+  FirebaseFirestore.instance.collection('visiters');
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Visitor Data'),
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: visitorsCollection.snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          }
+
+          return ListView(
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+              return ListTile(
+                title: Text(data['name']),
+                subtitle: Text(data['age'].toString()),
+              );
+            }).toList(),
+          );
+        },
+      ),
     );
   }
 }

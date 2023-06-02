@@ -35,7 +35,7 @@ class AdminPageRoot extends CupertinoPageRoute {
           scale: animation,
           child: FadeTransition(
             opacity: animation,
-            child: AdminData(),
+            child: VisitorScreen(),
           ),
         ));
   }

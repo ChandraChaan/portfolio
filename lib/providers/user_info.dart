@@ -238,7 +238,6 @@ class UserInfo extends ChangeNotifier {
 
   imageFilter(String typ) {
     imageLoaded = false;
-    print('add filter to $typ');
     imageFilterString = typ;
     pImages = pImages.where((o) => o['type'] == typ).toList();
     imageLoaded = true;
@@ -277,7 +276,6 @@ class UserInfo extends ChangeNotifier {
       grantedPermission = 1;
     } else {
       // Permission denied
-      print('Web push permission denied');
       grantedPermission = 2;
     }
     notifyListeners();
@@ -287,7 +285,6 @@ class UserInfo extends ChangeNotifier {
     nLoading = true;
     if (grantedPermission == 1) {
       if (tokenFirebqse == null) {
-        print('Unable to send FCM message, no token exists.');
         return;
       } else {
         try {
@@ -306,15 +303,13 @@ class UserInfo extends ChangeNotifier {
                   },
                   "notification": {
                     "title": title ?? "Portfolio Showcase",
-                    "body":
-                        dec ?? "Check out the latest additions to my portfolio! Explore my creative projects and professional work."
+                    "body": dec ??
+                        "Check out the latest additions to my portfolio! Explore my creative projects and professional work."
                   }
                 }),
               )
               .then((value) => print(value.body));
-          print('FCM request for web sent!');
         } catch (e) {
-          print(e);
         }
       }
     }
@@ -420,9 +415,7 @@ class UserInfo extends ChangeNotifier {
   }
 
   Future<void> postData() async {
-    print('post api calling step 1');
     const apiUrl = 'https://chandrachaan.in/randac/item/role_app_users';
-    print('$apiUrl');
     final requestBody = {
       'system_name': systemName,
       'browser_name': browserName,
@@ -436,9 +429,7 @@ class UserInfo extends ChangeNotifier {
       'seen_chat_screen': '',
       'seen_full_resume': '',
     };
-    print('$requestBody');
     try {
-      print('post api step 2');
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {
@@ -446,7 +437,6 @@ class UserInfo extends ChangeNotifier {
         },
         body: jsonEncode(requestBody),
       );
-      print('post api step 3');
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(response.body);
         Map<String, dynamic> apiResponse = jsonData['data'];
@@ -459,20 +449,15 @@ class UserInfo extends ChangeNotifier {
         themeColor = tcolor;
       } else {
         // Request failed
-        print('Error - Response Code: ${response.statusCode}');
       }
-      print('post api step 4');
     } catch (e) {
       // Exception occurred during API call
-      print('post api error');
-      print('Exception: $e');
     }
+    notifyListeners();
   }
 
   Future<void> updateData() async {
-    print('post api calling step 1');
     const apiUrl = 'https://chandrachaan.in/randac/item/role_app_users';
-    print('$apiUrl');
     final requestBody = {
       'id': deviceId,
       'system_name': systemName,
@@ -487,9 +472,7 @@ class UserInfo extends ChangeNotifier {
       'seen_chat_screen': '',
       'seen_full_resume': '',
     };
-    print('$requestBody');
     try {
-      print('post api step 2');
       final response = await http.put(
         Uri.parse(apiUrl),
         headers: {
@@ -497,19 +480,14 @@ class UserInfo extends ChangeNotifier {
         },
         body: jsonEncode(requestBody),
       );
-      print('post api step 3');
       if (response.statusCode == 200) {
-        print('API response: ${response.body}');
       } else {
         // Request failed
-        print('Error - Response Code: ${response.statusCode}');
       }
-      print('post api step 4');
     } catch (e) {
       // Exception occurred during API call
-      print('post api error');
-      print('Exception: $e');
     }
+    notifyListeners();
   }
 
   initFun() async {
