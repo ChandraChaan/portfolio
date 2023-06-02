@@ -24,70 +24,6 @@ class _AdminDataState extends State<AdminData> {
   }
 
   Future<void> callAPI() async {
-    usersData.addAll([
-      {
-        "id": "5",
-        "system_name": "MacIntel",
-        "browser_name": "Chrome",
-        "token_fcm":
-            "eBUtJvL8OzdtxWbKsBQz0y:APA91bFuIxxQvIH-n814Q9IHp3nvRkpe8lrRQKECNjFgOOPjesXIik98kF6p3UJ5TuY3F6mz_nOpZu_1FDE3OL3fXtJqEVlUKkA_8v1yaOaPXDmXY_cs7G-ajUL2Byh2fr_2FQMZmC0A",
-        "address": "Kadapa, YSR, Andhra Pradesh, 516001, India",
-        "battery": "94",
-        "wifi": "Connected",
-        "sound": "0",
-        "dark_theme": "0",
-        "color_theme": "ColorSwatch(primary value: Color(0xff2196f3))",
-        "seen_chat_screen": "0",
-        "seen_full_resume": "0",
-        "date": "2023-05-29 21:15:37"
-      },
-      {
-        "id": "3",
-        "system_name": "MacIntel",
-        "browser_name": "Chrome",
-        "token_fcm": "null",
-        "address": "Kadapa, YSR, Andhra Pradesh, 516001, India",
-        "battery": "84",
-        "wifi": "Connected",
-        "sound": "0",
-        "dark_theme": "0",
-        "color_theme": "ColorSwatch(primary value: Color(0xff2196f3))",
-        "seen_chat_screen": "0",
-        "seen_full_resume": "0",
-        "date": "2023-05-29 20:56:19"
-      },
-      {
-        "id": "2",
-        "system_name": "MacIntel",
-        "browser_name": "Chrome",
-        "token_fcm": "null",
-        "address": "Kadapa, YSR, Andhra Pradesh, 516001, India",
-        "battery": "84",
-        "wifi": "Connected",
-        "sound": "0",
-        "dark_theme": "0",
-        "color_theme": "ColorSwatch(primary value: Color(0xff2196f3))",
-        "seen_chat_screen": "0",
-        "seen_full_resume": "0",
-        "date": "2023-05-29 20:56:19"
-      },
-      {
-        "id": "1",
-        "system_name": "MacIntel",
-        "browser_name": "Chrome",
-        "token_fcm":
-            "fNrucpJLnXOaFV-2KeiIjq:APA91bHHU-laZjizGWoph3hEGnzL1fu5EFbUCKpHaR4EU1GgveAYPpdW3-ZW_4YgUY8KCFmk929kLxNQH2hzJD7k0ecuH23TfUnpjWy-uwmIFqJlZa51AjX-Z50RiuuTjh7c7-P7SCN4",
-        "address": "???, YSR, Andhra Pradesh, 516001, India",
-        "battery": "82",
-        "wifi": "Connected",
-        "sound": "0",
-        "dark_theme": "0",
-        "color_theme": "ColorSwatch(primary value: Color(0xff2196f3))",
-        "seen_chat_screen": "0",
-        "seen_full_resume": "0",
-        "date": "2023-05-29 20:53:13"
-      }
-    ]);
     final response = await http
         .get(Uri.parse('https://chandrachaan.in/randac/item/role_app_users'));
 
@@ -114,45 +50,85 @@ class _AdminDataState extends State<AdminData> {
       },
     );
   }
-
+  CollectionReference visitorsCollection =
+  FirebaseFirestore.instance.collection('visiters');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('User Data'),
       ),
-      body: usersData.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.separated(
-              itemCount: usersData.length,
-              itemBuilder: (BuildContext context, int index) {
-                String themeColor = usersData[index]['darkTheme'] ?? '';
-                Color themeCol = getColorFromColorRepresentation(themeColor);
-                String formattedDate = formatDate(usersData[index]['date']);
+      body:StreamBuilder<QuerySnapshot>(
+        stream: visitorsCollection.snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
 
-                return UserDataScreen(
-                  address: usersData[index]['address'] ?? '',
-                  systemName: usersData[index]['system_name'] ?? '',
-                  date: formattedDate,
-                  browserName: usersData[index]['browser_name'] ?? '',
-                  id: usersData[index]['id'] ?? '',
-                  tokenFcm: usersData[index]['tokenFcm'] ?? '',
-                  battery: usersData[index]['battery'] ?? '',
-                  wifi: usersData[index]['wifi'] ?? '',
-                  sound: usersData[index]['sound'] ?? '',
-                  darkTheme: usersData[index]['darkTheme'] ?? '',
-                  colorTheme: themeCol,
-                  seenChatScreen: usersData[index]['seenChatScreen'] ?? '',
-                  seenFullResume: usersData[index]['seenFullResume'] ?? '',
-                  onPre: () {
-                    showNotificationPopup(context);
-                  },
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return const Divider();
-              },
-            ),
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          }
+
+          return ListView(
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+              String themeColor = data['darkTheme'] ?? '';
+              Color themeCol = getColorFromColorRepresentation(themeColor);
+              String formattedDate = formatDate(data['date']);
+              return UserDataScreen(
+                address: data['address'] ?? '',
+                systemName: data['system_name'] ?? '',
+                date: formattedDate,
+                browserName: data['browser_name'] ?? '',
+                id: data['id'] ?? '',
+                tokenFcm: data['tokenFcm'] ?? '',
+                battery: data['battery'] ?? '',
+                wifi: data['wifi'] ?? '',
+                sound: data['sound'] ?? '',
+                darkTheme: data['darkTheme'] ?? '',
+                colorTheme: themeCol,
+                seenChatScreen: data['seenChatScreen'] ?? '',
+                seenFullResume: data['seenFullResume'] ?? '',
+                onPre: () {
+                  showNotificationPopup(context);
+                },
+              );
+            }).toList(),
+          );
+        },
+      ),
+      // body: usersData.isEmpty
+      //     ? const Center(child: CircularProgressIndicator())
+      //     : ListView.separated(
+      //         itemCount: usersData.length,
+      //         itemBuilder: (BuildContext context, int index) {
+      //           String themeColor = usersData[index]['darkTheme'] ?? '';
+      //           Color themeCol = getColorFromColorRepresentation(themeColor);
+      //           String formattedDate = formatDate(usersData[index]['date']);
+      //
+      //           return UserDataScreen(
+      //             address: usersData[index]['address'] ?? '',
+      //             systemName: usersData[index]['system_name'] ?? '',
+      //             date: formattedDate,
+      //             browserName: usersData[index]['browser_name'] ?? '',
+      //             id: usersData[index]['id'] ?? '',
+      //             tokenFcm: usersData[index]['tokenFcm'] ?? '',
+      //             battery: usersData[index]['battery'] ?? '',
+      //             wifi: usersData[index]['wifi'] ?? '',
+      //             sound: usersData[index]['sound'] ?? '',
+      //             darkTheme: usersData[index]['darkTheme'] ?? '',
+      //             colorTheme: themeCol,
+      //             seenChatScreen: usersData[index]['seenChatScreen'] ?? '',
+      //             seenFullResume: usersData[index]['seenFullResume'] ?? '',
+      //             onPre: () {
+      //               showNotificationPopup(context);
+      //             },
+      //           );
+      //         },
+      //         separatorBuilder: (BuildContext context, int index) {
+      //           return const Divider();
+      //         },
+      //       ),
     );
   }
 
