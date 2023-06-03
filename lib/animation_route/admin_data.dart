@@ -42,11 +42,11 @@ class _AdminDataState extends State<AdminData> {
   //   }
   // }
 
-  void showNotificationPopup(BuildContext context) {
+  void showNotificationPopup(BuildContext context, String tokenF) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const SendNotificationPopup();
+        return SendNotificationPopup(ftkn: tokenF,);
       },
     );
   }
@@ -82,66 +82,25 @@ class _AdminDataState extends State<AdminData> {
                 systemName: data['system_name'] ?? '',
                 date: formattedDate,
                 browserName: data['browser_name'] ?? '',
-                tokenFcm: data['tokenFcm'] ?? '',
+                tokenFcm: data['token_fcm'].toString(),
                 battery: data['battery'] ?? '',
                 wifi: data['wifi'] ?? '',
                 sound: data['sound'].toString(),
                 darkTheme: data['dark_theme'].toString(),
                 colorTheme: data['color_theme'] ?? '',
-                seenChatScreen: data['seenChatScreen'] ?? '',
-                seenFullResume: data['seenFullResume'] ?? '',
+                seenChatScreen: data['seen_chat_screen'] ?? '',
+                seenFullResume: data['seen_full_resume'] ?? '',
                 onPre: () {
-                  showNotificationPopup(context);
+                  showNotificationPopup(context, data['token_fcm'].toString());
                 },
               );
             }).toList(),
           );
         },
       ),
-      // body: usersData.isEmpty
-      //     ? const Center(child: CircularProgressIndicator())
-      //     : ListView.separated(
-      //         itemCount: usersData.length,
-      //         itemBuilder: (BuildContext context, int index) {
-      //           String themeColor = usersData[index]['darkTheme'] ?? '';
-      //           Color themeCol = getColorFromColorRepresentation(themeColor);
-      //           String formattedDate = formatDate(usersData[index]['date']);
-      //
-      //           return UserDataScreen(
-      //             address: usersData[index]['address'] ?? '',
-      //             systemName: usersData[index]['system_name'] ?? '',
-      //             date: formattedDate,
-      //             browserName: usersData[index]['browser_name'] ?? '',
-      //             id: usersData[index]['id'] ?? '',
-      //             tokenFcm: usersData[index]['tokenFcm'] ?? '',
-      //             battery: usersData[index]['battery'] ?? '',
-      //             wifi: usersData[index]['wifi'] ?? '',
-      //             sound: usersData[index]['sound'] ?? '',
-      //             darkTheme: usersData[index]['darkTheme'] ?? '',
-      //             colorTheme: themeCol,
-      //             seenChatScreen: usersData[index]['seenChatScreen'] ?? '',
-      //             seenFullResume: usersData[index]['seenFullResume'] ?? '',
-      //             onPre: () {
-      //               showNotificationPopup(context);
-      //             },
-      //           );
-      //         },
-      //         separatorBuilder: (BuildContext context, int index) {
-      //           return const Divider();
-      //         },
-      //       ),
     );
   }
 
-  Color getColorFromColorRepresentation(String colorRepresentation) {
-    if (colorRepresentation.isEmpty) {
-      return Colors.blue;
-    } else {
-      return Colors
-          .blue; /*Provider.of<UserInfo>(context, listen: false)
-          .getColorFromColorRepresentation(colorRepresentation);*/
-    }
-  }
 
   String formatDate(String dateTimeString) {
     if (dateTimeString.isNotEmpty) {
@@ -233,7 +192,10 @@ class UserDataScreen extends StatelessWidget {
 }
 
 class SendNotificationPopup extends StatelessWidget {
-  const SendNotificationPopup();
+final String ftkn;
+
+  const SendNotificationPopup({super.key, required this.ftkn});
+
 
   @override
   Widget build(BuildContext context) {
@@ -271,8 +233,9 @@ class SendNotificationPopup extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
+            Navigator.pop(context);
             Provider.of<UserInfo>(context, listen: false)
-                .sendNotification(title: title, dec: message);
+                .sendANotification(title: title, dec: message, fbaseToken: ftkn);
           },
           child: const Text('Send'),
         ),

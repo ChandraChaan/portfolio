@@ -323,6 +323,38 @@ class UserInfo extends ChangeNotifier {
     nLoading = false;
   }
 
+  sendANotification({String? title, String? dec, required String fbaseToken}) async {
+    nLoading = true;
+
+
+        try {
+          await http
+              .post(
+                Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                headers: <String, String>{
+                  'Content-Type': 'application/json',
+                  'Authorization':
+                      'key=AAAAy2Awy5M:APA91bHy0D-kVL7hR5vWL8M_56uxq_gpSPP6H29Ez7Goi7wIgm9Q1wGQSaE-fbVyF8F76vmfo1-gXYHVLh0TLW5wt5cgokJApoG2yCxf8qXXWhug_nY6HUrWzrmNk1QKhIq_Ebdme_d_'
+                },
+                body: json.encode({
+                  'to': fbaseToken.toString(),
+                  'message': {
+                    'token': fbaseToken.toString(),
+                  },
+                  "notification": {
+                    "title": title ?? "Portfolio Showcase",
+                    "body": dec ??
+                        "Check out the latest additions to my portfolio! Explore my creative projects and professional work."
+                  }
+                }),
+              )
+              .then((value) => print(value.body));
+        } catch (e) {
+        }
+
+    nLoading = false;
+  }
+
   String address = '';
   double latitude = 0.0;
   double longitude = 0.0;
