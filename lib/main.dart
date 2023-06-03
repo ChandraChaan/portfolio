@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'animation_route/gaming_page.dart';
 import 'home_page.dart';
 
@@ -62,15 +62,27 @@ class PushNotificationApp extends StatefulWidget {
 class _PushNotificationAppState extends State<PushNotificationApp> {
   @override
   void initState() {
+    // updateDta();
     Provider.of<UserInfo>(context, listen: false).initFun();
     print('message listener running');
     messageListener(context);
     super.initState();
   }
 
+  // updateDta() async {
+  //   final CollectionReference collectionRef =
+  //       FirebaseFirestore.instance.collection('visiters');
+  //   final QuerySnapshot snapshot = await collectionRef.get();
+  //   for (final DocumentSnapshot doc in snapshot.docs) {
+  //     await collectionRef.doc(doc.id).update({
+  //       'dark_theme': 'true',
+  //       'sound': 'true',
+  //     });
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
       // Initialize FlutterFire
       future: Firebase.initializeApp(),

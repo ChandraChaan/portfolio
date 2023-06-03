@@ -21,6 +21,7 @@ import 'package:http/http.dart' as http;
 import 'package:visibility_detector/visibility_detector.dart';
 import 'animation_route/navigate_newpage.dart';
 
+
 class HomePage extends StatefulWidget {
   HomePage({super.key});
 

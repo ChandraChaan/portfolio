@@ -17,30 +17,30 @@ class AdminData extends StatefulWidget {
 class _AdminDataState extends State<AdminData> {
   List<dynamic> usersData = [];
 
-  @override
-  void initState() {
-    super.initState();
-    callAPI();
-  }
-
-  Future<void> callAPI() async {
-    final response = await http
-        .get(Uri.parse('https://chandrachaan.in/randac/item/role_app_users'));
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> jsonData = json.decode(response.body);
-      usersData.clear();
-      usersData.addAll(jsonData["data"]);
-
-      setState(() {
-        // Update your state variables here if needed
-      });
-
-      // Do something with the response data
-    } else {
-      print('status code is:${response.statusCode}');
-    }
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   callAPI();
+  // }
+  //
+  // Future<void> callAPI() async {
+  //   final response = await http
+  //       .get(Uri.parse('https://chandrachaan.in/randac/item/role_app_users'));
+  //
+  //   if (response.statusCode == 200) {
+  //     Map<String, dynamic> jsonData = json.decode(response.body);
+  //     usersData.clear();
+  //     usersData.addAll(jsonData["data"]);
+  //
+  //     setState(() {
+  //       // Update your state variables here if needed
+  //     });
+  //
+  //     // Do something with the response data
+  //   } else {
+  //     print('status code is:${response.statusCode}');
+  //   }
+  // }
 
   void showNotificationPopup(BuildContext context) {
     showDialog(
@@ -50,15 +50,17 @@ class _AdminDataState extends State<AdminData> {
       },
     );
   }
+
   CollectionReference visitorsCollection =
-  FirebaseFirestore.instance.collection('visiters');
+      FirebaseFirestore.instance.collection('visiters');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('User Data'),
       ),
-      body:StreamBuilder<QuerySnapshot>(
+      body: StreamBuilder<QuerySnapshot>(
         stream: visitorsCollection.snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -71,22 +73,21 @@ class _AdminDataState extends State<AdminData> {
 
           return ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-              String themeColor = data['darkTheme'] ?? '';
-              Color themeCol = getColorFromColorRepresentation(themeColor);
-              String formattedDate = formatDate(data['date']);
+              Map<String, dynamic> data =
+                  document.data() as Map<String, dynamic>;
+              String formattedDate =
+                  formatDate(data['date'] ?? DateTime.now().toString());
               return UserDataScreen(
                 address: data['address'] ?? '',
                 systemName: data['system_name'] ?? '',
                 date: formattedDate,
                 browserName: data['browser_name'] ?? '',
-                id: data['id'] ?? '',
                 tokenFcm: data['tokenFcm'] ?? '',
                 battery: data['battery'] ?? '',
                 wifi: data['wifi'] ?? '',
-                sound: data['sound'] ?? '',
-                darkTheme: data['darkTheme'] ?? '',
-                colorTheme: themeCol,
+                sound: data['sound'].toString(),
+                darkTheme: data['dark_theme'].toString(),
+                colorTheme: data['color_theme'] ?? '',
                 seenChatScreen: data['seenChatScreen'] ?? '',
                 seenFullResume: data['seenFullResume'] ?? '',
                 onPre: () {
@@ -136,8 +137,9 @@ class _AdminDataState extends State<AdminData> {
     if (colorRepresentation.isEmpty) {
       return Colors.blue;
     } else {
-      return Provider.of<UserInfo>(context, listen: false)
-          .getColorFromColorRepresentation(colorRepresentation);
+      return Colors
+          .blue; /*Provider.of<UserInfo>(context, listen: false)
+          .getColorFromColorRepresentation(colorRepresentation);*/
     }
   }
 
@@ -151,7 +153,6 @@ class _AdminDataState extends State<AdminData> {
 }
 
 class UserDataScreen extends StatelessWidget {
-  final String id;
   final String systemName;
   final String browserName;
   final String tokenFcm;
@@ -160,14 +161,13 @@ class UserDataScreen extends StatelessWidget {
   final String wifi;
   final String sound;
   final String darkTheme;
-  final Color colorTheme;
+  final String colorTheme;
   final String seenChatScreen;
   final String seenFullResume;
   final String date;
   final Function()? onPre;
 
   const UserDataScreen({
-    required this.id,
     required this.systemName,
     required this.browserName,
     required this.tokenFcm,
@@ -187,7 +187,7 @@ class UserDataScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(8.0),
-      color: darkTheme == true ? Colors.black : Colors.white,
+      color: darkTheme.toString() == 'true' ? Colors.black : Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Wrap(
@@ -199,10 +199,10 @@ class UserDataScreen extends StatelessWidget {
             _buildChip(address, Icons.location_on),
             _buildChip(battery, Icons.battery_full),
             _buildChip('', wifi == 'Connected' ? Icons.wifi : Icons.wifi_off),
-            _buildChip('', sound != '0' ? Icons.volume_up : Icons.volume_mute),
-            _buildChip('', darkTheme == '0' ? Icons.brightness_2 : Icons.sunny),
+            _buildChip('', sound.toString() != 'false' ? Icons.volume_up : Icons.volume_off),
+            _buildChip('', darkTheme.toString() == 'true' ? Icons.brightness_2 : Icons.sunny),
             _buildChip(date, Icons.calendar_today),
-            if (tokenFcm.isNotEmpty)
+            if (tokenFcm.toString().isNotEmpty && tokenFcm.toString() != 'null')
               ElevatedButton(
                 onPressed: onPre,
                 child: const Text('Send Message'),
@@ -214,15 +214,16 @@ class UserDataScreen extends StatelessWidget {
   }
 
   Widget _buildChip(String label, IconData icon) {
+    // int _color =
     return Chip(
       label: Text(label),
       avatar: Icon(
         icon,
-        color: colorTheme,
+        color: (colorTheme.toString() != 'null' && colorTheme.toString().isNotEmpty) ? Color(int.parse(colorTheme)): null,
       ),
       backgroundColor: Colors.grey[300],
       labelStyle: TextStyle(
-        color: darkTheme == true ? Colors.white : Colors.black,
+        color: darkTheme.toString() == 'true' ? Colors.white : Colors.black,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
@@ -282,48 +283,6 @@ class SendNotificationPopup extends StatelessWidget {
           child: const Text('Cancel'),
         ),
       ],
-    );
-  }
-}
-
-
-class VisitorScreen extends StatefulWidget {
-  @override
-  _VisitorScreenState createState() => _VisitorScreenState();
-}
-
-class _VisitorScreenState extends State<VisitorScreen> {
-  CollectionReference visitorsCollection =
-  FirebaseFirestore.instance.collection('visiters');
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Visitor Data'),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: visitorsCollection.snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          }
-
-          return ListView(
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-              return ListTile(
-                title: Text(data['name']),
-                subtitle: Text(data['age'].toString()),
-              );
-            }).toList(),
-          );
-        },
-      ),
     );
   }
 }

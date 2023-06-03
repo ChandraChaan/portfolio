@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class UserInfo extends ChangeNotifier {
   bool musicMode = false;
   Color themeColor = Colors.blue;
-  int deviceId = -1;
+  String themeStringColor = '';
+  String deviceId = '';
   bool themeLightMode =
       (DateTime.now().hour > 6 && DateTime.now().hour < 18) ? true : false;
   String user = 'Chandra Obul Reddy';
@@ -37,13 +39,13 @@ class UserInfo extends ChangeNotifier {
 
   changeThemeMode() {
     themeLightMode = !themeLightMode;
-    updateData();
+    roleAppUsersPut();
     notifyListeners();
   }
 
   changeMusicMode() {
     musicMode = !musicMode;
-    updateData();
+    roleAppUsersPut();
     notifyListeners();
   }
 
@@ -245,8 +247,12 @@ class UserInfo extends ChangeNotifier {
   }
 
   themeColorChange(Color cl) {
+
+    int colorCode = cl.value;
+    String colorHex = '0x${colorCode.toRadixString(16).padLeft(8, '0').toUpperCase()}';
     themeColor = cl;
-    updateData();
+    themeStringColor = colorHex;
+    roleAppUsersPut();
     notifyListeners();
   }
 
@@ -286,7 +292,8 @@ class UserInfo extends ChangeNotifier {
     if (grantedPermission == 1) {
       if (tokenFirebqse == null) {
         return;
-      } else {
+      }
+      else {
         try {
           await http
               .post(
@@ -402,7 +409,7 @@ class UserInfo extends ChangeNotifier {
 
   // api call
 
-  Color getColorFromColorRepresentation(String colorRepresentation) {
+  int getColorFromColorRepresentation(String colorRepresentation) {
     // Remove unnecessary parts from the string
     String colorValueString =
         colorRepresentation.replaceAll(RegExp(r'[^0-9a-fA-F]'), '');
@@ -411,84 +418,210 @@ class UserInfo extends ChangeNotifier {
     int colorValue = int.parse(colorValueString, radix: 16);
 
     // Create and return the Color object
-    return Color(colorValue);
+    return colorValue;
   }
 
-  Future<void> postData() async {
-    const apiUrl = 'https://chandrachaan.in/randac/item/role_app_users';
-    final requestBody = {
-      'system_name': systemName,
-      'browser_name': browserName,
-      'token_fcm': '$tokenFirebqse'.toString(),
-      'address': address,
-      'battery': chargingStatus,
-      'wifi': wifiNetworkTypeLoc,
-      'sound': '$musicMode'.toString(),
-      'dark_theme': '${!themeLightMode}'.toString(),
-      'color_theme': '$themeColor'.toString(),
-      'seen_chat_screen': '',
-      'seen_full_resume': '',
-    };
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(requestBody),
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> jsonData = json.decode(response.body);
-        Map<String, dynamic> apiResponse = jsonData['data'];
-        Color tcolor =
-            getColorFromColorRepresentation(apiResponse['color_theme']);
-        deviceId = apiResponse['id'];
-        musicMode = apiResponse['sound'].toString() == '0' ? false : true;
-        themeLightMode =
-            apiResponse['dark_theme'].toString() == '0' ? true : false;
-        themeColor = tcolor;
-      } else {
-        // Request failed
+
+  Future<void> roleAppUsersPost() async {
+    final tokenFcm_f = tokenFirebqse;
+    final browserName_f = browserName;
+    final systemName_f = systemName;
+    final address_f = address;
+
+    final collectionRef = FirebaseFirestore.instance.collection('visiters');
+
+    if (tokenFcm_f != null && tokenFcm_f.isNotEmpty) {
+      final querySnapshot = await collectionRef.where('token_fcm', isEqualTo: tokenFcm_f).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final existingRecord = querySnapshot.docs.first;
+
+        final data = {
+          'system_name': systemName_f,
+          'browser_name': browserName_f,
+          'address': address_f,
+          'token_fcm': tokenFcm_f,
+          'battery': chargingStatus,
+          'wifi': wifiNetworkTypeLoc,
+          'sound': musicMode ? 'true' : 'false',
+          'dark_theme': themeLightMode ? 'false' : 'true',
+          'color_theme': themeStringColor,
+          'seen_chat_screen': '0',
+          'seen_full_resume': '0',
+          'date':DateTime.now().toString()
+        };
+
+        await existingRecord.reference.update(data);
+
+        final updatedRecordSnapshot = await existingRecord.reference.get();
+        final updatedRecord = updatedRecordSnapshot.data();
+        // Map<String, dynamic> updatedRecord = updatedRecordSnapshot.data() as Map<String, dynamic>;
+        deviceId = updatedRecordSnapshot.id;
+
+        final response = {
+          'status': 'success',
+          'message': 'Data updated successfully',
+          'data': updatedRecord,
+        };
+        print('device id $deviceId');
+       // print(response.toString());
+
       }
-    } catch (e) {
-      // Exception occurred during API call
+      else {
+
+        final data = {
+          'system_name': systemName_f,
+          'browser_name': browserName_f,
+          'token_fcm': tokenFcm_f,
+          'address': address_f,
+          'battery': chargingStatus,
+          'wifi': wifiNetworkTypeLoc,
+          'sound': musicMode ? 'true' : 'false',
+          'dark_theme': themeLightMode ? 'false' : 'true',
+          'color_theme': themeStringColor,
+          'seen_chat_screen':'0',
+          'seen_full_resume': '0',
+          'date': DateTime.now().toString()
+        };
+
+        final newDocumentRef = await collectionRef.add(data);
+        final newDocumentSnapshot = await newDocumentRef.get();
+        final newRecord = newDocumentSnapshot.data();
+        deviceId = newDocumentSnapshot.id;
+        final response = {
+          'status': 'success',
+          'message': 'Data inserted successfully',
+          'data': newRecord,
+        };
+
+        print('device id $deviceId');
+      }
     }
     notifyListeners();
   }
 
-  Future<void> updateData() async {
-    const apiUrl = 'https://chandrachaan.in/randac/item/role_app_users';
-    final requestBody = {
-      'id': deviceId,
-      'system_name': systemName,
-      'browser_name': browserName,
-      'token_fcm': '$tokenFirebqse'.toString(),
-      'address': address,
-      'battery': chargingStatus,
-      'wifi': wifiNetworkTypeLoc,
-      'sound': '$musicMode'.toString(),
-      'dark_theme': '${!themeLightMode}'.toString(),
-      'color_theme': '$themeColor'.toString(),
-      'seen_chat_screen': '',
-      'seen_full_resume': '',
-    };
-    try {
-      final response = await http.put(
-        Uri.parse(apiUrl),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(requestBody),
-      );
-      if (response.statusCode == 200) {
-      } else {
-        // Request failed
-      }
-    } catch (e) {
-      // Exception occurred during API call
+  Future<void> roleAppUsersPut() async {
+    final id = deviceId;
+
+    final collectionRef = FirebaseFirestore.instance.collection('visiters');
+    final documentSnapshot = await collectionRef.doc(id).get();
+    print('the id have data');
+print(documentSnapshot.data());
+    if (documentSnapshot.exists) {
+      final existingRecord = documentSnapshot.reference;
+      print('the id have data step 3');
+      final data = {
+        'system_name': systemName,
+        'browser_name': browserName,
+        'token_fcm': tokenFirebqse,
+        'address': address,
+        'battery': chargingStatus,
+        'wifi': wifiNetworkTypeLoc,
+        'sound': '$musicMode'.toString(),
+        'dark_theme': '${!themeLightMode}'.toString(),
+        'color_theme': themeStringColor,
+        'seen_chat_screen':'0',
+        'seen_full_resume': '0',
+        'date':DateTime.now().toString()
+      };
+
+      await existingRecord.update(data);
+      print('the id have data step 4');
+      final response = {
+        'status': 'success',
+        'message': 'Data updated successfully',
+        'data': data,
+      };
+
+      print(response.toString());
+      print('the id have data step 5');
+    } else {
+      final response = {
+        'status': 'error',
+        'message': 'Record does not exist',
+        'data': null,
+      };
+
+      print(response.toString());
     }
     notifyListeners();
   }
+
+  // Future<void> postData() async {
+  //   const apiUrl = 'https://chandrachaan.in/randac/item/role_app_users';
+  //   final requestBody = {
+  //     'system_name': systemName,
+  //     'browser_name': browserName,
+  //     'token_fcm': '$tokenFirebqse'.toString(),
+  //     'address': address,
+  //     'battery': chargingStatus,
+  //     'wifi': wifiNetworkTypeLoc,
+  //     'sound': '$musicMode'.toString(),
+  //     'dark_theme': '${!themeLightMode}'.toString(),
+  //     'color_theme': '$themeColor'.toString(),
+  //     'seen_chat_screen': '',
+  //     'seen_full_resume': '',
+  //   };
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse(apiUrl),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: jsonEncode(requestBody),
+  //     );
+  //     if (response.statusCode == 200) {
+  //       Map<String, dynamic> jsonData = json.decode(response.body);
+  //       Map<String, dynamic> apiResponse = jsonData['data'];
+  //       Color tcolor =
+  //           getColorFromColorRepresentation(apiResponse['color_theme']);
+  //       deviceId = apiResponse['id'];
+  //       musicMode = apiResponse['sound'].toString() == '0' ? false : true;
+  //       themeLightMode =
+  //           apiResponse['dark_theme'].toString() == '0' ? true : false;
+  //       themeColor = tcolor;
+  //     } else {
+  //       // Request failed
+  //     }
+  //   } catch (e) {
+  //     // Exception occurred during API call
+  //   }
+  //   notifyListeners();
+  // }
+  //
+  // Future<void> updateData() async {
+  //   const apiUrl = 'https://chandrachaan.in/randac/item/role_app_users';
+  //   final requestBody = {
+  //     'id': deviceId,
+  //     'system_name': systemName,
+  //     'browser_name': browserName,
+  //     'token_fcm': '$tokenFirebqse'.toString(),
+  //     'address': address,
+  //     'battery': chargingStatus,
+  //     'wifi': wifiNetworkTypeLoc,
+  //     'sound': '$musicMode'.toString(),
+  //     'dark_theme': '${!themeLightMode}'.toString(),
+  //     'color_theme': '$themeColor'.toString(),
+  //     'seen_chat_screen': '',
+  //     'seen_full_resume': '',
+  //   };
+  //   try {
+  //     final response = await http.put(
+  //       Uri.parse(apiUrl),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: jsonEncode(requestBody),
+  //     );
+  //     if (response.statusCode == 200) {
+  //     } else {
+  //       // Request failed
+  //     }
+  //   } catch (e) {
+  //     // Exception occurred during API call
+  //   }
+  //   notifyListeners();
+  // }
 
   initFun() async {
     await getPermission();
@@ -497,6 +630,6 @@ class UserInfo extends ChangeNotifier {
     await getBrowserName();
     await getBatteryLevel();
     await getWifiNetworkType();
-    postData();
+    roleAppUsersPost();
   }
 }
