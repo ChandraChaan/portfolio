@@ -19,8 +19,7 @@ class Projects extends StatelessWidget {
       builder: (context, provider, child) {
         provider.imagesListModifiying();
         return Container(
-          color:Theme.of(context).backgroundColor,
-
+          color: Theme.of(context).backgroundColor,
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -28,8 +27,8 @@ class Projects extends StatelessWidget {
                 const SizedBox(
                   height: (100),
                 ),
-                getTextStyle("Projects", FontWeight.bold, Theme.of(context).primaryColor,
-                    50),
+                getTextStyle("Projects", FontWeight.bold,
+                    Theme.of(context).primaryColor, 50),
                 const SizedBox(
                   height: 10,
                 ),
@@ -50,10 +49,9 @@ class Projects extends StatelessWidget {
                             padding: const EdgeInsets.all(12.0),
                             child: Container(
                               decoration: BoxDecoration(
-                                  color:Theme.of(context).cardColor,
-                                  border: Border.all(color:provider.themeColor)
-                              ),
-
+                                  color: Theme.of(context).cardColor,
+                                  border:
+                                      Border.all(color: provider.themeColor)),
                               child: Padding(
                                 padding: const EdgeInsets.all(28.0),
                                 child: Column(
@@ -63,14 +61,19 @@ class Projects extends StatelessWidget {
                                     Text(
                                       "${provider.projectsData[a]['title']}",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 18, color: Theme.of(context).primaryColor),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          color:
+                                              Theme.of(context).primaryColor),
                                     ),
                                     const SizedBox(
                                       height: 10,
                                     ),
                                     Text(
                                       "${provider.projectsData[a]['date']}",
-                                      style: TextStyle(color: Theme.of(context).primaryColor),
+                                      style: TextStyle(
+                                          color:
+                                              Theme.of(context).primaryColor),
                                     ),
                                     const SizedBox(
                                       height: 10,
@@ -80,7 +83,8 @@ class Projects extends StatelessWidget {
                                       style: GoogleFonts.abyssinicaSil(
                                         textStyle: TextStyle(
                                             fontWeight: FontWeight.normal,
-                                            color: Theme.of(context).primaryColor,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                             fontSize: 19),
                                       ),
                                       textAlign: TextAlign.left,
@@ -97,95 +101,111 @@ class Projects extends StatelessWidget {
                           lineXY: 0.2,
                           startChild: a.isEven
                               ? Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color:Theme.of(context).cardColor,
-                                  border: Border.all(color:provider.themeColor)
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(28.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "${provider.projectsData[a]['title']}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 18, color: Theme.of(context).primaryColor),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "${provider.projectsData[a]['date']}",
-                                      style: TextStyle(color: Theme.of(context).primaryColor),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "${provider.projectsData[a]['summary']}",
-                                      style: GoogleFonts.abyssinicaSil(
-                                        textStyle: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            color: Theme.of(context).primaryColor,
-                                            fontSize: 19),
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context).cardColor,
+                                        border: Border.all(
+                                            color: provider.themeColor)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(28.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "${provider.projectsData[a]['title']}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            "${provider.projectsData[a]['date']}",
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            "${provider.projectsData[a]['summary']}",
+                                            style: GoogleFonts.abyssinicaSil(
+                                              textStyle: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  fontSize: 19),
+                                            ),
+                                            textAlign: TextAlign.right,
+                                            maxLines: 3,
+                                          ),
+                                        ],
                                       ),
-                                      textAlign: TextAlign.right,
-                                      maxLines: 3,
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
+                                  ),
+                                )
                               : null,
                           endChild: a.isOdd
                               ? Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color:Theme.of(context).cardColor,
-                                  border: Border.all(color:provider.themeColor)
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(28.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "${provider.projectsData[a]['title']}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 18, color: Theme.of(context).primaryColor),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "${provider.projectsData[a]['date']}",
-                                      style: TextStyle(color: Theme.of(context).primaryColor),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "${provider.projectsData[a]['summary']}",
-                                      style: GoogleFonts.abyssinicaSil(
-                                        textStyle: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            color: Theme.of(context).primaryColor,
-                                            fontSize: 19),
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context).cardColor,
+                                        border: Border.all(
+                                            color: provider.themeColor)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(28.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "${provider.projectsData[a]['title']}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            "${provider.projectsData[a]['date']}",
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            "${provider.projectsData[a]['summary']}",
+                                            style: GoogleFonts.abyssinicaSil(
+                                              textStyle: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  fontSize: 19),
+                                            ),
+                                            textAlign: TextAlign.left,
+                                            maxLines: 3,
+                                          ),
+                                        ],
                                       ),
-                                      textAlign: TextAlign.left,
-                                      maxLines: 3,
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
+                                  ),
+                                )
                               : null,
                         ),
                 const SizedBox(

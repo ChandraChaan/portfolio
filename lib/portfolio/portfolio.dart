@@ -90,7 +90,23 @@ class Portfolio extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {
+                                // Show the dialog using ImageDialog
                                 showDialog(
+                                  barrierDismissible: true,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    final images = [
+                                      "assets/backGround-image.jpg",
+                                      "assets/background_image.jpg",
+                                      "assets/profile_image.jpg",
+// Add more images as needed
+                                    ];
+
+                                    return ImageDialog(images: images);
+                                  },
+                                );
+
+                                /*  showDialog(
                                     barrierDismissible: true,
                                     context: context,
                                     builder: (BuildContext context) {
@@ -101,7 +117,7 @@ class Portfolio extends StatelessWidget {
                                             img:
                                                 "${provider.pImages[index]['img']}"),
                                       );
-                                    });
+                                    });*/
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
@@ -123,19 +139,33 @@ class Portfolio extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {
-                                // this is start the code
                                 showDialog(
-                                    barrierDismissible: true,
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      final longList = List<Widget>.generate(
-                                          100, (i) => Text("Item $i"));
-                                      return Dialog(
-                                        child: ImageDynamic(
-                                            img:
-                                                "${provider.pImages[index]['img']}"),
-                                      );
-                                    });
+                                  barrierDismissible: true,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    final images = [
+                                      "assets/backGround-image.jpg",
+                                      "assets/background_image.jpg",
+                                      "assets/profile_image.jpg",
+// Add more images as needed
+                                    ];
+
+                                    return ImageDialog(images: images);
+                                  },
+                                );
+                                // this is start the code
+                                // showDialog(
+                                //     barrierDismissible: true,
+                                //     context: context,
+                                //     builder: (BuildContext context) {
+                                //       final longList = List<Widget>.generate(
+                                //           100, (i) => Text("Item $i"));
+                                //       return Dialog(
+                                //         child: ImageDynamic(
+                                //             img:
+                                //                 "${provider.pImages[index]['img']}"),
+                                //       );
+                                //     });
                                 // this is ending the code
                               },
                               child: Container(
@@ -158,6 +188,118 @@ class Portfolio extends StatelessWidget {
               ])
             : const Center(child: CircularProgressIndicator());
       },
+    );
+  }
+}
+
+class ImageDialog extends StatefulWidget {
+  final List<String> images;
+  final int initialIndex;
+
+  ImageDialog({required this.images, this.initialIndex = 0});
+
+  @override
+  _ImageDialogState createState() => _ImageDialogState();
+}
+
+class _ImageDialogState extends State<ImageDialog> {
+  late int currentIndex;
+  late bool hasPrevious;
+  late bool hasNext;
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.initialIndex;
+    hasPrevious = currentIndex > 0;
+    hasNext = currentIndex < widget.images.length - 1;
+  }
+
+  void updateVisibility() {
+    setState(() {
+      hasPrevious = currentIndex > 0;
+      hasNext = currentIndex < widget.images.length - 1;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      insetPadding: EdgeInsets.zero,
+      child: Container(
+        color: Colors.white,
+        height: MediaQuery.of(context).size.height / 1.5,
+        width: MediaQuery.of(context).size.width / 1.5,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      size: 24,
+                      color: Colors.black87,
+                    ),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ),
+              ],
+            ),
+            Flexible(
+                fit: FlexFit.loose,
+                child: ImageDynamic(img: widget.images[currentIndex])),
+            Container(
+              color: Colors.white,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: hasPrevious
+                        ? IconButton(
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              size: 32,
+                              color: Colors.black87,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                currentIndex--;
+                                updateVisibility();
+                              });
+                            },
+                          )
+                        : Container(),
+                  ),
+                  Expanded(
+                    child: hasNext
+                        ? IconButton(
+                            icon: const Icon(
+                              Icons.arrow_forward,
+                              size: 32,
+                              color: Colors.black87,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                currentIndex++;
+                                updateVisibility();
+                              });
+                            },
+                          )
+                        : Container(),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
