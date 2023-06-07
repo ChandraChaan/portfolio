@@ -71,12 +71,21 @@ class _AdminDataState extends State<AdminData> {
             return CircularProgressIndicator();
           }
 
+          final sortedDocs = snapshot.data!.docs..sort((a, b) {
+            final aDateString = (a.data() as Map<String, dynamic>)['date'] as String?;
+            final bDateString = (b.data() as Map<String, dynamic>)['date'] as String?;
+            final aDate = aDateString != null ? DateTime.parse(aDateString) : DateTime.now();
+            final bDate = bDateString != null ? DateTime.parse(bDateString) : DateTime.now();
+            return bDate.compareTo(aDate);
+          });
+
           return ListView(
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            children: sortedDocs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
-                  document.data() as Map<String, dynamic>;
+              document.data() as Map<String, dynamic>;
+
               String formattedDate =
-                  formatDate(data['date'] ?? DateTime.now().toString());
+              formatDate(data['date'] ?? DateTime.now().toString());
               return UserDataScreen(
                 address: data['address'] ?? '',
                 systemName: data['system_name'] ?? '',

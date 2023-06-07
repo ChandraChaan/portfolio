@@ -1,9 +1,12 @@
-<!DOCTYPE html><html><head>
+<!DOCTYPE html>
+<html>
+
+<head>
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="this is resume type website.">
+  <meta name="description" content="This is a resume-type website.">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,17 +25,53 @@
     // The value below is injected by flutter build, do not touch.
     var serviceWorkerVersion = null;
   </script>
-  <!-- This script adds the flutter initialization JS code -->
+  <!-- This script adds the Flutter initialization JS code -->
   <script src="flutter.js" defer=""></script>
   <link rel="stylesheet" type="text/css" href="splash/style.css">
+  <style>
+    .progress-bar-container {
+      position: relative;
+      width: 200px;
+      height: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background-color: #4caf50;
+      width: 0%;
+      transition: width 0.2s ease-in-out;
+    }
+
+    .percentage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 12px;
+      font-weight: bold;
+    }
+  </style>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
   <script src="splash/splash.js"></script>
+  <script src="progress.js"></script> <!-- Include the progress.js file -->
 </head>
+
 <body>
 <div class="loading">Loading...</div>
+<div id="loader" class="loader"></div> <!-- Add a loader element -->
+<div class="progress-bar-container"> <!-- Add a container for the progress bar -->
+  <div id="myProgressBar" class="progress-bar"></div> <!-- Add the progress bar element -->
+  <div id="incrementpercentage" class="percentage">0%</div> <!-- Add the percentage element -->
+</div>
 <script src="main.dart.js" type="application/javascript"></script>
 <script>
-        window.addEventListener('load', function(ev) {
+    window.addEventListener('load', function(ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
@@ -44,7 +83,7 @@
         return appRunner.runApp();
       });
     });
-    </script>
+  </script>
+</body>
 
-
-</body></html>
+</html>
