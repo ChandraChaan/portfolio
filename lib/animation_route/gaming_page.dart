@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:portfoli_web/home_page.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
-
 
 import '../utils/getReplayList.dart';
 import 'navigate_newpage.dart';
@@ -61,6 +61,10 @@ class _SecondpageState extends State<Secondpage> {
           if (name.contains('admin')) {
             rText = 'Opening...';
             Navigator.of(context).push(AdminPageRoot());
+          } else if (name.contains('resume')) {
+            rText = 'Opening...';
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => HomePage()));
           } else {
             rText = "I didn't get";
           }
@@ -135,7 +139,6 @@ class _SecondpageState extends State<Secondpage> {
                     ),
                     SelectableText(
                         'Welcome to Time Pass Game ${(provd.systemName.isNotEmpty) ? '\nSystem name: ${provd.systemName}' : ''}, ${(provd.browserName.isNotEmpty) ? '\nBrowser name: ${provd.browserName}' : ''},'),
-
                     const SizedBox(
                       width: 18.0,
                     ),
