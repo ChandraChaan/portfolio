@@ -142,12 +142,17 @@ class _SecondpageState extends State<Secondpage> {
                       width: 18.0,
                     ),
                     const SelectableText('Welcome to Time Pass Game \n'),
-                    SelectableText(
-                        '${(provd.systemName.isNotEmpty) ? '\nSystem name: ${provd.systemName}' : ''} ${(provd.browserName.isNotEmpty) ? '\nBrowser name: ${provd.browserName}' : ''}'),
+                    Consumer<UserInfo>(
+                      builder: (context, person, child) {
+                        return SelectableText(
+                            '${(person.systemName.isNotEmpty) ? '\nSystem name: ${person.systemName}' : ''} ${(person.browserName.isNotEmpty) ? '\nBrowser name: ${person.browserName}' : ''}');
+                      },
+                    ),
+
                     const SizedBox(
                       width: 18.0,
                     ),
-                    if (provd.chargingStatus != 'Unknown')
+                    if (context.read<UserInfo>().chargingStatus != 'Unknown')
                       Row(
                         children: [
                           const Icon(
@@ -155,13 +160,13 @@ class _SecondpageState extends State<Secondpage> {
                             color: Colors.green,
                           ),
                           const SizedBox(width: 5),
-                          Text('${provd.chargingStatus}%'),
+                          Text('${context.read<UserInfo>().chargingStatus}%'),
                         ],
                       ),
                     const SizedBox(
                       width: 18.0,
                     ),
-                    if (provd.wifiNetworkTypeLoc != 'Unknown')
+                    if (context.read<UserInfo>().wifiNetworkTypeLoc != 'Unknown')
                       Row(
                         children: [
                           const Icon(
@@ -169,7 +174,7 @@ class _SecondpageState extends State<Secondpage> {
                             color: Colors.blue,
                           ),
                           const SizedBox(width: 5),
-                          Text(provd.wifiNetworkTypeLoc),
+                          Text(context.read<UserInfo>().wifiNetworkTypeLoc),
                         ],
                       )
                   ],
