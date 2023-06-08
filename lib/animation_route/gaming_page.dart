@@ -8,7 +8,9 @@ import '../utils/getReplayList.dart';
 import 'navigate_newpage.dart';
 
 class Secondpage extends StatefulWidget {
-  const Secondpage({Key? key}) : super(key: key);
+  final bool hideBackButton;
+
+  Secondpage({Key? key, this.hideBackButton = false}) : super(key: key);
 
   @override
   State<Secondpage> createState() => _SecondpageState();
@@ -125,11 +127,13 @@ class _SecondpageState extends State<Secondpage> {
                   children: [
                     IconButton(
                       padding: EdgeInsets.zero,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back,
+                      onPressed: widget.hideBackButton
+                          ? null
+                          : () {
+                              Navigator.pop(context);
+                            },
+                      icon: Icon(
+                        widget.hideBackButton ? Icons.chair : Icons.arrow_back,
                         color: Colors.black,
                         size: 35.0,
                       ),
@@ -137,34 +141,37 @@ class _SecondpageState extends State<Secondpage> {
                     const SizedBox(
                       width: 18.0,
                     ),
+                    const SelectableText('Welcome to Time Pass Game \n'),
                     SelectableText(
-                        'Welcome to Time Pass Game ${(provd.systemName.isNotEmpty) ? '\nSystem name: ${provd.systemName}' : ''}, ${(provd.browserName.isNotEmpty) ? '\nBrowser name: ${provd.browserName}' : ''},'),
+                        '${(provd.systemName.isNotEmpty) ? '\nSystem name: ${provd.systemName}' : ''} ${(provd.browserName.isNotEmpty) ? '\nBrowser name: ${provd.browserName}' : ''}'),
                     const SizedBox(
                       width: 18.0,
                     ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.battery_full,
-                          color: Colors.green,
-                        ),
-                        const SizedBox(width: 5),
-                        Text('${provd.chargingStatus}%'),
-                      ],
-                    ),
+                    if (provd.chargingStatus != 'Unknown')
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.battery_full,
+                            color: Colors.green,
+                          ),
+                          const SizedBox(width: 5),
+                          Text('${provd.chargingStatus}%'),
+                        ],
+                      ),
                     const SizedBox(
                       width: 18.0,
                     ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.wifi,
-                          color: Colors.blue,
-                        ),
-                        const SizedBox(width: 5),
-                        Text(provd.wifiNetworkTypeLoc),
-                      ],
-                    )
+                    if (provd.wifiNetworkTypeLoc != 'Unknown')
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.wifi,
+                            color: Colors.blue,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(provd.wifiNetworkTypeLoc),
+                        ],
+                      )
                   ],
                 ),
               ),
@@ -258,6 +265,7 @@ class _SecondpageState extends State<Secondpage> {
                     children: [
                       Expanded(
                         child: TextField(
+                          autofocus: true,
                           controller: inputController,
                           textInputAction: TextInputAction.done,
                           onEditingComplete: _getReply,

@@ -96,7 +96,7 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           print('android firebase initiated');
-          return Secondpage();
+          return Secondpage(hideBackButton: true,);
         }
         // Otherwise, show something whilst waiting for initialization to complete
         return const Center(
