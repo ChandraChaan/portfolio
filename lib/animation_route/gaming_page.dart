@@ -28,7 +28,6 @@ class _SecondpageState extends State<Secondpage> {
 
   _getReply() async {
     final String userGivenText = inputController.text.trim();
-
     if (userGivenText.isNotEmpty) {
       _userText = userGivenText;
       String userText = userGivenText.toLowerCase();
@@ -115,75 +114,86 @@ class _SecondpageState extends State<Secondpage> {
     final provd = Provider.of<UserInfo>(context, listen: false);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(130.0),
+        preferredSize: const Size.fromHeight(140.0),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
+          child: Row(
             children: [
-              Center(
-                child: Row(
+              const SizedBox(width: 18.0),
+              IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: widget.hideBackButton ? null : () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  widget.hideBackButton ? Icons.chair : Icons.arrow_back,
+                  color: Colors.black,
+                  size: 35.0,
+                ),
+              ),
+              const SizedBox(width: 18.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: widget.hideBackButton
-                          ? null
-                          : () {
-                              Navigator.pop(context);
-                            },
-                      icon: Icon(
-                        widget.hideBackButton ? Icons.chair : Icons.arrow_back,
-                        color: Colors.black,
-                        size: 35.0,
+                    const SizedBox(height: 10.0),
+                    const Text(
+                      'Welcome to Time Pass Game',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(
-                      width: 18.0,
-                    ),
-                    const SelectableText('Welcome to Time Pass Game \n'),
+                    const SizedBox(height: 10.0),
                     Consumer<UserInfo>(
                       builder: (context, person, child) {
                         return SelectableText(
-                            '${(person.systemName.isNotEmpty) ? '\nSystem name: ${person.systemName}' : ''} ${(person.browserName.isNotEmpty) ? '\nBrowser name: ${person.browserName}' : ''}');
+                          '${(person.systemName.isNotEmpty) ? 'System name: ${person.systemName}' : ''}\n${(person.browserName.isNotEmpty) ? 'Browser name: ${person.browserName}' : ''}',
+                          style: TextStyle(fontSize: 16.0),
+                        );
                       },
                     ),
-
-                    const SizedBox(
-                      width: 18.0,
-                    ),
-                    if (context.read<UserInfo>().chargingStatus != 'Unknown')
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.battery_full,
-                            color: Colors.green,
-                          ),
-                          const SizedBox(width: 5),
-                          Text('${context.read<UserInfo>().chargingStatus}%'),
-                        ],
+                    SelectableText(
+                      (provd.address.isNotEmpty) ? 'Address: ${provd.address}' : '',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    const SizedBox(
-                      width: 18.0,
                     ),
-                    if (context.read<UserInfo>().wifiNetworkTypeLoc != 'Unknown')
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.wifi,
-                            color: Colors.blue,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(context.read<UserInfo>().wifiNetworkTypeLoc),
-                        ],
-                      )
+                    const SizedBox(height: 10.0),
                   ],
                 ),
               ),
-              SelectableText(
-                (provd.address.isNotEmpty) ? '\nAddress: ${provd.address}' : '',
-                style: const TextStyle(overflow: TextOverflow.ellipsis),
-              ),
+              const SizedBox(width: 18.0),
+              if (context.read<UserInfo>().chargingStatus != 'Unknown')
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.battery_full,
+                      color: Colors.green,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      '${context.read<UserInfo>().chargingStatus}%',
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ],
+                ),
+              const SizedBox(width: 18.0),
+              if (context.read<UserInfo>().wifiNetworkTypeLoc != 'Unknown')
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.wifi,
+                      color: Colors.blue,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      context.read<UserInfo>().wifiNetworkTypeLoc,
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
