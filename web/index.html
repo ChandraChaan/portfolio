@@ -2,8 +2,10 @@
 <html>
 
 <head>
+  <!-- Base href for Flutter -->
   <base href="$FLUTTER_BASE_HREF">
 
+  <!-- Meta tags -->
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="This is a resume-type website.">
@@ -17,17 +19,27 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
 
+  <!-- Title and manifest file -->
   <title>Curriculum Vitae</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Firebase scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-messaging.js"></script>
+
+  <!-- Service Worker version -->
   <script>
     // The value below is injected by flutter build, do not touch.
     var serviceWorkerVersion = null;
   </script>
-  <!-- This script adds the Flutter initialization JS code -->
+
+  <!-- Flutter initialization scripts -->
   <script src="flutter.js" defer=""></script>
+
+  <!-- Splash screen styles -->
   <link rel="stylesheet" type="text/css" href="splash/style.css">
+
+  <!-- Custom styles for progress bar -->
   <style>
     .progress-bar-container {
       position: relative;
@@ -57,22 +69,38 @@
       font-weight: bold;
     }
   </style>
+
+  <!-- Viewport settings -->
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+
+  <!-- Custom scripts for splash screen and progress bar -->
   <script src="splash/splash.js"></script>
-  <script src="progress.js"></script> <!-- Include the progress.js file -->
+  <script src="progress.js"></script>
+
 </head>
 
 <body>
+<!-- Loading message -->
 <div class="loading">Loading...</div>
-<div id="loader" class="loader"></div> <!-- Add a loader element -->
-<div class="progress-bar-container"> <!-- Add a container for the progress bar -->
-  <div id="myProgressBar" class="progress-bar"></div> <!-- Add the progress bar element -->
-  <div id="incrementpercentage" class="percentage">0%</div> <!-- Add the percentage element -->
+
+<!-- Loader element -->
+<div id="loader" class="loader"></div>
+
+<!-- Container for the progress bar -->
+<div class="progress-bar-container">
+  <!-- Progress bar element -->
+  <div id="myProgressBar" class="progress-bar"></div>
+
+  <!-- Percentage element -->
+  <div id="incrementpercentage" class="percentage">0%</div>
 </div>
+
+<!-- Main Dart script -->
 <script src="main.dart.js" type="application/javascript"></script>
 <script>
+    // Event listener for when the page finishes loading
     window.addEventListener('load', function(ev) {
-      // Download main.dart.js
+      // Download main.dart.js and initialize Flutter engine
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,

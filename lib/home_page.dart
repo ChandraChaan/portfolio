@@ -1,9 +1,6 @@
-import 'dart:convert';
-
-// import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -17,7 +14,6 @@ import '../experience/experience.dart';
 import '../portfolio/portfolio.dart';
 import '../skills/skills.dart';
 import 'about/about.dart';
-import 'package:http/http.dart' as http;
 import 'package:visibility_detector/visibility_detector.dart';
 import 'animation_route/navigate_newpage.dart';
 
@@ -31,13 +27,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String? _token;
-  Stream<String>? _tokenStream;
+
   int notificationCount = 0;
 
-  void setToken(String? token) {
-    print('FCM TokenToken: $token');
-    Provider.of<UserInfo>(context, listen: false).insertToeken(token);
-  }
 
   showDeniedPopUp() {
     return showDialog(
@@ -97,9 +89,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     //get token
-    FirebaseMessaging.instance.getToken().then(setToken);
-    _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
-    _tokenStream?.listen(setToken);
+
     _scrollController = ScrollController();
     _scrollController?.addListener(_scrollListener);
   }
@@ -926,9 +916,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   srollSmooth(BuildContext context) {
-    // if (Provider.of<UserInfo>(context, listen: false).musicMode) {
-    //   AudioPlayer().play(AssetSource('audio/decide.mp3'));
-    // }
+    if (Provider.of<UserInfo>(context, listen: false).musicMode) {
+      AudioPlayer().play(AssetSource('audio/decide.mp3'));
+    }
     Scrollable.ensureVisible(context,
         duration: const Duration(seconds: 1), curve: Curves.easeIn);
   }

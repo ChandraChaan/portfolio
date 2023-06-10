@@ -43,13 +43,12 @@ dependencies:
   provider: ^6.0.5
   sizer: ^2.0.15
   cached_network_image: ^3.2.3
-#  audioplayers: ^1.0.1
+  audioplayers: ^1.0.1
   flutter_local_notifications:
   firebase_core:
   firebase_messaging:
   http:
   flutter_animate: ^4.1.1+1
-  flutter_native_splash:
   geolocator: ^7.0.1
   geocoding: ^2.0.0
   battery_plus: ^2.0.2

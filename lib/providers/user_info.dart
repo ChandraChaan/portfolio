@@ -538,7 +538,7 @@ class UserInfo extends ChangeNotifier {
     final collectionRef = FirebaseFirestore.instance.collection('visiters');
     final documentSnapshot = await collectionRef.doc(id).get();
     print('the id have data');
-print(documentSnapshot.data());
+    print(documentSnapshot.data());
     if (documentSnapshot.exists) {
       final existingRecord = documentSnapshot.reference;
       print('the id have data step 3');
@@ -655,8 +655,20 @@ print(documentSnapshot.data());
   //   notifyListeners();
   // }
 
+  void setToken(String? token) {
+    print('FCM TokenToken: $token');
+    insertToeken(token);
+  }
+  Stream<String>? _tokenStream;
+  void getToken() {
+    FirebaseMessaging.instance.getToken().then(setToken);
+    _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
+    _tokenStream?.listen(setToken);
+  }
+
   initFun() async {
     await getPermission();
+    getToken();
     await getUserLocation();
     await getSystemName();
     await getBrowserName();
