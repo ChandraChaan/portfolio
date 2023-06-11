@@ -429,7 +429,7 @@ class _SecondpageState extends State<Secondpage> {
                                         constraints: constraints,
                                       )
                                     : SelectableText(
-                                        message.song,
+                                        message.msg,
                                         style: const TextStyle(fontSize: 16),
                                       );
                               },
