@@ -25,40 +25,39 @@ class _SecondpageState extends State<Secondpage> {
   bool circle = false;
   int rNumber = 0;
   List<Messages> listMesseges = [];
+  // List<String> listImages = [];
 
   _getReply() async {
     final String userGivenText = inputController.text.trim();
     if (userGivenText.isNotEmpty) {
       _userText = userGivenText;
-      String userText = userGivenText.toLowerCase();
       inputController.clear();
-      addItemToList(Messages(msg: _userText, left: false, shape: 'null'));
+      String userText = userGivenText.toLowerCase();
+      List<String> listImages = [];
+      showTable = false;
+      container = false;
+      circle = false;
+      addItemToList(Messages(msg: _userText, left: false, shape: 'null', images: []));
 
       String? rText;
       if (userGivenText.isNumeric) {
         rNumber = int.parse(userGivenText);
         rText = (2 * rNumber).toString();
         showTable = true;
-        container = false;
-        circle = false;
       } else {
-        showTable = false;
         List<String> name = userGivenText.split(' ');
         if (name[0] == 'create') {
           if (name.contains('container')) {
             container = true;
-            circle = false;
             rText = 'Container';
           } else if (name.contains('circle')) {
-            container = false;
             circle = true;
             rText = 'Circle';
           } else {
-            container = false;
-            circle = false;
             rText = "I didn't get";
           }
-        } else if (name[0] == 'open') {
+        }
+        else if (name[0] == 'open') {
           if (name.contains('admin')) {
             rText = 'Opening...';
             Navigator.of(context).push(AdminPageRoot());
@@ -69,10 +68,14 @@ class _SecondpageState extends State<Secondpage> {
           } else {
             rText = "I didn't get";
           }
-        } else {
-          container = false;
-          circle = false;
         }
+        else if(name[0] == 'show'){
+
+          //TODO : API call for google images
+          rText = 'Here we go...';
+          listImages = ['https://akm-img-a-in.tosshub.com/indiatoday/images/story/202205/Jr-NTR-n-1200by667_1200x768.jpeg?VersionId=u5nt3.z6xrqfONmd_vPjNTKjTPEfTYDg&size=690:388', 'https://imgd.aeplcdn.com/1280x720/n/cw/ec/44686/activa-6g-right-front-three-quarter.jpeg?q=80'];
+        }
+
 
         List<String> checkKeys = CommonUse().getReplayList.keys.toList();
 
@@ -85,7 +88,7 @@ class _SecondpageState extends State<Secondpage> {
 
       String shape = container ? 'container' : (circle ? 'circle' : 'null');
       addItemToList(
-          Messages(msg: rText ?? "I didn't get", left: true, shape: shape));
+          Messages(msg: rText ?? "I didn't get", left: true, shape: shape, images: listImages));
       setState(() {
         replyTest = rText ?? "I didn't get";
       });
@@ -261,6 +264,23 @@ class _SecondpageState extends State<Secondpage> {
                               height: 150,
                               width: 150,
                             ),
+                          if (message.images.isNotEmpty && message.left)
+                            Wrap(
+                              children: [
+                                for(int a=0; a<message.images.length; a++)
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
+                                  padding: const EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  height: 150,
+                                  width: 150,
+                                  child: Image.network(message.images[a]),
+                                )
+                              ],
+                            ),
                         ],
                       );
                     },
@@ -332,8 +352,9 @@ class Messages {
   final String msg;
   final bool left;
   final String shape;
+  final List<String> images;
 
-  Messages({required this.msg, required this.left, required this.shape});
+  Messages({required this.msg, required this.left, required this.shape, required this.images});
 }
 
 class TypewriterTextAnimation extends StatefulWidget {
