@@ -1,9 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:portfoli_web/home_page.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'dart:async';
 
+// import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import '../utils/dynamic_image.dart';
 import '../utils/getReplayList.dart';
 import 'navigate_newpage.dart';
 
@@ -25,7 +31,6 @@ class _SecondpageState extends State<Secondpage> {
   bool circle = false;
   int rNumber = 0;
   List<Messages> listMesseges = [];
-  // List<String> listImages = [];
 
   _getReply() async {
     final String userGivenText = inputController.text.trim();
@@ -34,10 +39,16 @@ class _SecondpageState extends State<Secondpage> {
       inputController.clear();
       String userText = userGivenText.toLowerCase();
       List<String> listImages = [];
+      String songName = '';
       showTable = false;
       container = false;
       circle = false;
-      addItemToList(Messages(msg: _userText, left: false, shape: 'null', images: []));
+      addItemToList(Messages(
+          msg: _userText,
+          left: false,
+          song: songName,
+          shape: 'null',
+          images: []));
 
       String? rText;
       if (userGivenText.isNumeric) {
@@ -56,8 +67,7 @@ class _SecondpageState extends State<Secondpage> {
           } else {
             rText = "I didn't get";
           }
-        }
-        else if (name[0] == 'open') {
+        } else if (name[0] == 'open') {
           if (name.contains('admin')) {
             rText = 'Opening...';
             Navigator.of(context).push(AdminPageRoot());
@@ -68,14 +78,28 @@ class _SecondpageState extends State<Secondpage> {
           } else {
             rText = "I didn't get";
           }
+        } else if (name[0] == 'play') {
+          int index = name.indexOf('the');
+          if (index < name.length - 1) {
+            String keyword = name[index + 1];
+            rText = 'Here we go...';
+            songName = await playVideo(keyword) ?? '';
+          } else {
+            rText = "I didn't get";
+          }
+        } else if (name.contains('show') &&
+            name.contains('images') &&
+            name.contains('of')) {
+          // Extract the keyword after 'of'
+          int index = name.indexOf('of');
+          if (index < name.length - 1) {
+            String keyword = name[index + 1];
+            rText = 'Here we go...';
+            listImages = await fetchGoogleImages(keyword);
+          } else {
+            rText = "I didn't get";
+          }
         }
-        else if(name[0] == 'show'){
-
-          //TODO : API call for google images
-          rText = 'Here we go...';
-          listImages = ['https://akm-img-a-in.tosshub.com/indiatoday/images/story/202205/Jr-NTR-n-1200by667_1200x768.jpeg?VersionId=u5nt3.z6xrqfONmd_vPjNTKjTPEfTYDg&size=690:388', 'https://imgd.aeplcdn.com/1280x720/n/cw/ec/44686/activa-6g-right-front-three-quarter.jpeg?q=80'];
-        }
-
 
         List<String> checkKeys = CommonUse().getReplayList.keys.toList();
 
@@ -84,15 +108,177 @@ class _SecondpageState extends State<Secondpage> {
             rText = CommonUse().getReplayList[key].toString();
           }
         });
+        if (rText.toString() == 'null' || rText == "I didn't get") {
+          rText = await generateGoogleResponse(_userText);
+        }
       }
 
       String shape = container ? 'container' : (circle ? 'circle' : 'null');
-      addItemToList(
-          Messages(msg: rText ?? "I didn't get", left: true, shape: shape, images: listImages));
+      addItemToList(Messages(
+          msg: rText ?? "I didn't get",
+          left: true,
+          song: songName,
+          shape: shape,
+          images: listImages));
       setState(() {
         replyTest = rText ?? "I didn't get";
       });
     }
+  }
+
+  String apiKey = 'AIzaSyCcyArg2tLT6FgAIvfe_mU2Q1DAzGC1gD4';
+  String searchEngineId = '23ca64046b86840ed';
+  String yutubeApiKey = 'AIzaSyDNtdImGrUc9SUOCw3Fm8bnbRoa48jfoXg';
+
+  Future<String?> generateGoogleResponse(String query) async {
+    final Uri uri = Uri.parse(
+      'https://www.googleapis.com/customsearch/v1?key=$apiKey&cx=$searchEngineId&q=$query',
+    );
+
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = json.decode(response.body);
+      if (data.containsKey('items')) {
+        List<dynamic> items = data['items'];
+        if (items.isNotEmpty) {
+          return items[0]['snippet'];
+        }
+      }
+    }
+
+    return null;
+  }
+
+  Future<List<String>> fetchGoogleImages(String keyword) async {
+    final Uri uri = Uri.parse(
+      'https://www.googleapis.com/customsearch/v1?key=$apiKey&cx=$searchEngineId&q=$keyword&searchType=image',
+    );
+
+    final response = await http.get(uri);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = json.decode(response.body);
+      if (data.containsKey('items')) {
+        List<dynamic> items = data['items'];
+        if (items.isNotEmpty) {
+          return items.map((item) => item['link']).cast<String>().toList();
+          // return 'Showing images of $keyword';
+        }
+      }
+    }
+    return [];
+  }
+
+// API endpoint for downloading a song
+  Future<String?> downloadSong(String songName) async {
+    try {
+      // Search for the song on YouTube
+      String searchQuery = Uri.encodeQueryComponent(songName);
+      final Uri searchUri = Uri.parse(
+          'https://www.googleapis.com/youtube/v3/search?part=snippet&q=$searchQuery&type=video&key=$yutubeApiKey');
+      final searchResponse = await http.get(searchUri);
+
+      if (searchResponse.statusCode == 200) {
+        Map<String, dynamic> searchData = json.decode(searchResponse.body);
+        if (searchData.containsKey('items')) {
+          List<dynamic> items = searchData['items'];
+          if (items.isNotEmpty) {
+            String videoId = items[0]['id']['videoId'];
+            String videoUrl = 'https://www.youtube.com/watch?v=$videoId';
+            // You can implement your download logic here using the videoUrl
+            return videoUrl;
+          }
+        }
+      }
+    } catch (e) {
+      print('Error downloading song: $e');
+    }
+
+    return null;
+  }
+
+  Future<void> downloadVideo(String videoUrl) async {
+    try {
+      // Send an HTTP GET request to download the video file
+      final response = await http.get(Uri.parse(videoUrl));
+
+      if (response.statusCode == 200) {
+        // Extract the filename from the URL
+        String fileName = videoUrl.split('/').last;
+
+        // Specify the path where you want to save the downloaded video file
+        String savePath = '/path/to/save/$fileName';
+
+        // Create a new file at the save path
+        final File file = File(savePath);
+
+        // Write the response body (video content) to the file
+        await file.writeAsBytes(response.bodyBytes);
+
+        print('Video downloaded successfully at: $savePath');
+      } else {
+        print('Error downloading video: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error downloading video: $e');
+    }
+  }
+
+// API endpoint for playing a song
+  Future<String?> playSong(String songName) async {
+    try {
+      // Search for the song on YouTube
+      String searchQuery = Uri.encodeQueryComponent(songName);
+      final Uri searchUri = Uri.parse(
+          'https://www.googleapis.com/youtube/v3/search?part=snippet&q=$searchQuery&type=video&key=$yutubeApiKey');
+      final searchResponse = await http.get(searchUri);
+
+      if (searchResponse.statusCode == 200) {
+        Map<String, dynamic> searchData = json.decode(searchResponse.body);
+        if (searchData.containsKey('items')) {
+          List<dynamic> items = searchData['items'];
+          if (items.isNotEmpty) {
+            String videoId = items[0]['id']['videoId'];
+            String videoUrl = 'https://www.youtube.com/watch?v=$videoId';
+            // You can implement your song playback logic here using the videoUrl
+            return videoUrl;
+          }
+        }
+      }
+    } catch (e) {
+      print('Error playing song: $e');
+    }
+
+    return null;
+  }
+
+// API endpoint for playing a video
+  Future<String?> playVideo(String videoName) async {
+    try {
+      // Search for the video on YouTube
+      String searchQuery = Uri.encodeQueryComponent(videoName);
+      final Uri searchUri = Uri.parse(
+          'https://www.googleapis.com/youtube/v3/search?part=snippet&q=$searchQuery&type=video&key=$yutubeApiKey');
+      final searchResponse = await http.get(searchUri);
+
+      if (searchResponse.statusCode == 200) {
+        Map<String, dynamic> searchData = json.decode(searchResponse.body);
+        if (searchData.containsKey('items')) {
+          List<dynamic> items = searchData['items'];
+          if (items.isNotEmpty) {
+            String videoId = items[0]['id']['videoId'];
+            print(videoId);
+            String videoUrl = 'https://www.youtube.com/watch?v=$videoId';
+            // You can implement your video playback logic here using the videoUrl
+            return videoId;
+          }
+        }
+      }
+    } catch (e) {
+      print('Error playing video: $e');
+    }
+
+    return null;
   }
 
   ScrollController _scrollController = ScrollController();
@@ -125,9 +311,11 @@ class _SecondpageState extends State<Secondpage> {
               const SizedBox(width: 18.0),
               IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: widget.hideBackButton ? null : () {
-                  Navigator.pop(context);
-                },
+                onPressed: widget.hideBackButton
+                    ? null
+                    : () {
+                        Navigator.pop(context);
+                      },
                 icon: Icon(
                   widget.hideBackButton ? Icons.chair : Icons.arrow_back,
                   color: Colors.black,
@@ -157,7 +345,9 @@ class _SecondpageState extends State<Secondpage> {
                       },
                     ),
                     SelectableText(
-                      (provd.address.isNotEmpty) ? 'Address: ${provd.address}' : '',
+                      (provd.address.isNotEmpty)
+                          ? 'Address: ${provd.address}'
+                          : '',
                       style: const TextStyle(
                         fontSize: 16.0,
                         overflow: TextOverflow.ellipsis,
@@ -238,11 +428,9 @@ class _SecondpageState extends State<Secondpage> {
                                             const Duration(milliseconds: 500),
                                         constraints: constraints,
                                       )
-                                    : Text(
-                                        message.msg,
+                                    : SelectableText(
+                                        message.song,
                                         style: const TextStyle(fontSize: 16),
-                                        maxLines: null,
-                                        overflow: TextOverflow.clip,
                                       );
                               },
                             ),
@@ -267,19 +455,36 @@ class _SecondpageState extends State<Secondpage> {
                           if (message.images.isNotEmpty && message.left)
                             Wrap(
                               children: [
-                                for(int a=0; a<message.images.length; a++)
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 10),
-                                  padding: const EdgeInsets.all(15),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  height: 150,
-                                  width: 150,
-                                  child: Image.network(message.images[a]),
-                                )
+                                for (int a = 0; a < message.images.length; a++)
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    padding: const EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    height: 150,
+                                    width: 150,
+                                    child: ImageDynamic(img: message.images[a]),
+                                  )
                               ],
+                            ),
+                          if ((message.song.toString() != 'null' &&
+                                  message.song.isNotEmpty) &&
+                              message.left)
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              height: 250,
+                              width: 250,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: YouTubePlayerWidget(
+                                  videoId: message.song,
+                                ),
+                              ),
                             ),
                         ],
                       );
@@ -353,8 +558,14 @@ class Messages {
   final bool left;
   final String shape;
   final List<String> images;
+  final String song;
 
-  Messages({required this.msg, required this.left, required this.shape, required this.images});
+  Messages(
+      {required this.msg,
+      required this.left,
+      required this.shape,
+      required this.song,
+      required this.images});
 }
 
 class TypewriterTextAnimation extends StatefulWidget {
@@ -407,6 +618,21 @@ class _TypewriterTextAnimationState extends State<TypewriterTextAnimation>
           child: Text(animatedText, style: const TextStyle(fontSize: 18)),
         );
       },
+    );
+  }
+}
+
+class YouTubePlayerWidget extends StatelessWidget {
+  final String videoId;
+
+  const YouTubePlayerWidget({super.key, required this.videoId});
+
+  @override
+  Widget build(BuildContext context) {
+    return YoutubePlayer(
+      showVideoProgressIndicator: true,
+      controller: YoutubePlayerController(initialVideoId: videoId),
+      aspectRatio: 16 / 9,
     );
   }
 }
