@@ -410,8 +410,10 @@ class _SecondpageState extends State<Secondpage> {
                           if ((message.song.toString() != 'null' &&
                                   message.song.isNotEmpty) &&
                               message.left)
-                            YouTubePlayerWidget(
-                              videoId: message.song,
+                            Center(
+                              child: YouTubePlayerWidget(
+                                videoId: message.song,
+                              ),
                             )
                         ],
                       );
@@ -552,7 +554,7 @@ class _TypewriterTextAnimationState extends State<TypewriterTextAnimation>
 class YouTubePlayerWidget extends StatefulWidget {
   final String videoId;
 
-  const YouTubePlayerWidget({super.key, required this.videoId});
+  const YouTubePlayerWidget({Key? key, required this.videoId}) : super(key: key);
 
   @override
   State<YouTubePlayerWidget> createState() => _YouTubePlayerWidgetState();
@@ -561,6 +563,7 @@ class YouTubePlayerWidget extends StatefulWidget {
 class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
   bool isPlaying = true;
   bool isMuted = false;
+  double videoProgress = 0.0;
 
   YoutubePlayerController _youtubeController =
       YoutubePlayerController.fromVideoId(
@@ -591,7 +594,7 @@ class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
           enableJavaScript: false,
           showFullscreenButton: false,
           showVideoAnnotations: false),
-    );
+    )..listen((event) { videoProgressListener(event);});
     super.initState();
   }
 
@@ -617,11 +620,29 @@ class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
     });
   }
 
+   videoProgressListener(YoutubePlayerValue? value) {
+    double progress = double.parse(_youtubeController.currentTime.toString()) / _youtubeController.value.metaData.duration.inSeconds;
+    setState(() {
+      videoProgress = progress;
+    });
+  }
+
+  void seekTo(double value) {
+    setState(() {
+      videoProgress = value;
+      double seekToDuration = double.parse((_youtubeController.value.metaData.duration.inSeconds *
+            videoProgress)
+            .round().toString());
+      print(seekToDuration);
+      _youtubeController.seekTo(seconds: seekToDuration, allowSeekAhead:true);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.deepPurple,
+        color: Colors.grey[900],
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -631,8 +652,8 @@ class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
           ),
         ],
       ),
-      height: 300,
-      width: 350,
+      height: 350,
+      width: 400,
       child: Stack(
         children: [
           ClipRRect(
@@ -660,23 +681,39 @@ class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
           Positioned.fill(
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: Row(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      isPlaying ? Icons.pause : Icons.play_arrow,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            isPlaying ? Icons.pause : Icons.play_arrow,
+                          ),
+                          color: Colors.white,
+                          onPressed: togglePlayPause,
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            isMuted ? Icons.volume_off : Icons.volume_up,
+                          ),
+                          color: Colors.white,
+                          onPressed: toggleMuteUnmute,
+                        ),
+                      ],
                     ),
-                    color: Colors.white,
-                    onPressed: togglePlayPause,
                   ),
-                  const SizedBox(height: 16),
-                  IconButton(
-                    icon: Icon(
-                      isMuted ? Icons.volume_off : Icons.volume_up,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Slider(
+                      value: videoProgress,
+                      onChanged: seekTo,
+                      activeColor: Colors.red,
+                      inactiveColor: Colors.white.withOpacity(0.5),
                     ),
-                    color: Colors.white,
-                    onPressed: toggleMuteUnmute,
                   ),
                 ],
               ),
@@ -687,3 +724,4 @@ class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
     );
   }
 }
+
