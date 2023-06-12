@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:portfoli_web/home_page.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'dart:async';
-
-// import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '../utils/dynamic_image.dart';
 import '../utils/getReplayList.dart';
 import 'navigate_newpage.dart';
@@ -79,14 +77,8 @@ class _SecondpageState extends State<Secondpage> {
             rText = "I didn't get";
           }
         } else if (name[0] == 'play') {
-          int index = name.indexOf('the');
-          if (index < name.length - 1) {
-            String keyword = name[index + 1];
-            rText = 'Here we go...';
-            songName = await playVideo(keyword) ?? '';
-          } else {
-            rText = "I didn't get";
-          }
+          rText = 'Here we go...';
+          songName = await playVideo(_userText) ?? '';
         } else if (name.contains('show') &&
             name.contains('images') &&
             name.contains('of')) {
@@ -169,34 +161,6 @@ class _SecondpageState extends State<Secondpage> {
     return [];
   }
 
-// API endpoint for downloading a song
-  Future<String?> downloadSong(String songName) async {
-    try {
-      // Search for the song on YouTube
-      String searchQuery = Uri.encodeQueryComponent(songName);
-      final Uri searchUri = Uri.parse(
-          'https://www.googleapis.com/youtube/v3/search?part=snippet&q=$searchQuery&type=video&key=$yutubeApiKey');
-      final searchResponse = await http.get(searchUri);
-
-      if (searchResponse.statusCode == 200) {
-        Map<String, dynamic> searchData = json.decode(searchResponse.body);
-        if (searchData.containsKey('items')) {
-          List<dynamic> items = searchData['items'];
-          if (items.isNotEmpty) {
-            String videoId = items[0]['id']['videoId'];
-            String videoUrl = 'https://www.youtube.com/watch?v=$videoId';
-            // You can implement your download logic here using the videoUrl
-            return videoUrl;
-          }
-        }
-      }
-    } catch (e) {
-      print('Error downloading song: $e');
-    }
-
-    return null;
-  }
-
   Future<void> downloadVideo(String videoUrl) async {
     try {
       // Send an HTTP GET request to download the video file
@@ -222,34 +186,6 @@ class _SecondpageState extends State<Secondpage> {
     } catch (e) {
       print('Error downloading video: $e');
     }
-  }
-
-// API endpoint for playing a song
-  Future<String?> playSong(String songName) async {
-    try {
-      // Search for the song on YouTube
-      String searchQuery = Uri.encodeQueryComponent(songName);
-      final Uri searchUri = Uri.parse(
-          'https://www.googleapis.com/youtube/v3/search?part=snippet&q=$searchQuery&type=video&key=$yutubeApiKey');
-      final searchResponse = await http.get(searchUri);
-
-      if (searchResponse.statusCode == 200) {
-        Map<String, dynamic> searchData = json.decode(searchResponse.body);
-        if (searchData.containsKey('items')) {
-          List<dynamic> items = searchData['items'];
-          if (items.isNotEmpty) {
-            String videoId = items[0]['id']['videoId'];
-            String videoUrl = 'https://www.youtube.com/watch?v=$videoId';
-            // You can implement your song playback logic here using the videoUrl
-            return videoUrl;
-          }
-        }
-      }
-    } catch (e) {
-      print('Error playing song: $e');
-    }
-
-    return null;
   }
 
 // API endpoint for playing a video
@@ -303,7 +239,7 @@ class _SecondpageState extends State<Secondpage> {
     final provd = Provider.of<UserInfo>(context, listen: false);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(140.0),
+        preferredSize: const Size.fromHeight(120.0),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -340,17 +276,19 @@ class _SecondpageState extends State<Secondpage> {
                       builder: (context, person, child) {
                         return SelectableText(
                           '${(person.systemName.isNotEmpty) ? 'System name: ${person.systemName}' : ''}\n${(person.browserName.isNotEmpty) ? 'Browser name: ${person.browserName}' : ''}',
-                          style: TextStyle(fontSize: 16.0),
+                          style: const TextStyle(fontSize: 16.0),
                         );
                       },
                     ),
-                    SelectableText(
-                      (provd.address.isNotEmpty)
-                          ? 'Address: ${provd.address}'
-                          : '',
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: SelectableText(
+                        (provd.address.isNotEmpty)
+                            ? 'Address: ${provd.address}'
+                            : '',
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10.0),
@@ -368,7 +306,7 @@ class _SecondpageState extends State<Secondpage> {
                     const SizedBox(width: 5),
                     Text(
                       '${context.read<UserInfo>().chargingStatus}%',
-                      style: TextStyle(fontSize: 16.0),
+                      style: const TextStyle(fontSize: 16.0),
                     ),
                   ],
                 ),
@@ -383,7 +321,7 @@ class _SecondpageState extends State<Secondpage> {
                     const SizedBox(width: 5),
                     Text(
                       context.read<UserInfo>().wifiNetworkTypeLoc,
-                      style: TextStyle(fontSize: 16.0),
+                      style: const TextStyle(fontSize: 16.0),
                     ),
                   ],
                 ),
@@ -472,20 +410,9 @@ class _SecondpageState extends State<Secondpage> {
                           if ((message.song.toString() != 'null' &&
                                   message.song.isNotEmpty) &&
                               message.left)
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.redAccent,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              height: 250,
-                              width: 250,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: YouTubePlayerWidget(
-                                  videoId: message.song,
-                                ),
-                              ),
-                            ),
+                            YouTubePlayerWidget(
+                              videoId: message.song,
+                            )
                         ],
                       );
                     },
@@ -622,17 +549,141 @@ class _TypewriterTextAnimationState extends State<TypewriterTextAnimation>
   }
 }
 
-class YouTubePlayerWidget extends StatelessWidget {
+class YouTubePlayerWidget extends StatefulWidget {
   final String videoId;
 
   const YouTubePlayerWidget({super.key, required this.videoId});
 
   @override
+  State<YouTubePlayerWidget> createState() => _YouTubePlayerWidgetState();
+}
+
+class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
+  bool isPlaying = true;
+  bool isMuted = false;
+
+  YoutubePlayerController _youtubeController =
+      YoutubePlayerController.fromVideoId(
+    videoId: '',
+    autoPlay: false,
+    params: const YoutubePlayerParams(
+        mute: true,
+        enableCaption: false,
+        pointerEvents: PointerEvents.none,
+        showControls: false,
+        enableKeyboard: false,
+        enableJavaScript: false,
+        showFullscreenButton: false,
+        showVideoAnnotations: false),
+  );
+
+  @override
+  void initState() {
+    _youtubeController = YoutubePlayerController.fromVideoId(
+      videoId: widget.videoId,
+      autoPlay: isPlaying,
+      params: YoutubePlayerParams(
+          mute: isMuted,
+          enableCaption: false,
+          pointerEvents: PointerEvents.none,
+          showControls: false,
+          enableKeyboard: false,
+          enableJavaScript: false,
+          showFullscreenButton: false,
+          showVideoAnnotations: false),
+    );
+    super.initState();
+  }
+
+  void togglePlayPause() {
+    setState(() {
+      isPlaying = !isPlaying;
+      if (isPlaying) {
+        _youtubeController.playVideo();
+      } else {
+        _youtubeController.pauseVideo();
+      }
+    });
+  }
+
+  void toggleMuteUnmute() {
+    setState(() {
+      isMuted = !isMuted;
+      if (isMuted) {
+        _youtubeController.mute();
+      } else {
+        _youtubeController.unMute();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return YoutubePlayer(
-      showVideoProgressIndicator: true,
-      controller: YoutubePlayerController(initialVideoId: videoId),
-      aspectRatio: 16 / 9,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.deepPurple,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 8.0,
+            spreadRadius: 4.0,
+          ),
+        ],
+      ),
+      height: 300,
+      width: 350,
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: YoutubePlayer(
+              controller: _youtubeController,
+              aspectRatio: 16 / 9,
+            ),
+          ),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withOpacity(0.7),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      isPlaying ? Icons.pause : Icons.play_arrow,
+                    ),
+                    color: Colors.white,
+                    onPressed: togglePlayPause,
+                  ),
+                  const SizedBox(height: 16),
+                  IconButton(
+                    icon: Icon(
+                      isMuted ? Icons.volume_off : Icons.volume_up,
+                    ),
+                    color: Colors.white,
+                    onPressed: toggleMuteUnmute,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -39,37 +39,6 @@
   <!-- Splash screen styles -->
   <link rel="stylesheet" type="text/css" href="splash/style.css">
 
-  <!-- Custom styles for progress bar -->
-  <style>
-    .progress-bar-container {
-      position: relative;
-      width: 200px;
-      height: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      background-color: #4caf50;
-      width: 0%;
-      transition: width 0.2s ease-in-out;
-    }
-
-    .percentage {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 12px;
-      font-weight: bold;
-    }
-  </style>
-
   <!-- Viewport settings -->
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 
@@ -82,18 +51,6 @@
 <body>
 <!-- Loading message -->
 <div class="loading">Loading...</div>
-
-<!-- Loader element -->
-<div id="loader" class="loader"></div>
-
-<!-- Container for the progress bar -->
-<div class="progress-bar-container">
-  <!-- Progress bar element -->
-  <div id="myProgressBar" class="progress-bar"></div>
-
-  <!-- Percentage element -->
-  <div id="incrementpercentage" class="percentage">0%</div>
-</div>
 
 <!-- Main Dart script -->
 <script src="main.dart.js" type="application/javascript"></script>
