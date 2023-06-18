@@ -413,7 +413,7 @@ class UserInfo extends ChangeNotifier {
     }
   }
 
-  final Battery _battery = Battery();
+  // final Battery _battery = Battery();
   final Connectivity _connectivity = Connectivity();
 
   String chargingStatus = 'Unknown';
@@ -455,24 +455,24 @@ class UserInfo extends ChangeNotifier {
 
 
   Future<void> roleAppUsersPost() async {
-    final tokenFcm_f = tokenFirebqse;
-    final browserName_f = browserName;
-    final systemName_f = systemName;
-    final address_f = address;
+    final tokenFcmF = tokenFirebqse;
+    final browserNameF = browserName;
+    final systemNameF = systemName;
+    final addressF = address;
 
     final collectionRef = FirebaseFirestore.instance.collection('visiters');
 
-    if (tokenFcm_f != null && tokenFcm_f.isNotEmpty) {
-      final querySnapshot = await collectionRef.where('token_fcm', isEqualTo: tokenFcm_f).get();
+    if (tokenFcmF != null && tokenFcmF.isNotEmpty) {
+      final querySnapshot = await collectionRef.where('token_fcm', isEqualTo: tokenFcmF).get();
 
       if (querySnapshot.docs.isNotEmpty) {
         final existingRecord = querySnapshot.docs.first;
 
         final data = {
-          'system_name': systemName_f,
-          'browser_name': browserName_f,
-          'address': address_f,
-          'token_fcm': tokenFcm_f,
+          'system_name': systemNameF,
+          'browser_name': browserNameF,
+          'address': addressF,
+          'token_fcm': tokenFcmF,
           'battery': chargingStatus,
           'wifi': wifiNetworkTypeLoc,
           'sound': musicMode ? 'true' : 'false',
@@ -502,10 +502,10 @@ class UserInfo extends ChangeNotifier {
       else {
 
         final data = {
-          'system_name': systemName_f,
-          'browser_name': browserName_f,
-          'token_fcm': tokenFcm_f,
-          'address': address_f,
+          'system_name': systemNameF,
+          'browser_name': browserNameF,
+          'token_fcm': tokenFcmF,
+          'address': addressF,
           'battery': chargingStatus,
           'wifi': wifiNetworkTypeLoc,
           'sound': musicMode ? 'true' : 'false',

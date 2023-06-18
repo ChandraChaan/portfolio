@@ -44,31 +44,25 @@
 
   <!-- Custom scripts for splash screen and progress bar -->
   <script src="splash/splash.js"></script>
-  <script src="progress.js"></script>
 
 </head>
 
 <body>
-<!-- Loading message -->
-<div class="loading">Loading...</div>
-
+<div class="splash-container">
+  <div class="splash-logo">
+    <img src="icons/Icon-512.png" alt="Logo">
+  </div>
+  <div class="splash-text">
+    <h1>Welcome to Programmer Site</h1>
+    <p>Get ready to explore the world of coding!</p>
+  </div>
+  <div class="progress-bar">
+    <div class="progress"></div>
+  </div>
+</div>
 <!-- Main Dart script -->
 <script src="main.dart.js" type="application/javascript"></script>
-<script>
-    // Event listener for when the page finishes loading
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js and initialize Flutter engine
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        }
-      }).then(function(engineInitializer) {
-        return engineInitializer.initializeEngine();
-      }).then(function(appRunner) {
-        return appRunner.runApp();
-      });
-    });
-  </script>
+
 </body>
 
 </html>
