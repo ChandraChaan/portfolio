@@ -6,7 +6,7 @@ function removeSplashFromWeb() {
 
 function startProgressAnimation() {
   var progressBar = document.querySelector('.progress');
-  var duration = 2000; // Total duration for the progress animation in milliseconds
+  var duration = 7000; // Total duration for the progress animation in milliseconds
   var interval = 10; // Interval for updating the progress in milliseconds
 
   var start = null;
@@ -18,11 +18,14 @@ function startProgressAnimation() {
 
     if (progress < duration) {
       requestAnimationFrame(animate);
+    } else {
+      removeSplashFromWeb(); // Call the function to hide the splash screen
     }
   }
 
   requestAnimationFrame(animate);
 }
+
 // Function to remove the splash screen elements
 function removeSplashFromWeb() {
   var splashContainer = document.querySelector('.splash-container');
@@ -32,23 +35,23 @@ function removeSplashFromWeb() {
     splashContainer.remove();
   }
 
-  document.body.style.background = "transparent";
+  document.body.style.background = 'transparent';
 }
 
-    // Event listener for when the page finishes loading
-    window.addEventListener('load', function(ev) {
-    startProgressAnimation();
-      // Download main.dart.js and initialize Flutter engine
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        }
-      }).then(function(engineInitializer) {
-        return engineInitializer.initializeEngine();
-      }).then(function(appRunner) {
-        return appRunner.runApp();
-      }).then(function() {
-    // Remove the splash screen
+// Event listener for when the page finishes loading
+window.addEventListener('load', function (ev) {
+startProgressAnimation();
+  // Download main.dart.js and initialize Flutter engine
+  _flutter.loader.loadEntrypoint({
+    serviceWorker: {
+      serviceWorkerVersion: serviceWorkerVersion,
+    },
+  }).then(function (engineInitializer) {
+    return engineInitializer.initializeEngine();
+  }).then(function (appRunner) {
+    return appRunner.runApp();
+  }).catch(function (error) {
+    console.error('Failed to initialize Flutter: ' + error);
     removeSplashFromWeb();
   });
-    });
+});
