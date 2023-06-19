@@ -10,6 +10,8 @@ import 'dart:async';
 import '../utils/dynamic_image.dart';
 import '../utils/getReplayList.dart';
 import 'navigate_newpage.dart';
+import 'package:flutter/services.dart';
+
 
 class Secondpage extends StatefulWidget {
   final bool hideBackButton;
@@ -233,6 +235,38 @@ class _SecondpageState extends State<Secondpage> {
       );
     });
   }
+  List<String> suggestions = [
+    'show some images of ',
+    'Hello',
+    'create a container',
+    'create a circle',
+    'play some RRR song telugu',
+  ];
+  List<String> filteredSuggestions = [];
+
+
+  @override
+  void initState() {
+    super.initState();
+    inputController.addListener(filterSuggestions);
+
+  }
+
+  void filterSuggestions() {
+    setState(() {
+      String searchText = inputController.text.toLowerCase();
+      filteredSuggestions = suggestions
+          .where((suggestion) =>
+          suggestion.toLowerCase().contains(searchText))
+          .toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    inputController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -420,6 +454,20 @@ class _SecondpageState extends State<Secondpage> {
                     },
                   ),
                 ),
+                const SizedBox(height: 10.0),
+                if(inputController.text.isNotEmpty)
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: filteredSuggestions.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(filteredSuggestions[index]),
+                        onTap: () {
+                          inputController.text = filteredSuggestions[index];
+                        },
+                      );
+                    },
+                  ),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 5.0),
                   decoration: const BoxDecoration(
