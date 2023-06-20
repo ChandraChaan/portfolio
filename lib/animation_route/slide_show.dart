@@ -25,7 +25,7 @@ class _SlideShowImageState extends State<SlideShowImage> {
     for (int a = 32; a <= 47; a++) 'mohan_paru/IMG_12$a.JPG',
   ];
 
-   late List<String> bottomImages;
+  late List<String> bottomImages;
 
   late PageController _topPageController;
   late PageController _bottomPageController;
@@ -87,7 +87,10 @@ class _SlideShowImageState extends State<SlideShowImage> {
                 itemCount: topImages.length,
                 itemBuilder:
                     (BuildContext context, int itemIndex, int pageViewIndex) =>
-                        Image.asset(topImages[itemIndex], fit: BoxFit.cover,),
+                        Image.asset(
+                          topImages[itemIndex],
+                          fit: BoxFit.cover,
+                        ),
                 options: CarouselOptions(
                   viewportFraction: 0.3,
                   autoPlay: true,
@@ -109,8 +112,7 @@ class _SlideShowImageState extends State<SlideShowImage> {
                   borderRadius: BorderRadius.circular(8.0),
                   color: Colors.black,
                 ),
-                child:
-                    const VideoPlayerWidget(), // Replace VideoPlayerWidget with your own video player implementation
+                child: const VideoPlayerWidget(url: 'mohan_paru/IMG_1231.MOV',),
               ),
             ),
           ),
@@ -120,7 +122,10 @@ class _SlideShowImageState extends State<SlideShowImage> {
                 itemCount: bottomImages.length,
                 itemBuilder:
                     (BuildContext context, int itemIndex, int pageViewIndex) =>
-                    Image.asset(bottomImages[itemIndex], fit: BoxFit.cover,),
+                        Image.asset(
+                          bottomImages[itemIndex],
+                          fit: BoxFit.cover,
+                        ),
                 options: CarouselOptions(
                   viewportFraction: 0.3,
                   autoPlay: true,
@@ -139,7 +144,9 @@ class _SlideShowImageState extends State<SlideShowImage> {
 }
 
 class VideoPlayerWidget extends StatefulWidget {
-  const VideoPlayerWidget({super.key});
+final String url;
+
+  const VideoPlayerWidget({super.key, required this.url});
 
   @override
   _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
@@ -153,7 +160,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   void initState() {
     super.initState();
     _videoPlayerController =
-        VideoPlayerController.asset('mohan_paru/IMG_1231.MOV')
+        VideoPlayerController.asset(widget.url)
           ..initialize().then((_) {
             setState(() {
               _isVideoInitialized = true;
@@ -212,12 +219,36 @@ class _ConfettiScreenPageState extends State<ConfettiScreenPage> {
     controllerTopCenter.play();
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            widget.childWidget,
-            buildLConfettiWidget(controllerTopCenter),
-            buildRConfettiWidget(controllerTopCenter),
-          ],
+        child: GestureDetector(
+          onDoubleTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: Container(
+                      // color: Colors.red,
+                      height: MediaQuery.of(context).size.height / 2,
+                      width: MediaQuery.of(context).size.height / 1.5,
+                      child: const Center(child: VideoPlayerWidget(url: 'mohan_paru/IMG_1793.MOV',),)),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('Close'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: Stack(
+            children: <Widget>[
+              widget.childWidget,
+              buildLConfettiWidget(controllerTopCenter),
+              buildRConfettiWidget(controllerTopCenter),
+            ],
+          ),
         ),
       ),
     );

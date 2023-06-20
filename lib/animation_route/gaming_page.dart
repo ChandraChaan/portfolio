@@ -506,7 +506,7 @@ class _SecondpageState extends State<Secondpage> {
                         children: [
                           Expanded(
                             child: TextField(
-                              autofocus: true,
+                              // autofocus: true,
                               controller: inputController,
                               textInputAction: TextInputAction.done,
                               onEditingComplete: _getReply,
