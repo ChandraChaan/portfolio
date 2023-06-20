@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:portfoli_web/animation_route/slide_show.dart';
 import 'package:portfoli_web/home_page.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,6 @@ import '../utils/dynamic_image.dart';
 import '../utils/getReplayList.dart';
 import 'navigate_newpage.dart';
 import 'package:flutter/services.dart';
-
 
 class Secondpage extends StatefulWidget {
   final bool hideBackButton;
@@ -52,9 +52,11 @@ class _SecondpageState extends State<Secondpage> {
 
       String? rText;
       if (userGivenText.isNumeric) {
-        rNumber = int.parse(userGivenText);
-        rText = (2 * rNumber).toString();
-        showTable = true;
+        // rNumber = int.parse(userGivenText);
+        rText = 'Happy birthday';
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) =>  const ConfettiScreenPage(childWidget: SlideShowImage(),)));
+        // showTable = true;
       } else {
         List<String> name = userGivenText.split(' ');
         if (name[0] == 'create') {
@@ -120,6 +122,7 @@ class _SecondpageState extends State<Secondpage> {
     }
   }
 
+  FocusNode textFocus = FocusNode();
   String apiKey = 'AIzaSyCcyArg2tLT6FgAIvfe_mU2Q1DAzGC1gD4';
   String searchEngineId = '23ca64046b86840ed';
   String yutubeApiKey = 'AIzaSyDNtdImGrUc9SUOCw3Fm8bnbRoa48jfoXg';
@@ -235,6 +238,7 @@ class _SecondpageState extends State<Secondpage> {
       );
     });
   }
+
   List<String> suggestions = [
     'show some images of ',
     'Hello',
@@ -243,21 +247,19 @@ class _SecondpageState extends State<Secondpage> {
     'play some RRR song telugu',
   ];
   List<String> filteredSuggestions = [];
-
+  int selectedIndex = -1;
 
   @override
   void initState() {
     super.initState();
     inputController.addListener(filterSuggestions);
-
   }
 
   void filterSuggestions() {
     setState(() {
       String searchText = inputController.text.toLowerCase();
       filteredSuggestions = suggestions
-          .where((suggestion) =>
-          suggestion.toLowerCase().contains(searchText))
+          .where((suggestion) => suggestion.toLowerCase().contains(searchText))
           .toList();
     });
   }
@@ -455,7 +457,7 @@ class _SecondpageState extends State<Secondpage> {
                   ),
                 ),
                 const SizedBox(height: 10.0),
-                if(inputController.text.isNotEmpty)
+                if (inputController.text.isNotEmpty)
                   ListView.builder(
                     shrinkWrap: true,
                     itemCount: filteredSuggestions.length,
@@ -468,39 +470,63 @@ class _SecondpageState extends State<Secondpage> {
                       );
                     },
                   ),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(
-                        width: 1.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          autofocus: true,
-                          controller: inputController,
-                          textInputAction: TextInputAction.done,
-                          onEditingComplete: _getReply,
-                          decoration: const InputDecoration(
-                            hintText: 'Type a message',
-                            border: InputBorder.none,
+                // Listener(
+                //   onPointerDown: (_) {
+                //     FocusScope.of(context).requestFocus(textFocus);
+                //   },
+                //   onPointerUp: (_) {
+                //     textFocus.unfocus();
+                //   },
+                //   child: RawKeyboardListener(
+                //     focusNode: textFocus,
+                //     onKey: (event) {
+                //       if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+                //         if (selectedIndex > 0) {
+                //           selectedIndex--;
+                //         }
+                //       } else if (event.logicalKey ==
+                //           LogicalKeyboardKey.arrowDown) {
+                //         if (selectedIndex < suggestions.length - 1) {
+                //           selectedIndex++;
+                //         }
+                //       }
+                //     },
+                //     child:
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            width: 1.0,
+                            color: Colors.grey,
                           ),
                         ),
                       ),
-                      IconButton(
-                        onPressed: _getReply,
-                        icon: const Icon(Icons.send_sharp),
-                        color:
-                            Colors.blue, // Set your desired send button color
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              autofocus: true,
+                              controller: inputController,
+                              textInputAction: TextInputAction.done,
+                              onEditingComplete: _getReply,
+                              decoration: const InputDecoration(
+                                hintText: 'Type a message',
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: _getReply,
+                            icon: const Icon(Icons.send_sharp),
+                            color: Colors
+                                .blue, // Set your desired send button color
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -602,7 +628,8 @@ class _TypewriterTextAnimationState extends State<TypewriterTextAnimation>
 class YouTubePlayerWidget extends StatefulWidget {
   final String videoId;
 
-  const YouTubePlayerWidget({Key? key, required this.videoId}) : super(key: key);
+  const YouTubePlayerWidget({Key? key, required this.videoId})
+      : super(key: key);
 
   @override
   State<YouTubePlayerWidget> createState() => _YouTubePlayerWidgetState();
@@ -642,7 +669,9 @@ class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
           enableJavaScript: false,
           showFullscreenButton: false,
           showVideoAnnotations: false),
-    )..listen((event) { videoProgressListener(event);});
+    )..listen((event) {
+        videoProgressListener(event);
+      });
     super.initState();
   }
 
@@ -668,8 +697,9 @@ class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
     });
   }
 
-   videoProgressListener(YoutubePlayerValue? value) {
-    double progress = double.parse(_youtubeController.currentTime.toString()) / _youtubeController.value.metaData.duration.inSeconds;
+  videoProgressListener(YoutubePlayerValue? value) {
+    double progress = double.parse(_youtubeController.currentTime.toString()) /
+        _youtubeController.value.metaData.duration.inSeconds;
     setState(() {
       videoProgress = progress;
     });
@@ -678,11 +708,12 @@ class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
   void seekTo(double value) {
     setState(() {
       videoProgress = value;
-      double seekToDuration = double.parse((_youtubeController.value.metaData.duration.inSeconds *
-            videoProgress)
-            .round().toString());
+      double seekToDuration = double.parse(
+          (_youtubeController.value.metaData.duration.inSeconds * videoProgress)
+              .round()
+              .toString());
       print(seekToDuration);
-      _youtubeController.seekTo(seconds: seekToDuration, allowSeekAhead:true);
+      _youtubeController.seekTo(seconds: seekToDuration, allowSeekAhead: true);
     });
   }
 
@@ -773,3 +804,120 @@ class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
   }
 }
 
+class SearchTextField extends StatefulWidget {
+  @override
+  _SearchTextFieldState createState() => _SearchTextFieldState();
+}
+
+class _SearchTextFieldState extends State<SearchTextField> {
+  final TextEditingController inputController = TextEditingController();
+  final FocusNode textFocus = FocusNode();
+  List<String> suggestions = ['Suggestion 1', 'Suggestion 2', 'Suggestion 3'];
+  int selectedIndex = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    textFocus.addListener(() {
+      setState(() {
+        selectedIndex = -1; // Reset the selected index when the text field loses focus
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    inputController.dispose();
+    textFocus.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (inputController.text.isNotEmpty)
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: suggestions.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(suggestions[index]),
+                onTap: () {
+                  setState(() {
+                    inputController.text = suggestions[index];
+                  });
+                },
+              );
+            },
+          ),
+        Listener(
+          onPointerDown: (_) {
+            FocusScope.of(context).requestFocus(textFocus);
+          },
+          onPointerUp: (_) {
+            textFocus.unfocus();
+          },
+          child: RawKeyboardListener(
+            focusNode: textFocus,
+            onKey: (event) {
+              if (event.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
+                if (selectedIndex > 0) {
+                  setState(() {
+                    selectedIndex--;
+                  });
+                }
+              } else if (event.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+                if (selectedIndex < suggestions.length - 1) {
+                  setState(() {
+                    selectedIndex++;
+                  });
+                }
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 5.0),
+              decoration: const BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    width: 1.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      autofocus: true,
+                      controller: inputController,
+                      textInputAction: TextInputAction.done,
+                      onEditingComplete: _getReply,
+                      decoration: const InputDecoration(
+                        hintText: 'Type a message',
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: _getReply,
+                    icon: const Icon(Icons.send_sharp),
+                    color: Colors
+                        .blue, // Set your desired send button color
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _getReply() {
+    // Perform the desired action when the send button is pressed
+    // For example, send the message or perform a search
+    String message = inputController.text;
+    print('Sending message: $message');
+  }
+}

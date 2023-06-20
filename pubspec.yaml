@@ -58,6 +58,9 @@ dependencies:
   intl: ^0.18.1
   cloud_firestore: ^4.8.0
   youtube_player_iframe: ^4.0.4
+  video_player:
+  confetti: ^0.7.0
+  carousel_slider: ^4.2.1
 
 
 
