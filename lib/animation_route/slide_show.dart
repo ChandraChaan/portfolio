@@ -25,17 +25,7 @@ class _SlideShowImageState extends State<SlideShowImage> {
     for (int a = 32; a <= 47; a++) 'mohan_paru/IMG_12$a.JPG',
   ];
 
-  final List<String> bottomImages = [
-    'mohan_paru/IMG_1196.JPG',
-    'mohan_paru/IMG_1197.JPG',
-    'mohan_paru/IMG_1198.JPG',
-    'mohan_paru/IMG_1199.JPG',
-    'mohan_paru/IMG_1200.JPG',
-    'mohan_paru/IMG_1207.JPG',
-    'mohan_paru/IMG_1209.JPG',
-    for (int a = 10; a <= 30; a++) 'mohan_paru/IMG_12$a.JPG',
-    for (int a = 32; a <= 47; a++) 'mohan_paru/IMG_12$a.JPG',
-  ];
+   late List<String> bottomImages;
 
   late PageController _topPageController;
   late PageController _bottomPageController;
@@ -48,7 +38,7 @@ class _SlideShowImageState extends State<SlideShowImage> {
     super.initState();
     _topPageController = PageController(initialPage: _topCurrentPage);
     _bottomPageController = PageController(initialPage: _bottomCurrentPage);
-
+    bottomImages = topImages.reversed.toList();
     // Auto-scrolling timer
     _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
       if (_topCurrentPage < topImages.length - 1) {
@@ -92,28 +82,23 @@ class _SlideShowImageState extends State<SlideShowImage> {
         children: [
           SizedBox(
             height: 200,
-            child: PageView.builder(
-              controller: _topPageController,
-              itemCount: topImages.length,
-              onPageChanged: (int index) {
-                setState(() {
-                  _topCurrentPage = index;
-                });
-              },
-              itemBuilder: (ctx, index) {
-                return Container(
-                  margin: const EdgeInsets.all(8.0),
-                  width: 300,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    image: DecorationImage(
-                      image: AssetImage(topImages[index]),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              },
-            ),
+            width: MediaQuery.of(context).size.width,
+            child: CarouselSlider.builder(
+                itemCount: topImages.length,
+                itemBuilder:
+                    (BuildContext context, int itemIndex, int pageViewIndex) =>
+                        Image.asset(topImages[itemIndex], fit: BoxFit.cover,),
+                options: CarouselOptions(
+                  viewportFraction: 0.3,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 2),
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enlargeCenterPage: true,
+                  enlargeFactor: 0.5,
+                  // onPageChanged: callbackFunction,
+                  scrollDirection: Axis.horizontal,
+                )),
           ),
           Expanded(
             child: Center(
@@ -131,28 +116,21 @@ class _SlideShowImageState extends State<SlideShowImage> {
           ),
           SizedBox(
             height: 200,
-            child: PageView.builder(
-              controller: _bottomPageController,
-              itemCount: bottomImages.length,
-              onPageChanged: (int index) {
-                setState(() {
-                  _bottomCurrentPage = index;
-                });
-              },
-              itemBuilder: (ctx, index) {
-                return Container(
-                  margin: const EdgeInsets.all(8.0),
-                  width: 300,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    image: DecorationImage(
-                      image: AssetImage(bottomImages[index]),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              },
-            ),
+            child: CarouselSlider.builder(
+                itemCount: bottomImages.length,
+                itemBuilder:
+                    (BuildContext context, int itemIndex, int pageViewIndex) =>
+                    Image.asset(bottomImages[itemIndex], fit: BoxFit.cover,),
+                options: CarouselOptions(
+                  viewportFraction: 0.3,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 2),
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enlargeCenterPage: true,
+                  enlargeFactor: 0.5,
+                  scrollDirection: Axis.horizontal,
+                )),
           ),
         ],
       ),
@@ -194,7 +172,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     if (!_isVideoInitialized) {
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     }
 
     return AspectRatio(
@@ -252,7 +230,7 @@ class _ConfettiScreenPageState extends State<ConfettiScreenPage> {
           shouldLoop: true,
           confettiController: controller,
           blastDirection: pi / 45,
-          numberOfParticles:99,
+          numberOfParticles: 99,
           blastDirectionality: BlastDirectionality.explosive),
     );
   }
@@ -263,7 +241,7 @@ class _ConfettiScreenPageState extends State<ConfettiScreenPage> {
       child: ConfettiWidget(
           shouldLoop: true,
           confettiController: controller,
-          numberOfParticles:99,
+          numberOfParticles: 99,
           blastDirection: pi / 45,
           blastDirectionality: BlastDirectionality.explosive),
     );
