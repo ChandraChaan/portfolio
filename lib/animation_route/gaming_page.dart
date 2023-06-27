@@ -54,8 +54,10 @@ class _SecondpageState extends State<Secondpage> {
       if (userGivenText.isNumeric) {
         // rNumber = int.parse(userGivenText);
         rText = 'Happy birthday';
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) =>  const ConfettiScreenPage(childWidget: SlideShowImage(),)));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const ConfettiScreenPage(
+                  childWidget: SlideShowImage(),
+                )));
         // showTable = true;
       } else {
         List<String> name = userGivenText.split(' ');
@@ -244,7 +246,7 @@ class _SecondpageState extends State<Secondpage> {
     'Hello',
     'create a container',
     'create a circle',
-    'play some RRR song telugu',
+    'play',
   ];
   List<String> filteredSuggestions = [];
   int selectedIndex = -1;
@@ -252,6 +254,7 @@ class _SecondpageState extends State<Secondpage> {
   @override
   void initState() {
     super.initState();
+    selectedIndex = filteredSuggestions.length-1;
     inputController.addListener(filterSuggestions);
   }
 
@@ -463,49 +466,49 @@ class _SecondpageState extends State<Secondpage> {
                     itemCount: filteredSuggestions.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text(filteredSuggestions[index]),
-                        onTap: () {
-                          inputController.text = filteredSuggestions[index];
-                        },
-                      );
+                            selected: selectedIndex == index ? true:false,
+                            title: Text(filteredSuggestions[index]),
+                            onTap: () {
+                              inputController.text = filteredSuggestions[index];
+                            },
+                          );
                     },
                   ),
-                // Listener(
-                //   onPointerDown: (_) {
-                //     FocusScope.of(context).requestFocus(textFocus);
-                //   },
-                //   onPointerUp: (_) {
-                //     textFocus.unfocus();
-                //   },
-                //   child: RawKeyboardListener(
-                //     focusNode: textFocus,
-                //     onKey: (event) {
-                //       if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
-                //         if (selectedIndex > 0) {
-                //           selectedIndex--;
-                //         }
-                //       } else if (event.logicalKey ==
-                //           LogicalKeyboardKey.arrowDown) {
-                //         if (selectedIndex < suggestions.length - 1) {
-                //           selectedIndex++;
-                //         }
-                //       }
-                //     },
-                //     child:
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 5.0),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                            width: 1.0,
-                            color: Colors.grey,
-                          ),
-                        ),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        width: 1.0,
+                        color: Colors.grey,
                       ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child:  CallbackShortcuts(
+                          bindings: <ShortcutActivator, VoidCallback>{
+                            const SingleActivator(LogicalKeyboardKey.arrowUp):
+                                () {
+                              if(filteredSuggestions.length > selectedIndex) {
+                                selectedIndex++;
+                                inputController.text = filteredSuggestions[selectedIndex];
+                              }
+                              setState(() {});
+                            },
+                            const SingleActivator(LogicalKeyboardKey.arrowDown):
+                                () {
+                              if(filteredSuggestions.length > selectedIndex) {
+                                selectedIndex--;
+                                inputController.text = filteredSuggestions[selectedIndex];
+                              }
+                              setState(() {});
+                            },
+                          },
+                          child: Focus(
+                            autofocus: true,
+                            child:TextField(
                               // autofocus: true,
                               controller: inputController,
                               textInputAction: TextInputAction.done,
@@ -516,17 +519,17 @@ class _SecondpageState extends State<Secondpage> {
                               ),
                             ),
                           ),
-                          IconButton(
-                            onPressed: _getReply,
-                            icon: const Icon(Icons.send_sharp),
-                            color: Colors
-                                .blue, // Set your desired send button color
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                //   ),
-                // ),
+                      IconButton(
+                        onPressed: _getReply,
+                        icon: const Icon(Icons.send_sharp),
+                        color:
+                            Colors.blue, // Set your desired send button color
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -820,7 +823,8 @@ class _SearchTextFieldState extends State<SearchTextField> {
     super.initState();
     textFocus.addListener(() {
       setState(() {
-        selectedIndex = -1; // Reset the selected index when the text field loses focus
+        selectedIndex =
+            -1; // Reset the selected index when the text field loses focus
       });
     });
   }
@@ -902,8 +906,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
                   IconButton(
                     onPressed: _getReply,
                     icon: const Icon(Icons.send_sharp),
-                    color: Colors
-                        .blue, // Set your desired send button color
+                    color: Colors.blue, // Set your desired send button color
                   ),
                 ],
               ),

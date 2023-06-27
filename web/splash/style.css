@@ -1,88 +1,30 @@
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #ffffff;
+html {
+  height: 100%
 }
 
-.splash-container {
+body {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
 
-.splash-logo img {
-  width: 150px; /* Adjust the size as needed */
-  animation: spin 2s infinite linear;
+.loading {
+  font-size: 48px;
+  font-weight: bold;
+  animation-name: heartbeat;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.splash-text {
-  text-align: center;
-  margin-top: 20px;
-  opacity: 0;
-  animation: slide-in 1s ease-in-out forwards;
-}
-
-@keyframes slide-in {
+@keyframes heartbeat {
   0% {
-    opacity: 0;
-    transform: translateY(-20px);
+    transform: scale(1);
   }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+  20% {
+    transform: scale(1.25);
   }
-}
-
-.splash-text h1 {
-  font-size: 28px; /* Adjust the font size as needed */
-  margin: 0;
-  animation: fade-in 2s ease-in-out forwards;
-}
-
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.splash-text p {
-  font-size: 16px; /* Adjust the font size as needed */
-  margin: 10px 0;
-  animation: fade-in 2s ease-in-out forwards;
-}
-
-.progress-bar {
-  width: 200px; /* Adjust the width as needed */
-  height: 10px; /* Adjust the height as needed */
-  background-color: #f1f1f1;
-  margin-top: 20px;
-}
-
-.progress {
-  width: 0%;
-  height: 100%;
-  background-color: #4caf50;
-}
-
-@keyframes progress-animation {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 100%;
+  40% {
+    transform: scale(1.5);
   }
 }
