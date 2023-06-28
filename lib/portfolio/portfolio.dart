@@ -19,9 +19,9 @@ class Portfolio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<UserInfo>(context, listen: false).imagesListModifying();
     return Consumer<UserInfo>(
       builder: (context, provider, child) {
-        provider.imagesListModifiying();
         return provider.imageLoaded
             ? Column(children: [
                 const SizedBox(
@@ -147,9 +147,7 @@ class Portfolio extends StatelessWidget {
                                       "assets/backGround-image.jpg",
                                       "assets/background_image.jpg",
                                       "assets/profile_image.jpg",
-// Add more images as needed
                                     ];
-
                                     return ImageDialog(images: images);
                                   },
                                 );

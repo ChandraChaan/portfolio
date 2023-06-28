@@ -92,6 +92,7 @@ flutter:
   assets:
     - assets/
     - assets/portfolio/chandra/
+    - assets/portfolio/
     - assets/skills/
     - assets/audio/
 #     - images/a_dot_burr.jpeg

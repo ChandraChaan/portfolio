@@ -17,7 +17,6 @@ class Projects extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserInfo>(
       builder: (context, provider, child) {
-        provider.imagesListModifiying();
         return Container(
           color: Theme.of(context).backgroundColor,
           child: Padding(

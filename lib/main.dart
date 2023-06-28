@@ -2,12 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
-import 'dart:async';
-import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'animation_route/gaming_page.dart';
 import 'home_page.dart';
 
 void main() async {
@@ -95,8 +91,8 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
         }
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          print('android firebase initiated');
-          return HomePage();
+            print('android firebase initiated');
+          return const HomePage();
           // return Secondpage(hideBackButton: true,);
         }
         // Otherwise, show something whilst waiting for initialization to complete

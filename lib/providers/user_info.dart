@@ -211,24 +211,39 @@ class UserInfo extends ChangeNotifier {
     },
   ];
 
-  Map imagesMap = {
+  Map<String, dynamic> imagesMap = {
     'all': [],
-    'ui': [
-      'assets/portfolio/chandra/arrton1.png',
-      'assets/portfolio/chandra/arrton2.png',
-      'assets/portfolio/chandra/arrton3.png',
+    'mobile ui': [
+      for (int a = 1; a <= 4; a++) 'assets/portfolio/arrton$a.png',
+      for (int a = 1; a <= 3; a++) 'assets/portfolio/arrton_d$a.png',
+      for (int a = 1; a <= 6; a++) 'assets/portfolio/arrton_m$a.png',
+      for (int a = 1; a <= 4; a++) 'assets/portfolio/ferry$a.png',
+      for (int a = 1; a <= 6; a++) 'assets/portfolio/ppl$a.png',
+      for (int a = 1; a <= 5; a++) 'assets/portfolio/randac$a.png',
+      for (int a = 1; a <= 38; a++) 'assets/portfolio/skedal$a.png',
+      for (int a = 1; a <= 17; a++) 'assets/portfolio/sunstone$a.png',
+    ],
+    'PWA': [
+      for (int a = 1; a <= 11; a++) 'assets/portfolio/edecofy$a.png',
     ],
   };
+
   List imagesKeys = [];
+  List totalImagesP = [];
   List pImages = [];
 
-  imagesListModifiying() {
+  imagesListModifying() {
     imageLoaded = false;
     imagesKeys.clear();
     pImages.clear();
+    totalImagesP.clear();
     imagesKeys = imagesMap.keys.toList();
     for (int a = 0; a < imagesKeys.length; a++) {
       for (int i = 0; i < imagesMap[imagesKeys[a]].length; i++) {
+        totalImagesP.add({
+          'img': '${imagesMap[imagesKeys[a]][i]}',
+          'type': '${imagesKeys[a]}'
+        });
         pImages.add({
           'img': '${imagesMap[imagesKeys[a]][i]}',
           'type': '${imagesKeys[a]}'
@@ -236,20 +251,27 @@ class UserInfo extends ChangeNotifier {
       }
     }
     imageLoaded = true;
+    // notifyListeners();
   }
 
   imageFilter(String typ) {
     imageLoaded = false;
     imageFilterString = typ;
-    pImages = pImages.where((o) => o['type'] == typ).toList();
+    if (typ == 'all') {
+      pImages = List.from(totalImagesP);
+    } else {
+      pImages = List.from(totalImagesP.where((o) => o['type'] == typ));
+    }
     imageLoaded = true;
     notifyListeners();
   }
 
-  themeColorChange(Color cl) {
 
+
+  themeColorChange(Color cl) {
     int colorCode = cl.value;
-    String colorHex = '0x${colorCode.toRadixString(16).padLeft(8, '0').toUpperCase()}';
+    String colorHex =
+        '0x${colorCode.toRadixString(16).padLeft(8, '0').toUpperCase()}';
     themeColor = cl;
     themeStringColor = colorHex;
     roleAppUsersPut();
@@ -292,8 +314,7 @@ class UserInfo extends ChangeNotifier {
     if (grantedPermission == 1) {
       if (tokenFirebqse == null) {
         return;
-      }
-      else {
+      } else {
         try {
           await http
               .post(
@@ -316,41 +337,39 @@ class UserInfo extends ChangeNotifier {
                 }),
               )
               .then((value) => print(value.body));
-        } catch (e) {
-        }
+        } catch (e) {}
       }
     }
     nLoading = false;
   }
 
-  sendANotification({String? title, String? dec, required String fbaseToken}) async {
+  sendANotification(
+      {String? title, String? dec, required String fbaseToken}) async {
     nLoading = true;
 
-
-        try {
-          await http
-              .post(
-                Uri.parse('https://fcm.googleapis.com/fcm/send'),
-                headers: <String, String>{
-                  'Content-Type': 'application/json',
-                  'Authorization':
-                      'key=AAAAy2Awy5M:APA91bHy0D-kVL7hR5vWL8M_56uxq_gpSPP6H29Ez7Goi7wIgm9Q1wGQSaE-fbVyF8F76vmfo1-gXYHVLh0TLW5wt5cgokJApoG2yCxf8qXXWhug_nY6HUrWzrmNk1QKhIq_Ebdme_d_'
-                },
-                body: json.encode({
-                  'to': fbaseToken.toString(),
-                  'message': {
-                    'token': fbaseToken.toString(),
-                  },
-                  "notification": {
-                    "title": title ?? "Portfolio Showcase",
-                    "body": dec ??
-                        "Check out the latest additions to my portfolio! Explore my creative projects and professional work."
-                  }
-                }),
-              )
-              .then((value) => print(value.body));
-        } catch (e) {
-        }
+    try {
+      await http
+          .post(
+            Uri.parse('https://fcm.googleapis.com/fcm/send'),
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+              'Authorization':
+                  'key=AAAAy2Awy5M:APA91bHy0D-kVL7hR5vWL8M_56uxq_gpSPP6H29Ez7Goi7wIgm9Q1wGQSaE-fbVyF8F76vmfo1-gXYHVLh0TLW5wt5cgokJApoG2yCxf8qXXWhug_nY6HUrWzrmNk1QKhIq_Ebdme_d_'
+            },
+            body: json.encode({
+              'to': fbaseToken.toString(),
+              'message': {
+                'token': fbaseToken.toString(),
+              },
+              "notification": {
+                "title": title ?? "Portfolio Showcase",
+                "body": dec ??
+                    "Check out the latest additions to my portfolio! Explore my creative projects and professional work."
+              }
+            }),
+          )
+          .then((value) => print(value.body));
+    } catch (e) {}
 
     nLoading = false;
   }
@@ -453,7 +472,6 @@ class UserInfo extends ChangeNotifier {
     return colorValue;
   }
 
-
   Future<void> roleAppUsersPost() async {
     final tokenFcmF = tokenFirebqse;
     final browserNameF = browserName;
@@ -463,7 +481,8 @@ class UserInfo extends ChangeNotifier {
     final collectionRef = FirebaseFirestore.instance.collection('visiters');
 
     if (tokenFcmF != null && tokenFcmF.isNotEmpty) {
-      final querySnapshot = await collectionRef.where('token_fcm', isEqualTo: tokenFcmF).get();
+      final querySnapshot =
+          await collectionRef.where('token_fcm', isEqualTo: tokenFcmF).get();
 
       if (querySnapshot.docs.isNotEmpty) {
         final existingRecord = querySnapshot.docs.first;
@@ -480,7 +499,7 @@ class UserInfo extends ChangeNotifier {
           'color_theme': themeStringColor,
           'seen_chat_screen': '0',
           'seen_full_resume': '0',
-          'date':DateTime.now().toString()
+          'date': DateTime.now().toString()
         };
 
         await existingRecord.reference.update(data);
@@ -496,11 +515,9 @@ class UserInfo extends ChangeNotifier {
           'data': updatedRecord,
         };
         print('device id $deviceId');
-       // print(response.toString());
+        // print(response.toString());
 
-      }
-      else {
-
+      } else {
         final data = {
           'system_name': systemNameF,
           'browser_name': browserNameF,
@@ -511,7 +528,7 @@ class UserInfo extends ChangeNotifier {
           'sound': musicMode ? 'true' : 'false',
           'dark_theme': themeLightMode ? 'false' : 'true',
           'color_theme': themeStringColor,
-          'seen_chat_screen':'0',
+          'seen_chat_screen': '0',
           'seen_full_resume': '0',
           'date': DateTime.now().toString()
         };
@@ -552,9 +569,9 @@ class UserInfo extends ChangeNotifier {
         'sound': '$musicMode'.toString(),
         'dark_theme': '${!themeLightMode}'.toString(),
         'color_theme': themeStringColor,
-        'seen_chat_screen':'0',
+        'seen_chat_screen': '0',
         'seen_full_resume': '0',
-        'date':DateTime.now().toString()
+        'date': DateTime.now().toString()
       };
 
       await existingRecord.update(data);
@@ -659,7 +676,9 @@ class UserInfo extends ChangeNotifier {
     print('FCM TokenToken: $token');
     insertToeken(token);
   }
+
   Stream<String>? _tokenStream;
+
   void getToken() {
     FirebaseMessaging.instance.getToken().then(setToken);
     _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
