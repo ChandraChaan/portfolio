@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 class ImageDynamic extends StatefulWidget {
   final String img;
   final double? height;
+  final double? width;
   final BoxFit? fit;
 
-  const ImageDynamic({Key? key, required this.img, this.height, this.fit})
+  const ImageDynamic({Key? key, required this.img, this.height, this.fit, this.width})
       : super(key: key);
 
   @override
@@ -23,6 +24,7 @@ class _ImageDynamicState extends State<ImageDynamic> {
             widget.img,
             fit: widget.fit ?? BoxFit.fitHeight,
             height: widget.height,
+      width: widget.width,
           )
         : _loadingFailed
             ? Column(
