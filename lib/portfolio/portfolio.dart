@@ -143,28 +143,10 @@ class Portfolio extends StatelessWidget {
                                   barrierDismissible: true,
                                   context: context,
                                   builder: (BuildContext context) {
-                                    final images = [
-                                      "assets/backGround-image.jpg",
-                                      "assets/background_image.jpg",
-                                      "assets/profile_image.jpg",
-                                    ];
+                                    final images = List<String>.from(provider.pImages[index]['images']);
                                     return ImageDialog(images: images);
                                   },
                                 );
-                                // this is start the code
-                                // showDialog(
-                                //     barrierDismissible: true,
-                                //     context: context,
-                                //     builder: (BuildContext context) {
-                                //       final longList = List<Widget>.generate(
-                                //           100, (i) => Text("Item $i"));
-                                //       return Dialog(
-                                //         child: ImageDynamic(
-                                //             img:
-                                //                 "${provider.pImages[index]['img']}"),
-                                //       );
-                                //     });
-                                // this is ending the code
                               },
                               child: Container(
                                 height: 170,

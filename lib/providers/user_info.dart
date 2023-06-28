@@ -214,17 +214,16 @@ class UserInfo extends ChangeNotifier {
   Map<String, dynamic> imagesMap = {
     'all': [],
     'mobile ui': [
-      for (int a = 1; a <= 4; a++) 'assets/portfolio/arrton$a.png',
-      for (int a = 1; a <= 3; a++) 'assets/portfolio/arrton_d$a.png',
-      for (int a = 1; a <= 6; a++) 'assets/portfolio/arrton_m$a.png',
-      for (int a = 1; a <= 4; a++) 'assets/portfolio/ferry$a.png',
-      for (int a = 1; a <= 6; a++) 'assets/portfolio/ppl$a.png',
-      for (int a = 1; a <= 5; a++) 'assets/portfolio/randac$a.png',
-      for (int a = 1; a <= 38; a++) 'assets/portfolio/skedal$a.png',
-      for (int a = 1; a <= 17; a++) 'assets/portfolio/sunstone$a.png',
+      {'thumb-line':'assets/portfolio/arrton1.png','img' : [for (int a = 1; a <= 4; a++) 'assets/portfolio/arrton$a.png',]},
+      {'thumb-line':'assets/portfolio/arrton_d1.png','img' : [for (int a = 1; a <= 3; a++) 'assets/portfolio/arrton_d$a.png',]},
+      {'thumb-line':'assets/portfolio/arrton_m1.png','img' : [for (int a = 1; a <= 6; a++) 'assets/portfolio/arrton_m$a.png',]},
+      {'thumb-line':'assets/portfolio/ferry1.png','img' : [for (int a = 1; a <= 4; a++) 'assets/portfolio/ferry$a.png',]},
+      {'thumb-line':'assets/portfolio/ppl1.png','img' : [for (int a = 1; a <= 6; a++) 'assets/portfolio/ppl$a.png',]},
+      {'thumb-line':'assets/portfolio/skedal1.png','img' : [for (int a = 1; a <= 38; a++) 'assets/portfolio/skedal$a.png',]},
+      {'thumb-line':'assets/portfolio/sunstone1.png','img' : [for (int a = 1; a <= 17; a++) 'assets/portfolio/sunstone$a.png',]},
     ],
     'PWA': [
-      for (int a = 1; a <= 11; a++) 'assets/portfolio/edecofy$a.png',
+      {'thumb-line':'assets/portfolio/edecofy1.png','img' : [for (int a = 1; a <= 11; a++) 'assets/portfolio/edecofy$a.png',]},
     ],
   };
 
@@ -241,11 +240,13 @@ class UserInfo extends ChangeNotifier {
     for (int a = 0; a < imagesKeys.length; a++) {
       for (int i = 0; i < imagesMap[imagesKeys[a]].length; i++) {
         totalImagesP.add({
-          'img': '${imagesMap[imagesKeys[a]][i]}',
+          'img': '${imagesMap[imagesKeys[a]][i]['thumb-line']}',
+          'images': imagesMap[imagesKeys[a]][i]['img'],
           'type': '${imagesKeys[a]}'
         });
         pImages.add({
-          'img': '${imagesMap[imagesKeys[a]][i]}',
+          'img': '${imagesMap[imagesKeys[a]][i]['thumb-line']}',
+          'images': imagesMap[imagesKeys[a]][i]['img'],
           'type': '${imagesKeys[a]}'
         });
       }
