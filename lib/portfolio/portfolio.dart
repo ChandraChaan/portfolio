@@ -392,40 +392,53 @@ class _ImageDialogState extends State<ImageDialog> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  if (hasPrevious)
-                    IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        size: 32,
-                        color: Colors.black87,
+                  Expanded(
+                    flex: 1,
+                    child: hasPrevious
+                        ? Center(
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          size: 32,
+                          color: Colors.black87,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            currentIndex--;
+                            updateVisibility();
+                          });
+                        },
                       ),
-                      onPressed: () {
-                        setState(() {
-                          currentIndex--;
-                          updateVisibility();
-                        });
-                      },
-                    ),
-                  if (hasNext)
-                    IconButton(
-                      icon: const Icon(
-                        Icons.arrow_forward,
-                        size: 32,
-                        color: Colors.black87,
+                    )
+                        : Container(),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: hasNext
+                        ? Center(
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.arrow_forward,
+                          size: 32,
+                          color: Colors.black87,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            currentIndex++;
+                            updateVisibility();
+                          });
+                        },
                       ),
-                      onPressed: () {
-                        setState(() {
-                          currentIndex++;
-                          updateVisibility();
-                        });
-                      },
-                    ),
+                    )
+                        : Container(),
+                  ),
                 ],
               ),
             ),
-            Container(
+            SizedBox(
               height: 100,
               child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 scrollDirection: Axis.horizontal,
                 itemCount: widget.images.length,
                 itemBuilder: (context, index) {
