@@ -90,34 +90,15 @@ class Portfolio extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {
-                                // Show the dialog using ImageDialog
                                 showDialog(
                                   barrierDismissible: true,
                                   context: context,
                                   builder: (BuildContext context) {
-                                    final images = [
-                                      "assets/backGround-image.jpg",
-                                      "assets/background_image.jpg",
-                                      "assets/profile_image.jpg",
-// Add more images as needed
-                                    ];
-
+                                    final images = List<String>.from(
+                                        provider.pImages[index]['images']);
                                     return ImageDialog(images: images);
                                   },
                                 );
-
-                                /*  showDialog(
-                                    barrierDismissible: true,
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      final longList = List<Widget>.generate(
-                                          100, (i) => Text("Item $i"));
-                                      return Dialog(
-                                        child: ImageDynamic(
-                                            img:
-                                                "${provider.pImages[index]['img']}"),
-                                      );
-                                    });*/
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
@@ -143,7 +124,8 @@ class Portfolio extends StatelessWidget {
                                   barrierDismissible: true,
                                   context: context,
                                   builder: (BuildContext context) {
-                                    final images = List<String>.from(provider.pImages[index]['images']);
+                                    final images = List<String>.from(
+                                        provider.pImages[index]['images']);
                                     return ImageDialog(images: images);
                                   },
                                 );
@@ -176,7 +158,7 @@ class ImageDialog extends StatefulWidget {
   final List<String> images;
   final int initialIndex;
 
-  ImageDialog({required this.images, this.initialIndex = 0});
+  const ImageDialog({super.key, required this.images, this.initialIndex = 0});
 
   @override
   _ImageDialogState createState() => _ImageDialogState();
@@ -205,72 +187,95 @@ class _ImageDialogState extends State<ImageDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: EdgeInsets.zero,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 50, vertical: 100),
       child: Container(
         color: Colors.white,
-        height: MediaQuery.of(context).size.height / 1.5,
-        width: MediaQuery.of(context).size.width / 1.5,
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            Stack(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+                ImageDynamic(
+                  img: widget.images[currentIndex],
+                  height: MediaQuery.of(context).size.height / 2.5,
+                  fit: BoxFit.cover,
+                ),
+                Positioned(
+                  top: 16,
+                  right: 16,
                   child: IconButton(
                     icon: const Icon(
                       Icons.close,
-                      size: 24,
+                      size: 32,
                       color: Colors.black87,
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ),
+                Positioned(
+                  top: 16,
+                  left: 16,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    child: Text(
+                      '${currentIndex + 1}/${widget.images.length}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
-            Flexible(
-                fit: FlexFit.loose,
-                child: ImageDynamic(img: widget.images[currentIndex])),
-            Container(
-              color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: Row(
+                // mainAxisAlignment: MainAxisAlignment.,
                 children: [
                   Expanded(
                     flex: 1,
                     child: hasPrevious
-                        ? IconButton(
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              size: 32,
-                              color: Colors.black87,
+                        ? Center(
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.arrow_back,
+                                size: 32,
+                                color: Colors.black87,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  currentIndex--;
+                                  updateVisibility();
+                                });
+                              },
                             ),
-                            onPressed: () {
-                              setState(() {
-                                currentIndex--;
-                                updateVisibility();
-                              });
-                            },
                           )
                         : Container(),
                   ),
                   Expanded(
+                    flex: 1,
                     child: hasNext
-                        ? IconButton(
-                            icon: const Icon(
-                              Icons.arrow_forward,
-                              size: 32,
-                              color: Colors.black87,
+                        ? Center(
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.arrow_forward,
+                                size: 32,
+                                color: Colors.black87,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  currentIndex++;
+                                  updateVisibility();
+                                });
+                              },
                             ),
-                            onPressed: () {
-                              setState(() {
-                                currentIndex++;
-                                updateVisibility();
-                              });
-                            },
                           )
                         : Container(),
                   ),

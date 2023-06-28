@@ -214,16 +214,56 @@ class UserInfo extends ChangeNotifier {
   Map<String, dynamic> imagesMap = {
     'all': [],
     'mobile ui': [
-      {'thumb-line':'assets/portfolio/arrton1.png','img' : [for (int a = 1; a <= 4; a++) 'assets/portfolio/arrton$a.png',]},
-      {'thumb-line':'assets/portfolio/arrton_d1.png','img' : [for (int a = 1; a <= 3; a++) 'assets/portfolio/arrton_d$a.png',]},
-      {'thumb-line':'assets/portfolio/arrton_m1.png','img' : [for (int a = 1; a <= 6; a++) 'assets/portfolio/arrton_m$a.png',]},
-      {'thumb-line':'assets/portfolio/ferry1.png','img' : [for (int a = 1; a <= 4; a++) 'assets/portfolio/ferry$a.png',]},
-      {'thumb-line':'assets/portfolio/ppl1.png','img' : [for (int a = 1; a <= 6; a++) 'assets/portfolio/ppl$a.png',]},
-      {'thumb-line':'assets/portfolio/skedal1.png','img' : [for (int a = 1; a <= 38; a++) 'assets/portfolio/skedal$a.png',]},
-      {'thumb-line':'assets/portfolio/sunstone1.png','img' : [for (int a = 1; a <= 17; a++) 'assets/portfolio/sunstone$a.png',]},
+      {
+        'thumb-line': 'assets/portfolio/arrton1.png',
+        'img': [
+          for (int a = 1; a <= 4; a++) 'assets/portfolio/arrton$a.png',
+        ]
+      },
+      {
+        'thumb-line': 'assets/portfolio/arrton_d1.png',
+        'img': [
+          for (int a = 1; a <= 3; a++) 'assets/portfolio/arrton_d$a.png',
+        ]
+      },
+      {
+        'thumb-line': 'assets/portfolio/arrton_m1.png',
+        'img': [
+          for (int a = 1; a <= 6; a++) 'assets/portfolio/arrton_m$a.png',
+        ]
+      },
+      {
+        'thumb-line': 'assets/portfolio/ferry1.png',
+        'img': [
+          for (int a = 1; a <= 4; a++) 'assets/portfolio/ferry$a.png',
+        ]
+      },
+      {
+        'thumb-line': 'assets/portfolio/ppl1.png',
+        'img': [
+          for (int a = 1; a <= 6; a++) 'assets/portfolio/ppl$a.png',
+        ]
+      },
+      {
+        'thumb-line': 'assets/portfolio/skedal1.png',
+        'img': [
+          for (int a = 1; a <= 38; a++) 'assets/portfolio/skedal$a.png',
+        ]
+      },
+      {
+        'thumb-line': 'assets/portfolio/sunstone1.png',
+        'img': [
+          for (int a = 1; a <= 17; a++) 'assets/portfolio/sunstone$a.png',
+        ]
+      },
     ],
     'PWA': [
-      {'thumb-line':'assets/portfolio/edecofy1.png','img' : [for (int a = 1; a <= 11; a++) 'assets/portfolio/edecofy$a.png',]},
+      {
+        'thumb-line': 'assets/portfolio/edecofy1.png',
+        'img': [
+          for (int a = 1; a <= 11; a++) 'assets/portfolio/edecofy$a.png',
+        ]
+      },
     ],
   };
 
@@ -257,17 +297,19 @@ class UserInfo extends ChangeNotifier {
 
   imageFilter(String typ) {
     imageLoaded = false;
-    imageFilterString = typ;
+    if(imageFilterString == typ){
+      pImages.shuffle();
+    }else{
     if (typ == 'all') {
       pImages = List.from(totalImagesP);
-    } else {
-      pImages = List.from(totalImagesP.where((o) => o['type'] == typ));
     }
+    else {
+      pImages = List.from(totalImagesP.where((o) => o['type'] == typ));
+    }}
+    imageFilterString = typ;
     imageLoaded = true;
     notifyListeners();
   }
-
-
 
   themeColorChange(Color cl) {
     int colorCode = cl.value;

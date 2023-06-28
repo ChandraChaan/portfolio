@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 
 class ImageDynamic extends StatefulWidget {
   final String img;
+  final double? height;
+  final BoxFit? fit;
 
-  const ImageDynamic({Key? key, required this.img}) : super(key: key);
+  const ImageDynamic({Key? key, required this.img, this.height, this.fit})
+      : super(key: key);
 
   @override
   _ImageDynamicState createState() => _ImageDynamicState();
@@ -18,14 +21,16 @@ class _ImageDynamicState extends State<ImageDynamic> {
     return widget.img.contains('assets')
         ? Image.asset(
             widget.img,
-            fit: BoxFit.fitHeight,
+            fit: widget.fit ?? BoxFit.fitHeight,
+            height: widget.height,
           )
         : _loadingFailed
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text('Failed to load image.', textAlign:TextAlign.center),
+                  const Text('Failed to load image.',
+                      textAlign: TextAlign.center),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
