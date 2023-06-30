@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import '../chat_game/chat_mini_game.dart';
+import '../admin/admin_screen.dart';
 
-import 'admin_data.dart';
-import 'gaming_page.dart';
-
-class SecondPageRoute extends CupertinoPageRoute {
-  SecondPageRoute() : super(builder: (BuildContext context) => Secondpage());
+class ChatGameRoute extends CupertinoPageRoute {
+  ChatGameRoute() : super(builder: (BuildContext context) => const ChatGame());
 
   // OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
   @override
@@ -16,7 +15,7 @@ class SecondPageRoute extends CupertinoPageRoute {
           scale: animation,
           child: FadeTransition(
             opacity: animation,
-            child: Secondpage(),
+            child: const ChatGame(),
           ),
         ));
   }
@@ -35,7 +34,7 @@ class AdminPageRoot extends CupertinoPageRoute {
           scale: animation,
           child: FadeTransition(
             opacity: animation,
-            child: AdminData(),
+            child: const AdminData(),
           ),
         ));
   }

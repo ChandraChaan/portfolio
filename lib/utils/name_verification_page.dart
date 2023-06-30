@@ -4,22 +4,24 @@ import 'package:portfoli_web/providers/user_info.dart';
 
 import 'package:provider/provider.dart';
 
-import 'about/about.dart';
+import '../about/about.dart';
 
 class NameVerificationPage extends StatefulWidget {
+  const NameVerificationPage({super.key});
+
   @override
   _NameVerificationPageState createState() => _NameVerificationPageState();
 }
 
 class _NameVerificationPageState extends State<NameVerificationPage> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _name = TextEditingController();
+  final TextEditingController _name = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -30,10 +32,7 @@ class _NameVerificationPageState extends State<NameVerificationPage> {
                 width: MediaQuery.of(context).size.width / 2,
                 child: TextFormField(
                   decoration: const InputDecoration(
-
                         border: OutlineInputBorder(),
-
-
                     labelText: 'Name',
                   ),
                   validator: (value) {
@@ -61,7 +60,7 @@ class _NameVerificationPageState extends State<NameVerificationPage> {
                       _formKey.currentState!.save();
                       if (context.read<UserInfo>().userDeatile(_name.text)) {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => About()));
+                            MaterialPageRoute(builder: (context) => const About()));
                       } else {
                         showDialog(
                           context: context,
@@ -70,14 +69,14 @@ class _NameVerificationPageState extends State<NameVerificationPage> {
                               child: AlertDialog(
                                 title: Text(
                                     'Welcome ${_name.text.split(' ').first}'),
-                                content: Text(
+                                content: const Text(
                                     'do not rush, slowly read caption below'),
                                 actions: [
                                   TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: Text('Ok'))
+                                      child: const Text('Ok'))
                                 ],
                               ),
                             );
@@ -86,7 +85,7 @@ class _NameVerificationPageState extends State<NameVerificationPage> {
                       }
                     }
                   },
-                  child: Text('Submit'),
+                  child: const Text('Submit'),
                 ),
               ),
             ],
