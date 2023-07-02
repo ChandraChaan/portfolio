@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveHome(
+    return ResponsiveWidget(
       mobile: mobileUI(context),
       tablet: tabletUI(context),
       desktop: deskTopUI(context),
@@ -169,10 +169,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget deskTopUI(BuildContext context) {
-    TextStyle styl = TextStyle(
-        color: Theme.of(context).primaryColor,
-        fontSize: 20,
-        fontWeight: FontWeight.w500);
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         body: Column(
@@ -226,6 +222,7 @@ class _HomePageState extends State<HomePage> {
                               srollSmooth(aboutScrollKey.currentContext!);
                             },
                             child: CommonText(
+                              // fontSize: 12,
                                 text: 'ABOUT',
                                 color: _isAboutVisible
                                     ? getOppositeColor(

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-
-
 import '../providers/user_info.dart';
 import 'dart:html' as html;
 import '../utils/font_style.dart';
@@ -21,7 +19,6 @@ class About extends StatefulWidget {
 class _AboutState extends State<About> {
   var searchTerm = "";
   var isSearching = false;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +49,20 @@ class _AboutState extends State<About> {
               FittedBox(
                 child: Row(
                   children: [
-                    getTextStyle(provider.userFirstName.toUpperCase(),
-                        FontWeight.bold, Theme.of(context).primaryColor, 70),
+                    CommonText(
+                      text: provider.userFirstName.toUpperCase(),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
                     const SizedBox(
                       width: 5,
                     ),
-                    getTextStyle(provider.user.split(' ').last.toUpperCase(),
-                        FontWeight.bold, Theme.of(context).indicatorColor, 70),
+                    CommonText(
+                      text: provider.user.split(' ').last.toUpperCase(),
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).indicatorColor,
+                      fontSize: 25,
+                    ),
                   ],
                 )
                     .animate()
@@ -67,13 +71,11 @@ class _AboutState extends State<About> {
                     .then(),
               ),
               FittedBox(
-                child: Text(provider.smallTagline,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 22,
-                      fontFamily: CommonFonts.frederickatheGreat,
-                    )).animate().scale(),
+                child: CommonText(
+                  text: provider.smallTagline,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: CommonFonts.frederickatheGreat,
+                ).animate().scale(),
               ),
               const SizedBox(
                 height: 30,
@@ -83,11 +85,10 @@ class _AboutState extends State<About> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: Text(provider.bigTagline,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,fontSize: 11),
-                      textAlign: TextAlign.start,
-                      // textScaleFactor: ScaleSize.textScaleFactor(context),
+                    child: CommonText(
+                      text:provider.bigTagline,
+                        fontSize: 4,
+
                     ),
                   ),
                   Expanded(
@@ -146,62 +147,13 @@ class _AboutState extends State<About> {
                     const SizedBox(
                       width: 20,
                     ),
-
-
-                    // IconButton(
-                    //   iconSize: 40,
-                    //   icon: const FaIcon(FontAwesomeIcons.twitter),
-                    //   onPressed: () {
-                    //     setState(
-                    //           () {
-                    //         Navigator.pop(context);
-                    //         isSearching = false;
-                    //         searchTerm = "";
-                    //       },
-                    //     );
-                    //   },
-                    // ),
-                    // const SizedBox(
-                    //   width: 20,
-                    // ),
-                    // IconButton(
-                    //   iconSize: 40,
-                    //   icon: const FaIcon(FontAwesomeIcons.linkedin),
-                    //   onPressed: () {
-                    //     setState(
-                    //           () {
-                    //         Navigator.pop(context);
-                    //         isSearching = false;
-                    //         searchTerm = "";
-                    //       },
-                    //     );
-                    //   },
-                    // ),
-                    // const SizedBox(
-                    //   width: 20,
-                    // ),
-                    // IconButton(
-                    //   iconSize: 40,
-                    //   icon: const FaIcon(FontAwesomeIcons.github),
-                    //   onPressed: () {
-                    //     setState(
-                    //           () {
-                    //         Navigator.pop(context);
-                    //         isSearching = false;
-                    //         searchTerm = "";
-                    //       },
-                    //     );
-                    //   },
-                    // ),
                   ],
                 ),
               ),
-          ],
+            ],
           ),
         ),
-
       );
     });
   }
 }
-

@@ -1,16 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:portfoli_web/utils/font_style.dart';
 import 'package:provider/provider.dart';
-
-import 'dart:convert';
-import 'dart:io';
-
 import '../providers/user_info.dart';
 import '../utils/dynamic_image.dart';
-import '../utils/dynamic_size.dart';
-import '../utils/font_style.dart';
 import 'image_dailog.dart';
 
 class Portfolio extends StatelessWidget {
@@ -28,8 +20,7 @@ class Portfolio extends StatelessWidget {
                 const SizedBox(
                   height: (50),
                 ),
-                getTextStyle("Portfolio", FontWeight.bold,
-                    Theme.of(context).primaryColor, 50),
+                const CommonText(text: "Portfolio", fontWeight: FontWeight.bold, fontSize: 12,),
                 const SizedBox(
                   height: 10,
                 ),
@@ -67,13 +58,12 @@ class Portfolio extends StatelessWidget {
                               },
                               child: Text(
                                 '${provider.imagesKeys[c]}'.toUpperCase(),
-                                style: GoogleFonts.abyssinicaSil(
-                                    textStyle: TextStyle(
+                                style: TextStyle(
                                         color: provider.imageFilterString ==
                                                 '${provider.imagesKeys[c]}'
                                             ? Colors.white
                                             : Theme.of(context).indicatorColor,
-                                        fontSize: 20)),
+                                        fontSize: 20),
                               )),
                         ),
                       ),

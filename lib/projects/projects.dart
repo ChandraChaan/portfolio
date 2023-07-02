@@ -1,12 +1,9 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:portfoli_web/utils/font_style.dart';
 import 'package:provider/provider.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 import '../providers/user_info.dart';
-import '../utils/dynamic_size.dart';
-import '../utils/font_style.dart';
 
 class Projects extends StatelessWidget {
   final bool smallCard;
@@ -26,8 +23,11 @@ class Projects extends StatelessWidget {
                 const SizedBox(
                   height: (100),
                 ),
-                getTextStyle("Projects", FontWeight.bold,
-                    Theme.of(context).primaryColor, 50),
+                const CommonText(
+                  text: "Projects",
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -57,37 +57,28 @@ class Projects extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      "${provider.projectsData[a]['title']}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          color:
-                                              Theme.of(context).primaryColor),
+                                    CommonText(
+                                      text:
+                                          "${provider.projectsData[a]['title']}",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 8,
                                     ),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Text(
-                                      "${provider.projectsData[a]['date']}",
-                                      style: TextStyle(
-                                          color:
-                                              Theme.of(context).primaryColor),
+                                    CommonText(
+                                      text:
+                                          "${provider.projectsData[a]['date']}",
+                                      fontSize: 9,
                                     ),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Text(
-                                      "${provider.projectsData[a]['summary']}",
-                                      style: GoogleFonts.abyssinicaSil(
-                                        textStyle: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontSize: 19),
-                                      ),
+                                    CommonText(
+                                      text:
+                                          "${provider.projectsData[a]['summary']}",
+                                      fontSize: 5,
                                       textAlign: TextAlign.left,
-                                      maxLines: 3,
                                     ),
                                   ],
                                 ),
@@ -114,37 +105,28 @@ class Projects extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            "${provider.projectsData[a]['title']}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18,
-                                                color: Theme.of(context)
-                                                    .primaryColor),
+                                          CommonText(
+                                            text:
+                                                "${provider.projectsData[a]['title']}",
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 8,
                                           ),
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          Text(
-                                            "${provider.projectsData[a]['date']}",
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColor),
+                                          CommonText(
+                                            text:
+                                                "${provider.projectsData[a]['date']}",
+                                            fontSize: 8,
                                           ),
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          Text(
-                                            "${provider.projectsData[a]['summary']}",
-                                            style: GoogleFonts.abyssinicaSil(
-                                              textStyle: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontSize: 19),
-                                            ),
+                                          CommonText(
+                                            text:
+                                                "${provider.projectsData[a]['summary']}",
+                                            fontSize: 5,
                                             textAlign: TextAlign.right,
-                                            maxLines: 3,
                                           ),
                                         ],
                                       ),
@@ -168,37 +150,28 @@ class Projects extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            "${provider.projectsData[a]['title']}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18,
-                                                color: Theme.of(context)
-                                                    .primaryColor),
+                                          CommonText(
+                                            text:
+                                                "${provider.projectsData[a]['title']}",
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 8,
                                           ),
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          Text(
-                                            "${provider.projectsData[a]['date']}",
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColor),
+                                          CommonText(
+                                            text:
+                                                "${provider.projectsData[a]['date']}",
+                                            fontSize: 9,
                                           ),
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          Text(
-                                            "${provider.projectsData[a]['summary']}",
-                                            style: GoogleFonts.abyssinicaSil(
-                                              textStyle: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontSize: 19),
-                                            ),
+                                          CommonText(
+                                            text:
+                                                "${provider.projectsData[a]['summary']}",
+                                            fontSize: 5,
                                             textAlign: TextAlign.left,
-                                            maxLines: 3,
                                           ),
                                         ],
                                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:portfoli_web/chat_game/chat_mini_game.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -54,9 +55,11 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
         }
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          print('android firebase initiated');
+          if (kDebugMode) {
+            print('android firebase initiated');
+          }
+          // return const ChatGame(hideBackButton: true);
           return const HomePage();
-          // return Secondpage(hideBackButton: true,);
         }
         // Otherwise, show something whilst waiting for initialization to complete
         return const Center(
@@ -75,7 +78,7 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
       if (message.notification != null) {
         if (kDebugMode) {
           print(
-            'Message also contained a notification: ${message.notification?.body}');
+              'Message also contained a notification: ${message.notification?.body}');
         }
         showDialog(
             context: context,

@@ -19,8 +19,11 @@ class Experience extends StatelessWidget {
           const SizedBox(
             height: 50,
           ),
-          getTextStyle("EXPERIENCE", FontWeight.bold,
-              Theme.of(context).primaryColor, 50),
+          const CommonText(
+            text: 'EXPERIENCE',
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+          ),
           const SizedBox(
             height: 10,
           ),
@@ -42,85 +45,15 @@ class Experience extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: 210,
-                          width: 140,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black38,
-                                // blurRadius: 100,
-                                spreadRadius: 0.5,
-                                offset: Offset(1.5, 1.5),
-                              )
-                            ],
-                            border: Border.all(
-                              color: Theme.of(context).indicatorColor,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 20.0, left: 20.0, right: 20.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                FittedBox(
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        provider.expData[index]["icon"],
-                                        color: Theme.of(context).indicatorColor,
-                                        size: 27,
-                                      ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      getTextStyle(
-                                          "${provider.expData[index]["title"]}",
-                                          FontWeight.bold,
-                                          Theme.of(context).primaryColor,
-                                          25)
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                getTextStyle(
-                                    "${provider.expData[index]["summary"]}",
-                                    FontWeight.normal,
-                                    Theme.of(context).primaryColor,
-                                    11),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                // getTextStyle("March 2019 - Present", FontWeight.normal, Colors.blue, 18),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      getTextStyle(
-                                          "${provider.expData[index]["startDate"]}",
-                                          FontWeight.normal,
-                                          Theme.of(context).indicatorColor,
-                                          14),
-                                      getTextStyle(
-                                          " - ${provider.expData[index]["present"] != true ? provider.expData[index]["endDate"] : 'Present'}",
-                                          FontWeight.normal,
-                                          Theme.of(context).indicatorColor,
-                                          14),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+                        child: cardItem(
+                            context: context,
+                            iconName: provider.expData[index]["icon"],
+                            title: "${provider.expData[index]["title"]}",
+                            summery: "${provider.expData[index]["summary"]}",
+                            startDate:
+                                "${provider.expData[index]["startDate"]}",
+                            endDate:
+                                " - ${provider.expData[index]["present"] != true ? provider.expData[index]["endDate"] : 'Present'}"),
                       );
                     })
                 : GridView.builder(
@@ -134,85 +67,14 @@ class Experience extends StatelessWidget {
                             childAspectRatio: 2,
                             mainAxisSpacing: 18.0),
                     itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        height: 210,
-                        width: 140,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black38,
-                              // blurRadius: 100,
-                              spreadRadius: 0.5,
-                              offset: Offset(1.5, 1.5),
-                            )
-                          ],
-                          border: Border.all(
-                            color: Theme.of(context).indicatorColor,
-                            width: 1.0,
-                          ),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 20.0, left: 20.0, right: 20.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              FittedBox(
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      provider.expData[index]["icon"],
-                                      color: Theme.of(context).indicatorColor,
-                                      size: 27,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    getTextStyle(
-                                        "${provider.expData[index]["title"]}",
-                                        FontWeight.bold,
-                                        Theme.of(context).primaryColor,
-                                        25)
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              getTextStyle(
-                                  "${provider.expData[index]["summary"]}",
-                                  FontWeight.normal,
-                                  Theme.of(context).primaryColor,
-                                  12),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              // getTextStyle("March 2019 - Present", FontWeight.normal, Colors.blue, 18),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    getTextStyle(
-                                        "${provider.expData[index]["startDate"]}",
-                                        FontWeight.normal,
-                                        Theme.of(context).indicatorColor,
-                                        14),
-                                    getTextStyle(
-                                        " - ${provider.expData[index]["present"] != true ? provider.expData[index]["endDate"] : 'Present'}",
-                                        FontWeight.normal,
-                                        Theme.of(context).indicatorColor,
-                                        14),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
+                      return cardItem(
+                          context: context,
+                          iconName: provider.expData[index]["icon"],
+                          title: "${provider.expData[index]["title"]}",
+                          summery: "${provider.expData[index]["summary"]}",
+                          startDate: "${provider.expData[index]["startDate"]}",
+                          endDate:
+                              " - ${provider.expData[index]["present"] != true ? provider.expData[index]["endDate"] : 'Present'}");
                     },
                   ),
           ),
@@ -221,6 +83,92 @@ class Experience extends StatelessWidget {
           ),
         ]);
       },
+    );
+  }
+
+  Widget cardItem(
+      {required BuildContext context,
+      required iconName,
+      required String title,
+      required String summery,
+      required String startDate,
+      required String endDate}) {
+    return Container(
+      height: 210,
+      width: 140,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black38,
+            // blurRadius: 100,
+            spreadRadius: 0.5,
+            offset: Offset(1.5, 1.5),
+          )
+        ],
+        border: Border.all(
+          color: Theme.of(context).indicatorColor,
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FittedBox(
+              child: Row(
+                children: [
+                  Icon(
+                    iconName,
+                    color: Theme.of(context).indicatorColor,
+                    size: 27,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  CommonText(
+                    text: title,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            CommonText(
+              text: summery,
+              fontSize: 5,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            // getTextStyle("March 2019 - Present", FontWeight.normal, Colors.blue, 18),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CommonText(
+                    text: startDate,
+                    fontSize: 7,
+                    color: Theme.of(context).indicatorColor,
+                  ),
+                  CommonText(
+                    text: " - $endDate",
+                    fontSize: 7,
+                    color: Theme.of(context).indicatorColor,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

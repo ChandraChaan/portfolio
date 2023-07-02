@@ -17,7 +17,7 @@ class _SettingsPopupState extends State<SettingsPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveHome(
+    return ResponsiveWidget(
       mobile: Dialog(
         backgroundColor: Theme.of(context).backgroundColor,
         shape: RoundedRectangleBorder(

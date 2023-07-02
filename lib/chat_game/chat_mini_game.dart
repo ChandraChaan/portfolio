@@ -56,13 +56,13 @@ class _ChatGameState extends State<ChatGame> {
 
       String? rText;
       if (userGivenText.isNumeric) {
-        // rNumber = int.parse(userGivenText);
-        rText = 'Happy birthday';
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const ConfettiScreenPage(
-                  childWidget: SlideShowImage(),
-                )));
-        // showTable = true;
+        rNumber = int.parse(userGivenText);
+        rText = rNumber.toString();
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => const ConfettiScreenPage(
+        //           childWidget: SlideShowImage(),
+        //         )));
+        showTable = true;
       } else {
         List<String> name = userGivenText.split(' ');
         if (name[0] == 'create') {

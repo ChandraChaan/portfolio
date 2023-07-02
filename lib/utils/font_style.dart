@@ -1,38 +1,62 @@
 import 'dart:math';
-
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-
-Widget getTextStyle(
-    String text, FontWeight fontWeight, Color color, double fontSizes) {
-  return AutoSizeText(
-    text,
-    style:
-
-          TextStyle(fontWeight: fontWeight, color: color, fontSize: fontSizes),
-
-    maxLines: 4,
-    // minFontSize: 10.0,
-    // stepGranularity: 1.0,
-  );
-}
+import 'package:portfoli_web/ui/responsive_ui.dart';
 
 class CommonText extends StatelessWidget {
   final String text;
   final Color? color;
+  final FontWeight? fontWeight;
+  final double? fontSize;
+  final String? fontFamily;
+  final TextAlign? textAlign;
 
-  const CommonText({super.key, required this.text, this.color});
+
+  const CommonText({super.key, required this.text, this.color, this.fontWeight, this.fontSize, this.fontFamily, this.textAlign});
 
   @override
   Widget build(BuildContext context) {
+    final double customFontSize = getFontSize(context, customMobileFontSize: fontSize ?? 10);
+    // return ResponsiveWidget(
+    //   mobile: textCommon(context:context, fontSize: customFontSize),
+    //   tablet: textCommon(context:context, fontSize: customFontSize),
+    //   desktop: textCommon(context:context, fontSize: customFontSize),
+    // );
+    return textCommon(context:context, fontSize: customFontSize);
+  }
+  Widget textCommon({required BuildContext context, required double fontSize}){
     return Text(
       text,
+      textScaleFactor: ScaleSize.textScaleFactor(context),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 4,
+      textAlign: textAlign,
       style: TextStyle(
+          fontWeight: fontWeight,
           color: color ?? Theme.of(context).primaryColor,
-          fontSize: 20,
-          fontFamily: 'FrederickatheGreat'),
+          fontSize: fontSize,
+          fontFamily: fontFamily ?? CommonFonts.frederickatheGreat
+      ),
     );
   }
+  double getFontSize(BuildContext context, {double customMobileFontSize = 12.0}) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    double mobileFontSize = customMobileFontSize;
+    double tabletFontSize = mobileFontSize * 1.25; // Scale up by 25%
+    double desktopFontSize = mobileFontSize * 1.5; // Scale up by 50%
+
+    if (screenWidth >= 600 && screenWidth < 1200) {
+      // For tablet devices
+      return tabletFontSize;
+    } else if (screenWidth >= 1200) {
+      // For desktop devices
+      return desktopFontSize;
+    }else{
+
+    // For mobile devices
+    return mobileFontSize;}
+  }
+
 }
 
 class ScaleSize {

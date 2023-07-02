@@ -31,8 +31,7 @@ class Skills extends StatelessWidget {
               padding: const EdgeInsets.only(top: 48.0),
               child: Column(
                 children: [
-                  getTextStyle("CODING SKILLS", FontWeight.bold,Theme.of(context).primaryColor, 50),
-
+                  const CommonText(text: "CODING SKILLS", fontWeight: FontWeight.bold, fontSize: 12,),
                   Wrap(
                     children: [
                       for (int i = 0; i < provider.skillData.length; i++)
@@ -54,16 +53,8 @@ class Skills extends StatelessWidget {
                                     height: 70,
                                     width: 70,
                                   ),
-                                  getTextStyle(
-                                      "${provider.skillData[i]["score"]}",
-                                      FontWeight.bold,
-                                      Theme.of(context).primaryColor,
-                                      35),
-                                  getTextStyle(
-                                      "${provider.skillData[i]["name"]}",
-                                      FontWeight.normal,
-                                      Theme.of(context).primaryColor,
-                                      23)
+                                  CommonText(text: "${provider.skillData[i]["score"]}", fontSize: 10, fontWeight: FontWeight.bold,),
+                                  CommonText(text: "${provider.skillData[i]["name"]}", fontSize: 8),
                                 ],
                               ),
                             ),
