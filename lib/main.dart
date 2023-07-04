@@ -30,6 +30,11 @@ class RoleApp extends StatelessWidget {
     return MaterialApp(
       title: 'Curriculum Vitae',
       theme: ThemeData(
+        typography: Typography.material2018(
+          englishLike: Typography.englishLike2018,
+          dense: Typography.dense2018,
+          tall: Typography.tall2018,
+        ),
         primaryColor: themeMode.themeLightMode ? Colors.black : Colors.white,
         indicatorColor: themeMode.themeColor,
         backgroundColor: themeMode.themeLightMode ? Colors.white : Colors.black,

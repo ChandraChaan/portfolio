@@ -51,32 +51,26 @@ class _AboutState extends State<About> {
                   children: [
                     CommonText(
                       text: provider.userFirstName.toUpperCase(),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
+                      style: FontStyles.heading1,
                     ),
                     const SizedBox(
                       width: 5,
                     ),
                     CommonText(
                       text: provider.user.split(' ').last.toUpperCase(),
-                      fontWeight: FontWeight.bold,
                       color: Theme.of(context).indicatorColor,
-                      fontSize: 25,
+                      style: FontStyles.heading1,
                     ),
                   ],
-                )
-                    .animate()
+                ).animate()
                     .flip(duration: const Duration(seconds: 3))
                     .shake()
                     .then(),
               ),
-              FittedBox(
-                child: CommonText(
-                  text: provider.smallTagline,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: CommonFonts.frederickatheGreat,
-                ).animate().scale(),
-              ),
+              CommonText(
+                text: provider.smallTagline,
+              style: FontStyles.heading6,
+              ).animate().scale(),
               const SizedBox(
                 height: 30,
               ),
@@ -84,11 +78,10 @@ class _AboutState extends State<About> {
               Row(
                 children: [
                   Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: CommonText(
-                      text:provider.bigTagline,
-                        fontSize: 4,
-
+                      text: provider.bigTagline,
+                      style: FontStyles.caption,
                     ),
                   ),
                   Expanded(
@@ -106,7 +99,7 @@ class _AboutState extends State<About> {
                     IconButton(
                       color: Theme.of(context).primaryColor,
                       icon: const FaIcon(FontAwesomeIcons.github),
-                      iconSize: 40,
+                      // iconSize: 40,
                       onPressed: () {
                         html.window
                             .open('https://github.com/ChandraChaan', 'new tab');
@@ -120,7 +113,7 @@ class _AboutState extends State<About> {
                     IconButton(
                         color: Theme.of(context).primaryColor,
                         icon: const FaIcon(FontAwesomeIcons.linkedin),
-                        iconSize: 40,
+                        // iconSize: 40,
                         onPressed: () {
                           html.window.open(
                               'https://www.linkedin.com/in/chandra-obul-reddy-dumpala-a7ba6415a/',
@@ -136,7 +129,7 @@ class _AboutState extends State<About> {
                         icon: const FaIcon(
                           FontAwesomeIcons.stackOverflow,
                         ),
-                        iconSize: 40,
+                        // iconSize: 40,
                         onPressed: () {
                           html.window.open(
                               'https://stackoverflow.com/users/16990621/chandra-chaan',

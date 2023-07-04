@@ -31,18 +31,18 @@ class Skills extends StatelessWidget {
               padding: const EdgeInsets.only(top: 48.0),
               child: Column(
                 children: [
-                  const CommonText(text: "CODING SKILLS", fontWeight: FontWeight.bold, fontSize: 12,),
+                  const CommonText(text: "CODING SKILLS", style: FontStyles.heading4,),
                   Wrap(
                     children: [
                       for (int i = 0; i < provider.skillData.length; i++)
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
-                            height: 210,
-                            width: 170,
+                            height: 120,
+                            width: 100,
                             color: Colors.grey.withOpacity(0.6),
                             child: Padding(
-                              padding: const EdgeInsets.all(18.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
@@ -50,11 +50,11 @@ class Skills extends StatelessWidget {
                                 children: [
                                   Image.asset(
                                     "${provider.skillData[i]["icon"]}",
-                                    height: 70,
-                                    width: 70,
+                                    height: 30,
+                                    width: 30,
                                   ),
-                                  CommonText(text: "${provider.skillData[i]["score"]}", fontSize: 10, fontWeight: FontWeight.bold,),
-                                  CommonText(text: "${provider.skillData[i]["name"]}", fontSize: 8),
+                                  CommonText(text: "${provider.skillData[i]["score"]}",style: FontStyles.body,),
+                                  CommonText(text: "${provider.skillData[i]["name"]}", style: FontStyles.body),
                                 ],
                               ),
                             ),

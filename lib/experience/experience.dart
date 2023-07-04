@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:portfoli_web/utils/headLine.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_info.dart';
@@ -16,25 +17,7 @@ class Experience extends StatelessWidget {
     return Consumer<UserInfo>(
       builder: (context, provider, child) {
         return Column(children: [
-          const SizedBox(
-            height: 50,
-          ),
-          const CommonText(
-            text: 'EXPERIENCE',
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            height: 6,
-            width: 120,
-            color: Theme.of(context).indicatorColor,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
+          const HeadLineText(heading: 'EXPERIENCE'),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: smallCard
@@ -64,7 +47,7 @@ class Experience extends StatelessWidget {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 18.0,
-                            childAspectRatio: 2,
+                            childAspectRatio: 1.56,
                             mainAxisSpacing: 18.0),
                     itemBuilder: (BuildContext context, int index) {
                       return cardItem(
@@ -94,7 +77,7 @@ class Experience extends StatelessWidget {
       required String startDate,
       required String endDate}) {
     return Container(
-      height: 210,
+      height: 280,
       width: 140,
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
@@ -124,15 +107,14 @@ class Experience extends StatelessWidget {
                   Icon(
                     iconName,
                     color: Theme.of(context).indicatorColor,
-                    size: 27,
+                    // size: 27,
                   ),
                   const SizedBox(
                     width: 5,
                   ),
                   CommonText(
                     text: title,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
+                    style: FontStyles.heading6,
                   )
                 ],
               ),
@@ -142,7 +124,7 @@ class Experience extends StatelessWidget {
             ),
             CommonText(
               text: summery,
-              fontSize: 5,
+              style: FontStyles.body,
             ),
             const SizedBox(
               height: 20,
@@ -155,12 +137,12 @@ class Experience extends StatelessWidget {
                 children: [
                   CommonText(
                     text: startDate,
-                    fontSize: 7,
+                    style: FontStyles.body,
                     color: Theme.of(context).indicatorColor,
                   ),
                   CommonText(
-                    text: " - $endDate",
-                    fontSize: 7,
+                    text: " $endDate",
+                    style: FontStyles.body,
                     color: Theme.of(context).indicatorColor,
                   )
                 ],

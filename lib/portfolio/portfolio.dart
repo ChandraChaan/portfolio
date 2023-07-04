@@ -3,6 +3,7 @@ import 'package:portfoli_web/utils/font_style.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_info.dart';
 import '../utils/dynamic_image.dart';
+import '../utils/headLine.dart';
 import 'image_dailog.dart';
 
 class Portfolio extends StatelessWidget {
@@ -17,21 +18,7 @@ class Portfolio extends StatelessWidget {
       builder: (context, provider, child) {
         return provider.imageLoaded
             ? Column(children: [
-                const SizedBox(
-                  height: (50),
-                ),
-                const CommonText(text: "Portfolio", fontWeight: FontWeight.bold, fontSize: 12,),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: (6),
-                  width: (120),
-                  color: Theme.of(context).indicatorColor,
-                ),
-                const SizedBox(
-                  height: (50),
-                ),
+                const HeadLineText(heading: 'PORTFOLIO'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -56,14 +43,15 @@ class Portfolio extends StatelessWidget {
                               onPressed: () {
                                 provider.imageFilter(provider.imagesKeys[c]);
                               },
-                              child: Text(
-                                '${provider.imagesKeys[c]}'.toUpperCase(),
-                                style: TextStyle(
-                                        color: provider.imageFilterString ==
-                                                '${provider.imagesKeys[c]}'
-                                            ? Colors.white
-                                            : Theme.of(context).indicatorColor,
-                                        fontSize: 20),
+                              child: Center(
+                                child: CommonText(
+                                  text:'${provider.imagesKeys[c]}'.toUpperCase(),
+                                  color: provider.imageFilterString ==
+                                      '${provider.imagesKeys[c]}'
+                                      ? Colors.white
+                                      : Theme.of(context).indicatorColor,
+                                  style:FontStyles.body,
+                                ),
                               )),
                         ),
                       ),

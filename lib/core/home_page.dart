@@ -188,10 +188,6 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           themeCOlorChange(),
-
-                          // const SizedBox(
-                          //   height: 10,
-                          // ),
                           Container(
                             height: 160,
                             width: 140,
@@ -222,12 +218,13 @@ class _HomePageState extends State<HomePage> {
                               srollSmooth(aboutScrollKey.currentContext!);
                             },
                             child: CommonText(
-                              // fontSize: 12,
                                 text: 'ABOUT',
                                 color: _isAboutVisible
                                     ? getOppositeColor(
                                         Theme.of(context).indicatorColor)
-                                    : null),
+                                    : null,
+                            style: _isAboutVisible ? FontStyles.heading6 : FontStyles.button,
+                            ),
                           ),
                           const SizedBox(
                             height: 10,
@@ -241,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                                 color: _isExpVisible
                                     ? getOppositeColor(
                                         Theme.of(context).indicatorColor)
-                                    : null),
+                                    : null,style: _isExpVisible ? FontStyles.heading6 : FontStyles.button,),
                           ),
                           const SizedBox(
                             height: 10,
@@ -252,6 +249,7 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: CommonText(
                                 text: "PORTFOLIO",
+                                style: _isPortfoVisible ? FontStyles.heading6 : FontStyles.button,
                                 color: _isPortfoVisible
                                     ? getOppositeColor(
                                         Theme.of(context).indicatorColor)
@@ -266,6 +264,7 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: CommonText(
                                 text: "SKILLS",
+                                style: _isSkillsVisible ? FontStyles.heading6 : FontStyles.button,
                                 color: _isSkillsVisible
                                     ? getOppositeColor(
                                         Theme.of(context).indicatorColor)
@@ -280,6 +279,7 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: CommonText(
                                   text: "PROJECTS",
+                                  style: _isProjectsVisible ? FontStyles.heading6 : FontStyles.button,
                                   color: _isProjectsVisible
                                       ? getOppositeColor(
                                           Theme.of(context).indicatorColor)
@@ -296,6 +296,7 @@ class _HomePageState extends State<HomePage> {
                                     ? getOppositeColor(
                                         Theme.of(context).indicatorColor)
                                     : null,
+                                style: _isContactVisible ? FontStyles.heading6 : FontStyles.button,
                                 text: "CONTACT",
                               )),
                         ],
@@ -426,10 +427,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget tabletUI(BuildContext context) {
-    TextStyle styl = TextStyle(
-        color: Theme.of(context).primaryColor,
-        fontSize: 20,
-        fontWeight: FontWeight.w500);
     return Scaffold(
       body: Column(
         children: [
@@ -703,10 +700,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Drawer drawerMobile(BuildContext context) {
-    TextStyle styl = TextStyle(
-        color: Theme.of(context).primaryColor,
-        fontSize: 20,
-        fontWeight: FontWeight.w500);
+
     return Drawer(
       child: SafeArea(
         child: Padding(
@@ -718,86 +712,6 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // SizedBox(
-                //   height: 150,
-                //   child: Consumer<UserInfo>(
-                //     builder: (context, provider, child) {
-                //       return Column(
-                //         children: [
-                //           themeCOlorChange(),
-                //           Row(
-                //             mainAxisAlignment: MainAxisAlignment.center,
-                //             children: [
-                //               provider.themeLightMode
-                //                   ? const Icon(
-                //                       Icons.sunny,
-                //                       color: Colors.white,
-                //                     )
-                //                   : const Icon(
-                //                       Icons.nightlight,
-                //                       color: Colors.black,
-                //                     ),
-                //               Transform.scale(
-                //                   scale: 1,
-                //                   child: Switch(
-                //                     onChanged: (bool newVal) {
-                //                       provider.changeThemeMode();
-                //                     },
-                //                     value: provider.themeLightMode,
-                //                     activeColor: Colors.white,
-                //                     activeTrackColor: Colors.white38,
-                //                     inactiveThumbColor: Colors.black,
-                //                     inactiveTrackColor: Colors.black38,
-                //                   )),
-                //             ],
-                //           ),
-                //           Row(
-                //             mainAxisAlignment: MainAxisAlignment.center,
-                //             children: [
-                //               provider.musicMode
-                //                   ? const Icon(
-                //                       Icons.add_alert_sharp,
-                //                       color: Colors.lightGreenAccent,
-                //                     )
-                //                   : const Icon(
-                //                       Icons.volume_mute_outlined,
-                //                       color: Colors.redAccent,
-                //                     ),
-                //               Transform.scale(
-                //                   scale: 1,
-                //                   child: Switch(
-                //                     onChanged: (bool newVal) {
-                //                       provider.changeMusicMode();
-                //                     },
-                //                     value: provider.musicMode,
-                //                     activeColor: Colors.green,
-                //                     activeTrackColor: Colors.greenAccent,
-                //                     inactiveThumbColor: Colors.redAccent,
-                //                     inactiveTrackColor: Colors.red,
-                //                   )),
-                //             ],
-                //           ),
-                //           TextButton(
-                //               onPressed: provider.nLoading == false
-                //                   ? () {
-                //                       sendNotificationThis();
-                //                     }
-                //                   : null,
-                //               child: provider.nLoading
-                //                   ? Text('Loading...', style: styl)
-                //                   : Text(
-                //                       'Notification',
-                //                       style: styl,
-                //                     ).animate(effects: [
-                //                       const ShakeEffect(
-                //                           duration: Duration(minutes: 2),
-                //                           delay: Duration(seconds: 5))
-                //                     ])),
-                //         ],
-                //       );
-                //     },
-                //   ),
-                // ),
                 themeCOlorChange(),
                 const SizedBox(
                   height: 50,
