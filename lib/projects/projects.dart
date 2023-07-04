@@ -26,14 +26,14 @@ class Projects extends StatelessWidget {
                   smallCard
                       ? timelineWidget(context,
                           title: "${provider.projectsData[a]['title']}",
-                          summery: "${provider.projectsData[a]['summary']}",
+                          summary: "${provider.projectsData[a]['summary']}",
                           date: "${provider.projectsData[a]['date']}",
                           isStartChild: false,
                           singleElement: true)
                       : timelineWidget(
                           context,
                           title: "${provider.projectsData[a]['title']}",
-                          summery: "${provider.projectsData[a]['summary']}",
+                          summary: "${provider.projectsData[a]['summary']}",
                           date: "${provider.projectsData[a]['date']}",
                           isStartChild: a.isOdd ? false : true,
                         ),
@@ -50,24 +50,35 @@ class Projects extends StatelessWidget {
 
   Widget timelineWidget(BuildContext context,
       {required String title,
-      required String summery,
+      required String summary,
       required String date,
       required bool isStartChild,
       bool singleElement = false}) {
     return TimelineTile(
       alignment: singleElement ? TimelineAlign.start : TimelineAlign.center,
       indicatorStyle: IndicatorStyle(
-        width: 30,
-        height: 30,
+        width: 40,
+        height: 40,
+        padding: const EdgeInsets.all(2),
         indicator: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).indicatorColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(10),
+            shape: BoxShape.circle,
+            color: Theme.of(context).indicatorColor,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                offset: const Offset(0, 2),
+                blurRadius: 6,
+                spreadRadius: 0,
+              ),
+            ],
           ),
           child: Center(
             child: Icon(
-              Icons.work,
-              color: Theme.of(context).indicatorColor,
+              Icons.folder,
+              // isStartChild? Icons.web : Icons.mobile_screen_share,
+              color: Theme.of(context).primaryColor,
+              size: 20,
             ),
           ),
         ),
@@ -80,30 +91,34 @@ class Projects extends StatelessWidget {
         color: Theme.of(context).indicatorColor,
         thickness: 2.0,
       ),
-      startChild: isStartChild == true
-          ? childElement(context,
+      startChild: isStartChild
+          ? childElement(
+              context,
               title: title,
-              summery: summery,
+              summery: summary,
               date: date,
-              isStartChild: isStartChild)
+              isStartChild: isStartChild,
+            )
           : null,
-      endChild: isStartChild == false
-          ? childElement(context,
+      endChild: !isStartChild
+          ? childElement(
+              context,
               title: title,
-              summery: summery,
+              summery: summary,
               date: date,
-              isStartChild: isStartChild)
+              isStartChild: isStartChild,
+              textAlignLeft: true,
+            )
           : null,
     );
   }
 
-  Widget childElement(
-    BuildContext context, {
-    required String title,
-    required String summery,
-    required String date,
-    required bool isStartChild,
-  }) {
+  Widget childElement(BuildContext context,
+      {required String title,
+      required String summery,
+      required String date,
+      required bool isStartChild,
+      bool textAlignLeft = false}) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
@@ -120,6 +135,7 @@ class Projects extends StatelessWidget {
             children: [
               CommonText(
                 text: title,
+                textAlign: textAlignLeft ? TextAlign.left : TextAlign.right,
                 style: FontStyles.heading5,
               ),
               const SizedBox(

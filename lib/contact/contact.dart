@@ -41,11 +41,8 @@ class Contact extends StatelessWidget {
                           Icons.location_pin,
                           color: Theme.of(context).primaryColor,
                         ),
-                        title: Text(
+                        title: const CommonText(text:
                           "Kadapa, Andra Pradesh, India, 516227",
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                          ),
                         ),
                       ),
                       ListTile(
@@ -53,20 +50,16 @@ class Contact extends StatelessWidget {
                           Icons.phone,
                           color: Theme.of(context).primaryColor,
                         ),
-                        title: Text("+91 70 93 599 788",
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                            )),
+                        title: const CommonText(text:"+91 7093 599 788",
+                        ),
                       ),
                       ListTile(
                         leading: Icon(
                           Icons.email_outlined,
                           color: Theme.of(context).primaryColor,
                         ),
-                        title: Text("Email: dchandrachaan@gmail.com",
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                            )),
+                        title: const CommonText(text:"Email: dchandrachaan@gmail.com",
+                        ),
                       ),
                     ],
                   )
@@ -79,10 +72,8 @@ class Contact extends StatelessWidget {
                             Icons.location_pin,
                             color: Theme.of(context).primaryColor,
                           ),
-                          title: Text("Kadapa, Andra Pradesh, India, 516227",
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                              )),
+                          title: const CommonText(text:"Kadapa, Andra Pradesh, India, 516227",
+                          ),
                         ),
                       ),
                       Expanded(
@@ -92,10 +83,8 @@ class Contact extends StatelessWidget {
                             Icons.phone,
                             color: Theme.of(context).primaryColor,
                           ),
-                          title: Text("+91 70 93 599 788",
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                              )),
+                          title: const CommonText(text:"+91 7093 599 788",
+                          ),
                         ),
                       ),
                       Expanded(
@@ -105,10 +94,8 @@ class Contact extends StatelessWidget {
                             Icons.email_outlined,
                             color: Theme.of(context).primaryColor,
                           ),
-                          title: Text("Email: dchandrachaan@gmail.com",
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                              )),
+                          title: const CommonText(text:"Email: dchandrachaan@gmail.com",
+                          ),
                         ),
                       ),
                     ],

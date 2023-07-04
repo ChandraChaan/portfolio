@@ -62,14 +62,15 @@ class _AboutState extends State<About> {
                       style: FontStyles.heading1,
                     ),
                   ],
-                ).animate()
+                )
+                    .animate()
                     .flip(duration: const Duration(seconds: 3))
                     .shake()
                     .then(),
               ),
               CommonText(
                 text: provider.smallTagline,
-              style: FontStyles.heading6,
+                style: FontStyles.heading6,
               ).animate().scale(),
               const SizedBox(
                 height: 30,
@@ -118,9 +119,7 @@ class _AboutState extends State<About> {
                           html.window.open(
                               'https://www.linkedin.com/in/chandra-obul-reddy-dumpala-a7ba6415a/',
                               'new tab');
-                        }
-                        // https://www.linkedin.com/in/chandra-obul-reddy-dumpala-a7ba6415a/                      },
-                        ),
+                        }),
                     const SizedBox(
                       width: 20,
                     ),
