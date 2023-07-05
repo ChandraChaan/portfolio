@@ -68,9 +68,20 @@ class _AboutState extends State<About> {
                     .shake()
                     .then(),
               ),
-              CommonText(
-                text: provider.smallTagline,
-                style: FontStyles.heading6,
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child:  CommonText(
+                      text: provider.smallTagline,
+                      style: FontStyles.heading6,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                ],
               ).animate().scale(),
               const SizedBox(
                 height: 30,
@@ -94,53 +105,51 @@ class _AboutState extends State<About> {
               const SizedBox(
                 height: 50,
               ),
-              FittedBox(
-                child: Row(
-                  children: [
-                    IconButton(
+              Row(
+                children: [
+                  IconButton(
+                    color: Theme.of(context).primaryColor,
+                    icon: const FaIcon(FontAwesomeIcons.github),
+                    // iconSize: 40,
+                    onPressed: () {
+                      html.window
+                          .open('https://github.com/ChandraChaan', 'new tab');
+
+                      // https://github.com/ChandraChaan
+                    },
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  IconButton(
                       color: Theme.of(context).primaryColor,
-                      icon: const FaIcon(FontAwesomeIcons.github),
+                      icon: const FaIcon(FontAwesomeIcons.linkedin),
                       // iconSize: 40,
                       onPressed: () {
-                        html.window
-                            .open('https://github.com/ChandraChaan', 'new tab');
-
-                        // https://github.com/ChandraChaan
-                      },
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    IconButton(
-                        color: Theme.of(context).primaryColor,
-                        icon: const FaIcon(FontAwesomeIcons.linkedin),
-                        // iconSize: 40,
-                        onPressed: () {
-                          html.window.open(
-                              'https://www.linkedin.com/in/chandra-obul-reddy-dumpala-a7ba6415a/',
-                              'new tab');
-                        }),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    IconButton(
-                        color: Theme.of(context).primaryColor,
-                        icon: const FaIcon(
-                          FontAwesomeIcons.stackOverflow,
-                        ),
-                        // iconSize: 40,
-                        onPressed: () {
-                          html.window.open(
-                              'https://stackoverflow.com/users/16990621/chandra-chaan',
-                              'new tab');
-                        }
-                        // https://www.linkedin.com/in/chandra-obul-reddy-dumpala-a7ba6415a/                      },
-                        ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                  ],
-                ),
+                        html.window.open(
+                            'https://www.linkedin.com/in/chandra-obul-reddy-dumpala-a7ba6415a/',
+                            'new tab');
+                      }),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  IconButton(
+                      color: Theme.of(context).primaryColor,
+                      icon: const FaIcon(
+                        FontAwesomeIcons.stackOverflow,
+                      ),
+                      // iconSize: 40,
+                      onPressed: () {
+                        html.window.open(
+                            'https://stackoverflow.com/users/16990621/chandra-chaan',
+                            'new tab');
+                      }
+                      // https://www.linkedin.com/in/chandra-obul-reddy-dumpala-a7ba6415a/                      },
+                      ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                ],
               ),
             ],
           ),

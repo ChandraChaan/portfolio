@@ -32,7 +32,7 @@ class CommonText extends StatelessWidget {
       text,
       // textScaleFactor: ScaleSize.textScaleFactor(context),
       overflow: TextOverflow.ellipsis,
-      maxLines: 10,
+      maxLines: 13,
       textAlign: textAlign,
       style: style?.copyWith(color: color ?? Theme.of(context).primaryColor) ??
           FontStyles.body.copyWith(color: Theme.of(context).primaryColor),

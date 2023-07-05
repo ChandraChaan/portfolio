@@ -80,7 +80,7 @@ class Experience extends StatelessWidget {
       height: 280,
       width: 140,
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).backgroundColor,
         boxShadow: const [
           BoxShadow(
             color: Colors.black38,

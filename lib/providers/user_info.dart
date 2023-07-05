@@ -21,12 +21,10 @@ class UserInfo extends ChangeNotifier {
   String imageFilterString = 'all';
   bool imageLoaded = false;
   String smallTagline =
-      'THE NEXT BIG IDEA IS WAITING FOR ITS NEXT BIG CHANGER WITH THEMSELF';
-  String bigTagline = 'I have a total of around 5.3 years of experience,'
-      'recently, with FLUTTER, I\'m developed multiple projects. I believe my'
-      'professional skill set and my previous experience working as a Full-Stack and'
-      'senior flutter developer could make me a valuable asset to your organization,'
-      ' so I am writing to inform you of my interest in pursuing a career at org name';
+      'Experienced Senior Flutter Developer driving successful projects, poised to make a meaningful impact.';
+  String bigTagline =
+      'Armed with extensive software development experience, including 4 years of expertise in Flutter, I am a seasoned Senior Flutter Developer known for consistently delivering successful projects. With a strong track record in creating robust and innovative solutions, I have also honed my skills as a Full-Stack Developer, integrating front-end and back-end technologies. My deep understanding of the software development lifecycle and dedication to crafting high-quality applications position me as a valuable asset.'
+      'I bring a proven track record of delivering results, an unwavering commitment to excellence, and a collaborative mindset. Thriving in dynamic and fast-paced environments, I leverage my technical expertise and problem-solving abilities to drive positive outcomes. Eager to contribute to a forward-thinking organization, I am adaptable, possess a strong work ethic, and excel in collaborative, goal-oriented environments. With confidence in my ability to make a significant impact, I am excited about contributing to growth and innovation.';
 
   bool userDeatile(String? text) {
     user = text ?? 'User';
@@ -297,15 +295,15 @@ class UserInfo extends ChangeNotifier {
 
   imageFilter(String typ) {
     imageLoaded = false;
-    if(imageFilterString == typ){
+    if (imageFilterString == typ) {
       pImages.shuffle();
-    }else{
-    if (typ == 'all') {
-      pImages = List.from(totalImagesP);
+    } else {
+      if (typ == 'all') {
+        pImages = List.from(totalImagesP);
+      } else {
+        pImages = List.from(totalImagesP.where((o) => o['type'] == typ));
+      }
     }
-    else {
-      pImages = List.from(totalImagesP.where((o) => o['type'] == typ));
-    }}
     imageFilterString = typ;
     imageLoaded = true;
     notifyListeners();
