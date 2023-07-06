@@ -77,7 +77,7 @@ class Projects extends StatelessWidget {
             child: Icon(
               Icons.folder,
               // isStartChild? Icons.web : Icons.mobile_screen_share,
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).focusColor,
               size: 20,
             ),
           ),

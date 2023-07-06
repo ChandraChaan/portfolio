@@ -8,6 +8,7 @@ class CommonText extends StatelessWidget {
   final Color? color;
   final FontWeight? fontWeight;
   final double? fontSize;
+  final int? maxLies;
   final String? fontFamily;
   final TextAlign? textAlign;
   final TextStyle? style;
@@ -18,6 +19,7 @@ class CommonText extends StatelessWidget {
       this.color,
       this.fontWeight,
       this.fontSize,
+      this.maxLies,
       this.fontFamily,
       this.style,
       this.textAlign});
@@ -32,7 +34,7 @@ class CommonText extends StatelessWidget {
       text,
       // textScaleFactor: ScaleSize.textScaleFactor(context),
       overflow: TextOverflow.ellipsis,
-      maxLines: 13,
+      maxLines: maxLies ?? 13,
       textAlign: textAlign,
       style: style?.copyWith(color: color ?? Theme.of(context).primaryColor) ??
           FontStyles.body.copyWith(color: Theme.of(context).primaryColor),

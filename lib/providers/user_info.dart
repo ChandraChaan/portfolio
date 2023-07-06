@@ -12,6 +12,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class UserInfo extends ChangeNotifier {
   bool musicMode = false;
   Color themeColor = Colors.blue;
+  Color oppositeColor = Colors.orange;
   String themeStringColor = '';
   String deviceId = '';
   bool themeLightMode =
@@ -21,10 +22,9 @@ class UserInfo extends ChangeNotifier {
   String imageFilterString = 'all';
   bool imageLoaded = false;
   String smallTagline =
-      'Experienced Senior Flutter Developer driving successful projects, poised to make a meaningful impact.';
+      'Senior Software Engineer | Flutter & Flutter Web 3.0 Specialist | Building High-Performance Cross-Platform and Web Applications';
   String bigTagline =
-      'Armed with extensive software development experience, including 4 years of expertise in Flutter, I am a seasoned Senior Flutter Developer known for consistently delivering successful projects. With a strong track record in creating robust and innovative solutions, I have also honed my skills as a Full-Stack Developer, integrating front-end and back-end technologies. My deep understanding of the software development lifecycle and dedication to crafting high-quality applications position me as a valuable asset.'
-      'I bring a proven track record of delivering results, an unwavering commitment to excellence, and a collaborative mindset. Thriving in dynamic and fast-paced environments, I leverage my technical expertise and problem-solving abilities to drive positive outcomes. Eager to contribute to a forward-thinking organization, I am adaptable, possess a strong work ethic, and excel in collaborative, goal-oriented environments. With confidence in my ability to make a significant impact, I am excited about contributing to growth and innovation.';
+      'Experienced Senior Software Engineer with 5.5 years of total experience, including 1.5 years of full-stack expertise and 4 years focused on Flutter development. Passionate about creating innovative mobile applications, I have successfully delivered 12+ projects across various domains. Specializing in robust e-commerce solutions, Google Maps integration, HR management systems, and educational and hospitality projects, I excel in delivering seamless user experiences, optimizing performance, and integrating complex functionalities. A collaborative problem-solver, I thrive on challenges and exceed client expectations by leveraging emerging technologies and staying up-to-date with industry trends. With strong communication and analytical skills, I translate complex requirements into actionable plans and consistently deliver results within deadlines. Committed to continuous learning and growth, I actively seek opportunities to expand my knowledge and skill set.';
 
   bool userDeatile(String? text) {
     user = text ?? 'User';
@@ -61,24 +61,27 @@ class UserInfo extends ChangeNotifier {
   List<Map<String, dynamic>> expData = [
     {
       "icon": Icons.laptop_outlined,
-      "title": "Senior Mobile App Developer",
-      "summary": "Here I am team lead, we are working on sprint wise features, and DDD"
-          "architecture and GetX, Bloc, providers state management we are using. Kotlin"
-          "  for android native payment integration purpose we are used. Swift for IOS"
-          "Native feature development we are used.",
-      "startDate": "Feb 2021",
+      "title": "Senior Software Developer",
+      "summary":
+          "As an experienced Flutter Web Developer at Softdel Systems, I specialize in responsive web design, PWAs, and Provider state management. With a strong focus on Flutter Web 3.0, I excel at creating stunning and fully responsive web designs, ensuring exceptional user experiences across various platforms. My expertise lies in implementing responsive UI solutions that seamlessly adapt to mobile, tablet, and desktop web environments. I am skilled at integrating Progressive Web App (PWA) features, allowing for offline functionality, push notifications, and an immersive user experience akin to native mobile apps. To optimize performance and maintainability, I rely on the efficient Provider state management architecture for effective state handling and communication between different components of the application. Additionally, I have successfully developed visually appealing graphs and charts, elevating data visualization and making complex information easily digestible for users. My passion for delivering exceptional Flutter Web experiences drives me to stay updated with the latest industry trends and best practices.",
+      "startDate": "June 2022",
       "endDate": "",
       "present": true,
     },
     {
       "icon": Icons.laptop_outlined,
+      "title": "Senior Mobile App Developer",
+      "summary":
+          "I firmly believe that great leadership is the key to unlocking extraordinary results. As an accomplished Team Leader specializing in Flutter mobile app development, I have successfully utilized the Flutter framework, along with technologies such as Getx and Bloc, to deliver exceptional outcomes. With expertise in creating dynamic and engaging user interfaces, seamless API integration, and integration of popular payment gateways, I prioritize clean, maintainable, and scalable codebases to reduce development time and costs. I have a proven track record of delivering high-quality solutions for various platforms, including Flutter web, Android, and iOS, within tight deadlines. Collaborating with my exceptional team and leveraging the power of Flutter, we consistently achieve remarkable productivity and efficiency, driving success in our projects.",
+      "startDate": "Feb 2021",
+      "endDate": "June 2022",
+      "present": false,
+    },
+    {
+      "icon": Icons.laptop_outlined,
       "title": "Software Developer",
-      "summary": "I'm Full Stack developer at this company and"
-          "We are using framework CodeIgniter, PHP frameworks for backend, and we"
-          "are using for mobile development in flutter, and we are using jQuery, JS,"
-          "bootstrap for frontend."
-          "This is product base company"
-          "Maintained integrity of general ledger, including the chart of accounts",
+      "summary":
+          "I am an accomplished Full-Stack Developer with expertise in web and mobile app development. I specialize in CodeIgniter, Flutter, and RESTful APIs. Throughout my career, I have consistently delivered high-quality projects using diverse technologies. I create visually appealing and user-friendly interfaces using HTML, CSS, JavaScript, jQuery, Ajax, and Bootstrap. I develop robust and scalable web applications using CodeIgniter and expand into Flutter for cross-platform mobile app development. I excel in efficient data management with MySQL and Firebase databases, and I have a strong skillset in developing RESTful APIs for seamless communication and integration.",
       "startDate": "Feb 2018",
       "endDate": "Jan 2021",
       "present": false,
@@ -164,22 +167,22 @@ class UserInfo extends ChangeNotifier {
   List<Map<String, dynamic>> skillData = [
     {
       "name": "Flutter",
-      "score": "100%",
+      "score": "96%",
       "icon": "assets/skills/flutter.png",
     },
     {
       "name": "Java",
-      "score": "80%",
+      "score": "63%",
       "icon": "assets/skills/java.png",
     },
     {
       "name": "Dart",
-      "score": "100%",
+      "score": "98%",
       "icon": "assets/skills/dart.png",
     },
     {
       "name": "JavaScript",
-      "score": "94%",
+      "score": "54%",
       "icon": "assets/skills/js.png",
     },
     {
@@ -199,7 +202,7 @@ class UserInfo extends ChangeNotifier {
     },
     {
       "name": "PYTHON",
-      "score": "84%",
+      "score": "51%",
       "icon": "assets/skills/python.png",
     },
     {
@@ -315,8 +318,22 @@ class UserInfo extends ChangeNotifier {
         '0x${colorCode.toRadixString(16).padLeft(8, '0').toUpperCase()}';
     themeColor = cl;
     themeStringColor = colorHex;
+    oppositeColor = getOppositeColor(cl);
     roleAppUsersPut();
     notifyListeners();
+  }
+
+  Color getOppositeColor(Color color) {
+    final int invertedRed = 255 - color.red;
+    final int invertedGreen = 255 - color.green;
+    final int invertedBlue = 255 - color.blue;
+
+    return Color.fromARGB(
+      color.alpha,
+      invertedRed,
+      invertedGreen,
+      invertedBlue,
+    );
   }
 
   int grantedPermission = 0;
@@ -473,7 +490,6 @@ class UserInfo extends ChangeNotifier {
     }
   }
 
-  // final Battery _battery = Battery();
   final Connectivity _connectivity = Connectivity();
 
   String chargingStatus = 'Unknown';
@@ -546,18 +562,7 @@ class UserInfo extends ChangeNotifier {
         await existingRecord.reference.update(data);
 
         final updatedRecordSnapshot = await existingRecord.reference.get();
-        final updatedRecord = updatedRecordSnapshot.data();
-        // Map<String, dynamic> updatedRecord = updatedRecordSnapshot.data() as Map<String, dynamic>;
         deviceId = updatedRecordSnapshot.id;
-
-        final response = {
-          'status': 'success',
-          'message': 'Data updated successfully',
-          'data': updatedRecord,
-        };
-        print('device id $deviceId');
-        // print(response.toString());
-
       } else {
         final data = {
           'system_name': systemNameF,
@@ -576,15 +581,7 @@ class UserInfo extends ChangeNotifier {
 
         final newDocumentRef = await collectionRef.add(data);
         final newDocumentSnapshot = await newDocumentRef.get();
-        final newRecord = newDocumentSnapshot.data();
         deviceId = newDocumentSnapshot.id;
-        final response = {
-          'status': 'success',
-          'message': 'Data inserted successfully',
-          'data': newRecord,
-        };
-
-        print('device id $deviceId');
       }
     }
     notifyListeners();
@@ -595,11 +592,8 @@ class UserInfo extends ChangeNotifier {
 
     final collectionRef = FirebaseFirestore.instance.collection('visiters');
     final documentSnapshot = await collectionRef.doc(id).get();
-    print('the id have data');
-    print(documentSnapshot.data());
     if (documentSnapshot.exists) {
       final existingRecord = documentSnapshot.reference;
-      print('the id have data step 3');
       final data = {
         'system_name': systemName,
         'browser_name': browserName,
@@ -616,23 +610,6 @@ class UserInfo extends ChangeNotifier {
       };
 
       await existingRecord.update(data);
-      print('the id have data step 4');
-      final response = {
-        'status': 'success',
-        'message': 'Data updated successfully',
-        'data': data,
-      };
-
-      print(response.toString());
-      print('the id have data step 5');
-    } else {
-      final response = {
-        'status': 'error',
-        'message': 'Record does not exist',
-        'data': null,
-      };
-
-      print(response.toString());
     }
     notifyListeners();
   }
@@ -714,7 +691,6 @@ class UserInfo extends ChangeNotifier {
   // }
 
   void setToken(String? token) {
-    print('FCM TokenToken: $token');
     insertToeken(token);
   }
 

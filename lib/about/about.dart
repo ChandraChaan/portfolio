@@ -52,6 +52,7 @@ class _AboutState extends State<About> {
                     CommonText(
                       text: provider.userFirstName.toUpperCase(),
                       style: FontStyles.heading1,
+                      color: Theme.of(context).backgroundColor,
                     ),
                     const SizedBox(
                       width: 5,
@@ -75,6 +76,7 @@ class _AboutState extends State<About> {
                     child:  CommonText(
                       text: provider.smallTagline,
                       style: FontStyles.heading6,
+                      color: Theme.of(context).backgroundColor,
                     ),
                   ),
                   Expanded(
@@ -94,6 +96,7 @@ class _AboutState extends State<About> {
                     child: CommonText(
                       text: provider.bigTagline,
                       style: FontStyles.caption,
+                      color: Theme.of(context).backgroundColor,
                     ),
                   ),
                   Expanded(
@@ -108,7 +111,7 @@ class _AboutState extends State<About> {
               Row(
                 children: [
                   IconButton(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).backgroundColor,
                     icon: const FaIcon(FontAwesomeIcons.github),
                     // iconSize: 40,
                     onPressed: () {
@@ -122,7 +125,7 @@ class _AboutState extends State<About> {
                     width: 20,
                   ),
                   IconButton(
-                      color: Theme.of(context).primaryColor,
+                      color: Theme.of(context).backgroundColor,
                       icon: const FaIcon(FontAwesomeIcons.linkedin),
                       // iconSize: 40,
                       onPressed: () {
@@ -134,7 +137,7 @@ class _AboutState extends State<About> {
                     width: 20,
                   ),
                   IconButton(
-                      color: Theme.of(context).primaryColor,
+                      color: Theme.of(context).backgroundColor,
                       icon: const FaIcon(
                         FontAwesomeIcons.stackOverflow,
                       ),

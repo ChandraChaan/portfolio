@@ -308,7 +308,7 @@ class _ChatGameState extends State<ChatGame> {
                   children: [
                     const SizedBox(height: 10.0),
                     const Text(
-                      'Welcome to Time Pass Game',
+                      'Welcome to Chat Mini Game',
                       style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,

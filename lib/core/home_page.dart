@@ -18,7 +18,6 @@ import '../about/about.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import '../animation_route/navigate_newpage.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -29,6 +28,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? _token;
   int notificationCount = 0;
+
   showDeniedPopUp() {
     return showDialog(
       context: context,
@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
   sendNotificationThis() {
     if (Provider.of<UserInfo>(context, listen: false).grantedPermission != 1) {
       showDeniedPopUp();
@@ -65,6 +66,7 @@ class _HomePageState extends State<HomePage> {
       Provider.of<UserInfo>(context, listen: false).sendNotification();
     }
   }
+
   ScrollController? _scrollController;
   double? _scrollPosition;
   double? _maxscroll;
@@ -106,19 +108,6 @@ class _HomePageState extends State<HomePage> {
 
   final contactScrollKey = GlobalKey();
   bool _isContactVisible = false;
-
-  Color getOppositeColor(Color color) {
-    final int invertedRed = 255 - color.red;
-    final int invertedGreen = 255 - color.green;
-    final int invertedBlue = 255 - color.blue;
-
-    return Color.fromARGB(
-      color.alpha,
-      invertedRed,
-      invertedGreen,
-      invertedBlue,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -218,12 +207,13 @@ class _HomePageState extends State<HomePage> {
                               srollSmooth(aboutScrollKey.currentContext!);
                             },
                             child: CommonText(
-                                text: 'ABOUT',
-                                color: _isAboutVisible
-                                    ? getOppositeColor(
-                                        Theme.of(context).indicatorColor)
-                                    : null,
-                            style: _isAboutVisible ? FontStyles.heading6 : FontStyles.button,
+                              text: 'ABOUT',
+                              color: _isAboutVisible
+                                  ? (Theme.of(context).focusColor)
+                                  : null,
+                              style: _isAboutVisible
+                                  ? FontStyles.heading6
+                                  : FontStyles.button,
                             ),
                           ),
                           const SizedBox(
@@ -234,11 +224,14 @@ class _HomePageState extends State<HomePage> {
                               srollSmooth(expScrollKey.currentContext!);
                             },
                             child: CommonText(
-                                text: "EXPERIENCE",
-                                color: _isExpVisible
-                                    ? getOppositeColor(
-                                        Theme.of(context).indicatorColor)
-                                    : null,style: _isExpVisible ? FontStyles.heading6 : FontStyles.button,),
+                              text: "EXPERIENCE",
+                              color: _isExpVisible
+                                  ? (Theme.of(context).focusColor)
+                                  : null,
+                              style: _isExpVisible
+                                  ? FontStyles.heading6
+                                  : FontStyles.button,
+                            ),
                           ),
                           const SizedBox(
                             height: 10,
@@ -249,10 +242,11 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: CommonText(
                                 text: "PORTFOLIO",
-                                style: _isPortfoVisible ? FontStyles.heading6 : FontStyles.button,
+                                style: _isPortfoVisible
+                                    ? FontStyles.heading6
+                                    : FontStyles.button,
                                 color: _isPortfoVisible
-                                    ? getOppositeColor(
-                                        Theme.of(context).indicatorColor)
+                                    ? (Theme.of(context).focusColor)
                                     : null),
                           ),
                           const SizedBox(
@@ -264,10 +258,11 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: CommonText(
                                 text: "SKILLS",
-                                style: _isSkillsVisible ? FontStyles.heading6 : FontStyles.button,
+                                style: _isSkillsVisible
+                                    ? FontStyles.heading6
+                                    : FontStyles.button,
                                 color: _isSkillsVisible
-                                    ? getOppositeColor(
-                                        Theme.of(context).indicatorColor)
+                                    ? (Theme.of(context).focusColor)
                                     : null),
                           ),
                           const SizedBox(
@@ -279,10 +274,11 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: CommonText(
                                   text: "PROJECTS",
-                                  style: _isProjectsVisible ? FontStyles.heading6 : FontStyles.button,
+                                  style: _isProjectsVisible
+                                      ? FontStyles.heading6
+                                      : FontStyles.button,
                                   color: _isProjectsVisible
-                                      ? getOppositeColor(
-                                          Theme.of(context).indicatorColor)
+                                      ? (Theme.of(context).focusColor)
                                       : null)),
                           const SizedBox(
                             height: 10,
@@ -293,10 +289,11 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: CommonText(
                                 color: _isContactVisible
-                                    ? getOppositeColor(
-                                        Theme.of(context).indicatorColor)
+                                    ? (Theme.of(context).focusColor)
                                     : null,
-                                style: _isContactVisible ? FontStyles.heading6 : FontStyles.button,
+                                style: _isContactVisible
+                                    ? FontStyles.heading6
+                                    : FontStyles.button,
                                 text: "CONTACT",
                               )),
                         ],
@@ -700,7 +697,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Drawer drawerMobile(BuildContext context) {
-
     return Drawer(
       child: SafeArea(
         child: Padding(
@@ -747,7 +743,7 @@ class _HomePageState extends State<HomePage> {
                   child: CommonText(
                       text: 'ABOUT',
                       color: _isAboutVisible
-                          ? getOppositeColor(Theme.of(context).indicatorColor)
+                          ? (Theme.of(context).focusColor)
                           : null),
                 ),
                 const SizedBox(
@@ -760,7 +756,7 @@ class _HomePageState extends State<HomePage> {
                   child: CommonText(
                       text: "EXPERIENCE",
                       color: _isExpVisible
-                          ? getOppositeColor(Theme.of(context).indicatorColor)
+                          ? (Theme.of(context).focusColor)
                           : null),
                 ),
                 const SizedBox(
@@ -773,7 +769,7 @@ class _HomePageState extends State<HomePage> {
                   child: CommonText(
                       text: "PORTFOLIO",
                       color: _isPortfoVisible
-                          ? getOppositeColor(Theme.of(context).indicatorColor)
+                          ? (Theme.of(context).focusColor)
                           : null),
                 ),
                 const SizedBox(
@@ -786,7 +782,7 @@ class _HomePageState extends State<HomePage> {
                   child: CommonText(
                       text: "SKILLS",
                       color: _isSkillsVisible
-                          ? getOppositeColor(Theme.of(context).indicatorColor)
+                          ? (Theme.of(context).focusColor)
                           : null),
                 ),
                 const SizedBox(
@@ -799,7 +795,7 @@ class _HomePageState extends State<HomePage> {
                     child: CommonText(
                         text: "PROJECTS",
                         color: _isProjectsVisible
-                            ? getOppositeColor(Theme.of(context).indicatorColor)
+                            ? (Theme.of(context).focusColor)
                             : null)),
                 const SizedBox(
                   height: 10,
@@ -810,7 +806,7 @@ class _HomePageState extends State<HomePage> {
                     },
                     child: CommonText(
                       color: _isContactVisible
-                          ? getOppositeColor(Theme.of(context).indicatorColor)
+                          ? (Theme.of(context).focusColor)
                           : null,
                       text: "CONTACT",
                     )),
@@ -830,4 +826,3 @@ class _HomePageState extends State<HomePage> {
         duration: const Duration(seconds: 1), curve: Curves.easeIn);
   }
 }
-

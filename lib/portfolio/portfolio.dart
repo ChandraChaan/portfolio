@@ -62,7 +62,7 @@ class Portfolio extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: smallCard
+                  child: /*smallCard
                       ? ListView.builder(
                           itemCount: provider.pImages.length,
                           shrinkWrap: true,
@@ -86,13 +86,13 @@ class Portfolio extends StatelessWidget {
                               ),
                             );
                           })
-                      : GridView.builder(
+                      :*/ GridView.builder(
                           itemCount: provider.pImages.length,
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
+                               SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: smallCard ? 2 : 3,
                                   crossAxisSpacing: 18.0,
                                   childAspectRatio: 2,
                                   mainAxisSpacing: 18.0),
