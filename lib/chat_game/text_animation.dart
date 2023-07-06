@@ -1,12 +1,13 @@
 
 import 'package:flutter/material.dart';
+import 'package:portfoli_web/utils/font_style.dart';
 
 class TypewriterTextAnimation extends StatefulWidget {
   final String text;
   final Duration duration;
   final BoxConstraints? constraints;
 
-  TypewriterTextAnimation({
+  const TypewriterTextAnimation({
     required this.text,
     required this.duration,
     this.constraints,
@@ -48,7 +49,7 @@ class _TypewriterTextAnimationState extends State<TypewriterTextAnimation>
         final animatedText = widget.text.substring(0, _textAnimation.value);
         return Container(
           constraints: widget.constraints,
-          child: Text(animatedText, style: const TextStyle(fontSize: 18)),
+          child: CommonText(text: animatedText),
         );
       },
     );

@@ -11,6 +11,7 @@ import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import '../utils/dynamic_image.dart';
+import '../utils/font_style.dart';
 import '../utils/getReplayList.dart';
 import '../animation_route/navigate_newpage.dart';
 import 'package:flutter/services.dart';
@@ -228,7 +229,7 @@ class _ChatGameState extends State<ChatGame> {
     return null;
   }
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   void addItemToList(Messages message) {
     setState(() {
@@ -281,8 +282,9 @@ class _ChatGameState extends State<ChatGame> {
   Widget build(BuildContext context) {
     final provd = Provider.of<UserInfo>(context, listen: false);
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(120.0),
+        preferredSize: const Size.fromHeight(190.0),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -297,7 +299,7 @@ class _ChatGameState extends State<ChatGame> {
                       },
                 icon: Icon(
                   widget.hideBackButton ? Icons.chair : Icons.arrow_back,
-                  color: Colors.black,
+                  color: Theme.of(context).primaryColor,
                   size: 35.0,
                 ),
               ),
@@ -307,19 +309,16 @@ class _ChatGameState extends State<ChatGame> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 10.0),
-                    const Text(
+                    const CommonText(text:
                       'Welcome to Chat Mini Game',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: FontStyles.heading5,
                     ),
                     const SizedBox(height: 10.0),
                     Consumer<UserInfo>(
                       builder: (context, person, child) {
                         return SelectableText(
                           '${(person.systemName.isNotEmpty) ? 'System name: ${person.systemName}' : ''}\n${(person.browserName.isNotEmpty) ? 'Browser name: ${person.browserName}' : ''}',
-                          style: const TextStyle(fontSize: 16.0),
+                          style: FontStyles.body.copyWith(color: Theme.of(context).primaryColor),
                         );
                       },
                     ),
@@ -328,10 +327,7 @@ class _ChatGameState extends State<ChatGame> {
                         (provd.address.isNotEmpty)
                             ? 'Address: ${provd.address}'
                             : '',
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        style: FontStyles.body.copyWith(color: Theme.of(context).primaryColor, overflow: TextOverflow.ellipsis),
                       ),
                     ),
                     const SizedBox(height: 10.0),
@@ -347,9 +343,8 @@ class _ChatGameState extends State<ChatGame> {
                       color: Colors.green,
                     ),
                     const SizedBox(width: 5),
-                    Text(
+                    CommonText(text:
                       '${context.read<UserInfo>().chargingStatus}%',
-                      style: const TextStyle(fontSize: 16.0),
                     ),
                   ],
                 ),
@@ -362,9 +357,8 @@ class _ChatGameState extends State<ChatGame> {
                       color: Colors.blue,
                     ),
                     const SizedBox(width: 5),
-                    Text(
+                    CommonText(text:
                       context.read<UserInfo>().wifiNetworkTypeLoc,
-                      style: const TextStyle(fontSize: 16.0),
                     ),
                   ],
                 ),
@@ -396,8 +390,8 @@ class _ChatGameState extends State<ChatGame> {
                             padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               color: message.left
-                                  ? Colors.grey[300]
-                                  : Colors.greenAccent,
+                                  ? Theme.of(context).focusColor.withOpacity(0.5)
+                                  : Theme.of(context).indicatorColor.withOpacity(0.5),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: LayoutBuilder(
@@ -411,7 +405,7 @@ class _ChatGameState extends State<ChatGame> {
                                       )
                                     : SelectableText(
                                         message.msg,
-                                        style: const TextStyle(fontSize: 16),
+                                        style: FontStyles.body.copyWith(color: Theme.of(context).primaryColor),
                                       );
                               },
                             ),
@@ -471,7 +465,7 @@ class _ChatGameState extends State<ChatGame> {
                     itemBuilder: (context, index) {
                       return ListTile(
                             selected: selectedIndex == index ? true:false,
-                            title: Text(filteredSuggestions[index]),
+                            title: CommonText(text:filteredSuggestions[index]),
                             onTap: () {
                               inputController.text = filteredSuggestions[index];
                             },
@@ -517,7 +511,9 @@ class _ChatGameState extends State<ChatGame> {
                               controller: inputController,
                               textInputAction: TextInputAction.done,
                               onEditingComplete: _getReply,
-                              decoration: const InputDecoration(
+                              style: FontStyles.body.copyWith(color: Theme.of(context).primaryColor),
+                              decoration: InputDecoration(
+                                hintStyle: FontStyles.body.copyWith(color: Theme.of(context).primaryColor),
                                 hintText: 'Type a message',
                                 border: InputBorder.none,
                               ),
@@ -545,10 +541,9 @@ class _ChatGameState extends State<ChatGame> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   for (int a = 1; a < 11; a++)
-                    Text(
+                    CommonText(text:
                       '$_userText x $a = ${(a * rNumber).toString()}',
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+
                     ),
                 ],
               ),
