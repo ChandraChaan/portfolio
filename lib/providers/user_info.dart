@@ -217,42 +217,49 @@ class UserInfo extends ChangeNotifier {
     'mobile ui': [
       {
         'thumb-line': 'assets/portfolio/arrton1.png',
+        'caption': 'Arrton',
         'img': [
           for (int a = 1; a <= 4; a++) 'assets/portfolio/arrton$a.png',
         ]
       },
       {
         'thumb-line': 'assets/portfolio/arrton_d1.png',
+        'caption': 'Arrton-Mobile App',
         'img': [
           for (int a = 1; a <= 3; a++) 'assets/portfolio/arrton_d$a.png',
         ]
       },
       {
         'thumb-line': 'assets/portfolio/arrton_m1.png',
+        'caption': 'Arrton-merchant App',
         'img': [
           for (int a = 1; a <= 6; a++) 'assets/portfolio/arrton_m$a.png',
         ]
       },
       {
         'thumb-line': 'assets/portfolio/ferry1.png',
+        'caption': 'Ferry App',
         'img': [
           for (int a = 1; a <= 4; a++) 'assets/portfolio/ferry$a.png',
         ]
       },
       {
         'thumb-line': 'assets/portfolio/ppl1.png',
+        'caption': 'People Platform App',
         'img': [
           for (int a = 1; a <= 6; a++) 'assets/portfolio/ppl$a.png',
         ]
       },
       {
         'thumb-line': 'assets/portfolio/skedal1.png',
+        'caption': 'Skadle App',
         'img': [
           for (int a = 1; a <= 38; a++) 'assets/portfolio/skedal$a.png',
         ]
       },
       {
         'thumb-line': 'assets/portfolio/sunstone1.png',
+        'caption': 'Sunstone App',
         'img': [
           for (int a = 1; a <= 17; a++) 'assets/portfolio/sunstone$a.png',
         ]
@@ -261,6 +268,7 @@ class UserInfo extends ChangeNotifier {
     'PWA': [
       {
         'thumb-line': 'assets/portfolio/edecofy1.png',
+        'caption': 'Edecofy',
         'img': [
           for (int a = 1; a <= 11; a++) 'assets/portfolio/edecofy$a.png',
         ]
@@ -283,11 +291,13 @@ class UserInfo extends ChangeNotifier {
         totalImagesP.add({
           'img': '${imagesMap[imagesKeys[a]][i]['thumb-line']}',
           'images': imagesMap[imagesKeys[a]][i]['img'],
+          'caption': '${imagesMap[imagesKeys[a]][i]['caption']}',
           'type': '${imagesKeys[a]}'
         });
         pImages.add({
           'img': '${imagesMap[imagesKeys[a]][i]['thumb-line']}',
           'images': imagesMap[imagesKeys[a]][i]['img'],
+          'caption': '${imagesMap[imagesKeys[a]][i]['caption']}',
           'type': '${imagesKeys[a]}'
         });
       }
@@ -300,11 +310,15 @@ class UserInfo extends ChangeNotifier {
     imageLoaded = false;
     if (imageFilterString == typ) {
       pImages.shuffle();
+      print('Image filter: Shuffled the images');
     } else {
+      print('Image filter: Filter type - $typ');
       if (typ == 'all') {
         pImages = List.from(totalImagesP);
+        print('Image filter: Showing all images (${pImages.length} images)');
       } else {
         pImages = List.from(totalImagesP.where((o) => o['type'] == typ));
+        print('Image filter: Showing images of type $typ (${pImages.length} images)');
       }
     }
     imageFilterString = typ;

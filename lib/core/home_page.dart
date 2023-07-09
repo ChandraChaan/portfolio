@@ -356,7 +356,7 @@ class _HomePageState extends State<HomePage> {
                                 });
                               }
                             },
-                            child: const Portfolio(
+                            child: Portfolio(
                               smallCard: false,
                             ),
                           ),
@@ -493,7 +493,7 @@ class _HomePageState extends State<HomePage> {
                           });
                         }
                       },
-                      child: const Portfolio(
+                      child: Portfolio(
                         smallCard: false,
                       ),
                     ),

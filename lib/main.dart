@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfoli_web/core/home_page.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,7 +43,7 @@ class RoleApp extends StatelessWidget {
         cardColor: themeMode.themeLightMode ? Colors.white : Colors.black,
       ),
       debugShowCheckedModeBanner: false,
-      home: const PushNotificationApp(),
+      home: const HomePage(),
     );
   }
 }

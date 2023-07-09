@@ -52,7 +52,7 @@ class _AboutState extends State<About> {
                     CommonText(
                       text: provider.userFirstName.toUpperCase(),
                       style: FontStyles.heading1,
-                      color: Theme.of(context).backgroundColor,
+                      color: Colors.white,
                     ),
                     const SizedBox(
                       width: 5,
@@ -76,7 +76,7 @@ class _AboutState extends State<About> {
                     child:  CommonText(
                       text: provider.smallTagline,
                       style: FontStyles.heading6,
-                      color: Theme.of(context).backgroundColor,
+                      color: Colors.white,
                     ),
                   ),
                   Expanded(
@@ -96,7 +96,7 @@ class _AboutState extends State<About> {
                     child: CommonText(
                       text: provider.bigTagline,
                       style: FontStyles.caption,
-                      color: Theme.of(context).backgroundColor,
+                      color: Colors.white,
                     ),
                   ),
                   Expanded(
