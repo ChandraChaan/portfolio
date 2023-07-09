@@ -338,9 +338,9 @@ class _ChatGameState extends State<ChatGame> {
               if (context.read<UserInfo>().chargingStatus != 'Unknown')
                 Row(
                   children: [
-                    const Icon(
+                     Icon(
                       Icons.battery_full,
-                      color: Colors.green,
+                      color: Theme.of(context).focusColor,
                     ),
                     const SizedBox(width: 5),
                     CommonText(text:
@@ -352,9 +352,9 @@ class _ChatGameState extends State<ChatGame> {
               if (context.read<UserInfo>().wifiNetworkTypeLoc != 'Unknown')
                 Row(
                   children: [
-                    const Icon(
+                     Icon(
                       Icons.wifi,
-                      color: Colors.blue,
+                      color: Theme.of(context).indicatorColor,
                     ),
                     const SizedBox(width: 5),
                     CommonText(text:
@@ -524,8 +524,7 @@ class _ChatGameState extends State<ChatGame> {
                       IconButton(
                         onPressed: _getReply,
                         icon: const Icon(Icons.send_sharp),
-                        color:
-                            Colors.blue, // Set your desired send button color
+                        color: Theme.of(context).indicatorColor
                       ),
                     ],
                   ),

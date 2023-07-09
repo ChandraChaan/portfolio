@@ -69,93 +69,95 @@ class Experience extends StatelessWidget {
     );
   }
 
-  Widget cardItem(
-      {required BuildContext context,
-      required iconName,
-      required String title,
-      required String summery,
-      required String startDate,
-      required String endDate,
-      }) {
-    return Consumer<UserInfo>(
-        builder: (context, provider, child) {
-        return Container(
-          height: 280,
-          width: 140,
-          decoration: BoxDecoration(
-            color: Theme.of(context).backgroundColor,
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black38,
-                // blurRadius: 100,
-                spreadRadius: 0.5,
-                offset: Offset(1.5, 1.5),
+  Widget cardItem({
+    required BuildContext context,
+    required iconName,
+    required String title,
+    required String summery,
+    required String startDate,
+    required String endDate,
+  }) {
+    return Consumer<UserInfo>(builder: (context, provider, child) {
+      return Container(
+        height: 280,
+        width: 140,
+        decoration: BoxDecoration(
+          color: Theme.of(context).backgroundColor,
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black38,
+              // blurRadius: 100,
+              spreadRadius: 0.5,
+              offset: Offset(1.5, 1.5),
+            )
+          ],
+          border: Border.all(
+            color: Theme.of(context).indicatorColor,
+            width: 1.0,
+          ),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              FittedBox(
+                child: Row(
+                  children: [
+                    Icon(
+                      iconName,
+                      color: Theme.of(context).focusColor,
+                      // size: 27,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    CommonText(
+                      text: title,
+                      style: FontStyles.heading6,
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: Center(
+                  child: CommonText(
+                    text: summery,
+                    // maxLies: 8,
+                    style: FontStyles.caption,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    CommonText(
+                      text: startDate,
+                      style: FontStyles.body,
+                      color: Theme.of(context).indicatorColor,
+                    ),
+                    CommonText(
+                      text: " $endDate",
+                      style: FontStyles.body,
+                      color: Theme.of(context).indicatorColor,
+                    )
+                  ],
+                ),
               )
             ],
-            border: Border.all(
-              color: Theme.of(context).indicatorColor,
-              width: 1.0,
-            ),
-            borderRadius: BorderRadius.circular(5),
           ),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FittedBox(
-                  child: Row(
-                    children: [
-                      Icon(
-                        iconName,
-                        color: Theme.of(context).focusColor,
-                        // size: 27,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      CommonText(
-                        text: title,
-                        style: FontStyles.heading6,
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CommonText(
-                  text: summery,
-                  maxLies: 8,
-                  style: FontStyles.body,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      CommonText(
-                        text: startDate,
-                        style: FontStyles.body,
-                        color: Theme.of(context).indicatorColor,
-                      ),
-                      CommonText(
-                        text: " $endDate",
-                        style: FontStyles.body,
-                        color: Theme.of(context).indicatorColor,
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 }

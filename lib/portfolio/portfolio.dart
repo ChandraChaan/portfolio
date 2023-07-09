@@ -62,66 +62,51 @@ class Portfolio extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: /*smallCard
-                      ? ListView.builder(
-                          itemCount: provider.pImages.length,
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () {
-                                showDialog(
-                                  barrierDismissible: true,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    final images = List<String>.from(
-                                        provider.pImages[index]['images']);
-                                    return ImageDialog(images: images);
-                                  },
-                                );
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: ImageDynamic(
-                                    img: "${provider.pImages[index]['img']}"),
+                  child: GridView.builder(
+                    itemCount: provider.pImages.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: smallCard ? 2 : 3,
+                      crossAxisSpacing: 18.0,
+                      childAspectRatio: 2,
+                      mainAxisSpacing: 18.0,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          showDialog(
+                            barrierDismissible: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              final images = List<String>.from(provider.pImages[index]['images']);
+                              return ImageDialog(images: images);
+                            },
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(10.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 6.0,
+                                offset: const Offset(0, 3),
                               ),
-                            );
-                          })
-                      :*/ GridView.builder(
-                          itemCount: provider.pImages.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          gridDelegate:
-                               SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: smallCard ? 2 : 3,
-                                  crossAxisSpacing: 18.0,
-                                  childAspectRatio: 2,
-                                  mainAxisSpacing: 18.0),
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () {
-                                showDialog(
-                                  barrierDismissible: true,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    final images = List<String>.from(
-                                        provider.pImages[index]['images']);
-                                    return ImageDialog(images: images);
-                                  },
-                                );
-                              },
-                              child: Container(
-                                height: 170,
-                                // width: 120,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: ImageDynamic(
-                                    img: "${provider.pImages[index]['img']}"),
-                              ),
-                            );
-                          },
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: ImageDynamic(
+                              img: "${provider.pImages[index]['img']}",
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
+                      );
+                    },
+                  ),
                 ),
                 const SizedBox(
                   height: 50,
