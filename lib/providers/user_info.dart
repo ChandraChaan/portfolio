@@ -9,6 +9,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
+import '../about/about.dart';
+import '../contact/contact.dart';
+import '../experience/experience.dart';
+import '../portfolio/portfolio.dart';
+import '../projects/projects.dart';
+import '../skills/skills.dart';
+
 class UserInfo extends ChangeNotifier {
   bool musicMode = false;
   Color themeColor = Colors.blue;
@@ -25,6 +32,52 @@ class UserInfo extends ChangeNotifier {
       'Senior Software Engineer | Flutter & Flutter Web 3.0 Specialist | Building High-Performance Cross-Platform and Web Applications';
   String bigTagline =
       'Experienced Senior Software Engineer with 5.5 years of total experience, including 1.5 years of full-stack expertise and 4 years focused on Flutter development. Passionate about creating innovative mobile applications, I have successfully delivered 12+ projects across various domains. Specializing in robust e-commerce solutions, Google Maps integration, HR management systems, and educational and hospitality projects, I excel in delivering seamless user experiences, optimizing performance, and integrating complex functionalities. A collaborative problem-solver, I thrive on challenges and exceed client expectations by leveraging emerging technologies and staying up-to-date with industry trends. With strong communication and analytical skills, I translate complex requirements into actionable plans and consistently deliver results within deadlines. Committed to continuous learning and growth, I actively seek opportunities to expand my knowledge and skill set.';
+
+  // home page properties,
+  ScrollController? scrollController = ScrollController();
+  final GlobalKey aboutScrollKey = GlobalKey();
+  final GlobalKey expScrollKey = GlobalKey();
+  final GlobalKey portfoScrollKey = GlobalKey();
+  final GlobalKey skillScrollKey = GlobalKey();
+  final GlobalKey projectsScrollKey = GlobalKey();
+  final GlobalKey contactScrollKey = GlobalKey();
+
+  GlobalKey scrollKeyValue(int index) {
+    if (index == 0) {
+      return aboutScrollKey;
+    } else if (index == 1) {
+      return expScrollKey;
+    } else if (index == 2) {
+      return portfoScrollKey;
+    } else if (index == 3) {
+      return skillScrollKey;
+    } else if (index == 4) {
+      return projectsScrollKey;
+    } else {
+      return contactScrollKey;
+    }
+  }
+
+  // the sidebar elements
+  List<Map<String, dynamic>> menuList = [
+    {'name':'About', 'visibility': true, 'widget' : const About(mobileImg: true,)},
+    {'name':'Experience', 'visibility': false, 'widget' : const Experience(smallCard: true,)},
+    {'name':'Portfolio', 'visibility': false, 'widget' : const Portfolio(smallCard: true,)},
+    {'name':'Skills', 'visibility': false, 'widget' : const Skills()},
+    {'name':'Projects', 'visibility': false, 'widget' : const Projects(smallCard: true,)},
+    {'name':'Contact', 'visibility': false, 'widget' : const Contact(isWeb: false,)},
+  ];
+
+  updateVisibility(int index) {
+    for (int a = 0; a < menuList.length; a++) {
+      if (a == index) {
+        menuList[a]['visibility'] = true;
+      } else {
+        menuList[a]['visibility'] = false;
+      }
+    }
+    notifyListeners();
+  }
 
   bool userDeatile(String? text) {
     user = text ?? 'User';
@@ -318,7 +371,8 @@ class UserInfo extends ChangeNotifier {
         print('Image filter: Showing all images (${pImages.length} images)');
       } else {
         pImages = List.from(totalImagesP.where((o) => o['type'] == typ));
-        print('Image filter: Showing images of type $typ (${pImages.length} images)');
+        print(
+            'Image filter: Showing images of type $typ (${pImages.length} images)');
       }
     }
     imageFilterString = typ;

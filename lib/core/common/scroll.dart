@@ -2,30 +2,73 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../animation_route/navigate_newpage.dart';
 import '../../providers/user_info.dart';
 
 srollSmooth(BuildContext context) {
-  if (Provider.of<UserInfo>(context, listen: false).musicMode)
-  {
+  if (Provider.of<UserInfo>(context, listen: false).musicMode) {
     AudioPlayer().play(AssetSource('audio/decide.mp3'));
   }
   Scrollable.ensureVisible(context,
       duration: const Duration(seconds: 1), curve: Curves.easeIn);
 }
 
-final aboutScrollKey = GlobalKey();
-bool isAboutVisible = false;
-final expScrollKey = GlobalKey();
-bool isExpVisible = false;
+class ScrollIndicator extends StatefulWidget {
+  const ScrollIndicator({super.key});
 
-final portfoScrollKey = GlobalKey();
-bool isPortfoVisible = false;
+  @override
+  State<ScrollIndicator> createState() => _ScrollIndicatorState();
+}
 
-final skillScrollKey = GlobalKey();
-bool isSkillsVisible = false;
+class _ScrollIndicatorState extends State<ScrollIndicator> {
+  ScrollController? _scrollController;
+  double? _scrollPosition;
+  double? _maxscroll;
+  double? _maxscrollpercentage;
 
-final projectsScrollKey = GlobalKey();
-bool isProjectsVisible = false;
+  _scrollListener() {
+    setState(() {
+      _scrollPosition = _scrollController?.position.pixels;
+      _maxscroll = _scrollController?.position.maxScrollExtent;
 
-final contactScrollKey = GlobalKey();
-bool isContactVisible = false;
+      _maxscrollpercentage =
+          double.parse((_scrollPosition! / _maxscroll! * 1).toStringAsFixed(1));
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    //get token
+    _scrollController =
+        Provider.of<UserInfo>(context, listen: false).scrollController;
+    _scrollController?.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _maxscrollpercentage != null && _maxscrollpercentage != 0.00
+        ? GestureDetector(
+            onDoubleTap: () {
+              Navigator.of(context).push(ChatGameRoute());
+            },
+            child: SizedBox(
+              height: 20,
+              child: LinearProgressIndicator(
+                backgroundColor: Colors.cyan[100],
+                color: Theme.of(context).indicatorColor,
+                value: _maxscrollpercentage,
+                // valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
+              ),
+            ),
+          )
+        : const SizedBox();
+  }
+}

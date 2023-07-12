@@ -4,36 +4,36 @@ import 'package:provider/provider.dart';
 
 import '../../providers/user_info.dart';
 import '../../utils/font_style.dart';
+import '../../utils/settings_popup.dart';
 
 Drawer drawerMobile(BuildContext context) {
   return Drawer(
-    child: SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Container(
-          color: Provider.of<UserInfo>(context).themeColor,
+    child: Padding(
+      padding: const EdgeInsets.all(18.0),
+      child: Consumer<UserInfo>(builder: (context, provider, child) {
+        return Container(
+          color: Theme.of(context).indicatorColor,
           width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // themeCOlorChange(),
+              const LunchSettings(),
               const SizedBox(
                 height: 50,
               ),
               Container(
                 height: 160,
                 width: 140,
-                decoration: const BoxDecoration(
-                    color: Colors.lightBlueAccent,
-                    borderRadius: BorderRadius.all(Radius.circular(100))),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).focusColor,
+                    borderRadius: const BorderRadius.all(Radius.circular(100))),
                 child: Center(
                   child: Container(
                       height: 150,
                       width: 130,
                       decoration: const BoxDecoration(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(100)),
+                          borderRadius: BorderRadius.all(Radius.circular(100)),
                           image: DecorationImage(
                             image: AssetImage("assets/profile.jpg"),
                             fit: BoxFit.fill,
@@ -43,84 +43,25 @@ Drawer drawerMobile(BuildContext context) {
               const SizedBox(
                 height: 20,
               ),
-              TextButton(
-                onPressed: () {
-                  srollSmooth(aboutScrollKey.currentContext!);
-                },
-                child: CommonText(
-                    text: 'ABOUT',
-                    color: isAboutVisible
-                        ? (Theme.of(context).focusColor)
-                        : null),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextButton(
-                onPressed: () {
-                  srollSmooth(expScrollKey.currentContext!);
-                },
-                child: CommonText(
-                    text: "EXPERIENCE",
-                    color: isExpVisible
-                        ? (Theme.of(context).focusColor)
-                        : null),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextButton(
-                onPressed: () {
-                  srollSmooth(portfoScrollKey.currentContext!);
-                },
-                child: CommonText(
-                    text: "PORTFOLIO",
-                    color: isPortfoVisible
-                        ? (Theme.of(context).focusColor)
-                        : null),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextButton(
-                onPressed: () {
-                  srollSmooth(skillScrollKey.currentContext!);
-                },
-                child: CommonText(
-                    text: "SKILLS",
-                    color: isSkillsVisible
-                        ? (Theme.of(context).focusColor)
-                        : null),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextButton(
+              for (int a = 0; a < provider.menuList.length; a++) ...[
+                TextButton(
                   onPressed: () {
-                    srollSmooth(projectsScrollKey.currentContext!);
+                    srollSmooth(provider.scrollKeyValue(a).currentContext!);
                   },
                   child: CommonText(
-                      text: "PROJECTS",
-                      color: isProjectsVisible
+                      text: '${provider.menuList[a]['name']}'.toUpperCase(),
+                      color: provider.menuList[a]['visibility']
                           ? (Theme.of(context).focusColor)
-                          : null)),
-              const SizedBox(
-                height: 10,
-              ),
-              TextButton(
-                  onPressed: () {
-                    srollSmooth(contactScrollKey.currentContext!);
-                  },
-                  child: CommonText(
-                    color: isContactVisible
-                        ? (Theme.of(context).focusColor)
-                        : null,
-                    text: "CONTACT",
-                  )),
+                          : null),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ]
             ],
           ),
-        ),
-      ),
+        );
+      }),
     ),
   );
 }

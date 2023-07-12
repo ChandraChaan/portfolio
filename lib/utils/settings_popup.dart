@@ -5,6 +5,27 @@ import 'package:provider/provider.dart';
 import '../providers/user_info.dart';
 import '../ui/responsive_ui.dart';
 
+class LunchSettings extends StatelessWidget {
+  const LunchSettings({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topRight,
+      child: TextButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return const SettingsPopup();
+                });
+          },
+          child: Icon(Icons.settings, color: Theme.of(context).primaryColor,)),
+    );
+  }
+}
+
 class SettingsPopup extends StatefulWidget {
   const SettingsPopup({super.key});
 
@@ -478,13 +499,13 @@ class GeneralSettingsSection extends StatelessWidget {
                       children: [
                         provider.themeLightMode
                             ? const Icon(
-                          Icons.sunny,
-                          color: Colors.white,
-                        )
+                                Icons.sunny,
+                                color: Colors.white,
+                              )
                             : const Icon(
-                          Icons.nightlight,
-                          color: Colors.black,
-                        ),
+                                Icons.nightlight,
+                                color: Colors.black,
+                              ),
                         Transform.scale(
                             scale: 1,
                             child: Switch(
@@ -505,13 +526,13 @@ class GeneralSettingsSection extends StatelessWidget {
                     children: [
                       provider.musicMode
                           ? const Icon(
-                        Icons.add_alert_sharp,
-                        color: Colors.lightGreenAccent,
-                      )
+                              Icons.add_alert_sharp,
+                              color: Colors.lightGreenAccent,
+                            )
                           : const Icon(
-                        Icons.volume_mute_outlined,
-                        color: Colors.redAccent,
-                      ),
+                              Icons.volume_mute_outlined,
+                              color: Colors.redAccent,
+                            ),
                       Transform.scale(
                           scale: 1,
                           child: Switch(
@@ -529,19 +550,19 @@ class GeneralSettingsSection extends StatelessWidget {
                   TextButton(
                       onPressed: provider.nLoading == false
                           ? () {
-                        // sendNotificationThis();
-                      }
+                              // sendNotificationThis();
+                            }
                           : null,
                       child: provider.nLoading
                           ? Text(
-                        'Loading...',
-                        style: styl,
-                      )
+                              'Loading...',
+                              style: styl,
+                            )
                           : Text('Notification', style: styl).animate(effects: [
-                        const ShakeEffect(
-                            duration: Duration(minutes: 2),
-                            delay: Duration(seconds: 5))
-                      ])),
+                              const ShakeEffect(
+                                  duration: Duration(minutes: 2),
+                                  delay: Duration(seconds: 5))
+                            ])),
                 ],
               );
             },
@@ -578,9 +599,9 @@ class ColorItem extends StatelessWidget {
           splashColor: Colors.white.withOpacity(0.5),
           customBorder: const CircleBorder(),
           child:
-          Provider.of<UserInfo>(context, listen: false).themeColor == color
-              ? const Icon(Icons.check)
-              : null,
+              Provider.of<UserInfo>(context, listen: false).themeColor == color
+                  ? const Icon(Icons.check)
+                  : null,
         ),
       ),
     );
