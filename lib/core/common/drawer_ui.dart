@@ -46,7 +46,7 @@ Drawer drawerMobile(BuildContext context) {
               for (int a = 0; a < provider.menuList.length; a++) ...[
                 TextButton(
                   onPressed: () {
-                    srollSmooth(provider.scrollKeyValue(a).currentContext!);
+                    scrollSmooth(provider.scrollKeyValue(a).currentContext!);
                   },
                   child: CommonText(
                       text: '${provider.menuList[a]['name']}'.toUpperCase(),

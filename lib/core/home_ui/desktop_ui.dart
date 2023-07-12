@@ -61,7 +61,7 @@ class DesktopHomeUI extends StatelessWidget {
                                 a++) ...[
                               TextButton(
                                 onPressed: () {
-                                  srollSmooth(provider
+                                  scrollSmooth(provider
                                       .scrollKeyValue(a)
                                       .currentContext!);
                                 },

@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../../animation_route/navigate_newpage.dart';
 import '../../providers/user_info.dart';
 
-srollSmooth(BuildContext context) {
+void scrollSmooth(BuildContext context) {
   if (Provider.of<UserInfo>(context, listen: false).musicMode) {
     AudioPlayer().play(AssetSource('audio/decide.mp3'));
   }
