@@ -87,14 +87,14 @@ class _SettingsPopupState extends State<SettingsPopup> {
                       Divider(
                         color: Theme.of(context).primaryColor,
                       ),
-                      DataControlSection(),
+                      const DataControlSection(),
                       const SizedBox(
                         height: 20,
                       ),
                       Divider(
                         color: Theme.of(context).primaryColor,
                       ),
-                      GeneralSettingsSection(),
+                      const GeneralSettingsSection(),
                     ],
                   ),
                 ),
@@ -195,8 +195,8 @@ class _SettingsPopupState extends State<SettingsPopup> {
                         index: _selectedIndex,
                         children: [
                           ThemeSection(),
-                          DataControlSection(),
-                          GeneralSettingsSection(),
+                          const DataControlSection(),
+                          const GeneralSettingsSection(),
                         ],
                       ),
                     ),
@@ -299,8 +299,8 @@ class _SettingsPopupState extends State<SettingsPopup> {
                         index: _selectedIndex,
                         children: [
                           ThemeSection(),
-                          DataControlSection(),
-                          GeneralSettingsSection(),
+                          const DataControlSection(),
+                          const GeneralSettingsSection(),
                         ],
                       ),
                     ),
@@ -454,6 +454,11 @@ class DataControlSection extends StatelessWidget {
         ),
         const SizedBox(height: 16.0),
         ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+              Theme.of(context).indicatorColor,
+            ),
+          ),
           onPressed: () async {
             DefaultCacheManager().emptyCache();
           },

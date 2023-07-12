@@ -42,6 +42,120 @@ class UserInfo extends ChangeNotifier {
   final GlobalKey projectsScrollKey = GlobalKey();
   final GlobalKey contactScrollKey = GlobalKey();
 
+  List<Map<String, dynamic>> mobileMenuList = [
+    {
+      'name': 'About',
+      'visibility': true,
+      'widget': const About(
+        mobileImg: true,
+      )
+    },
+    {
+      'name': 'Experience',
+      'visibility': false,
+      'widget': const Experience(
+        smallCard: true,
+      )
+    },
+    {
+      'name': 'Portfolio',
+      'visibility': false,
+      'widget': const Portfolio(
+        smallCard: true,
+      )
+    },
+    {'name': 'Skills', 'visibility': false, 'widget': const Skills()},
+    {
+      'name': 'Projects',
+      'visibility': false,
+      'widget': const Projects(
+        smallCard: true,
+      )
+    },
+    {
+      'name': 'Contact',
+      'visibility': false,
+      'widget': const Contact(
+        isWeb: false,
+      )
+    },
+  ];
+  List<Map<String, dynamic>> tabMenuList = [
+    {
+      'name': 'About',
+      'visibility': true,
+      'widget': const About(
+        mobileImg: true,
+        tabImg: true,
+      )
+    },
+    {
+      'name': 'Experience',
+      'visibility': false,
+      'widget': const Experience(
+        smallCard: false,
+      )
+    },
+    {
+      'name': 'Portfolio',
+      'visibility': false,
+      'widget': const Portfolio(
+        smallCard: false,
+      )
+    },
+    {'name': 'Skills', 'visibility': false, 'widget': const Skills()},
+    {
+      'name': 'Projects',
+      'visibility': false,
+      'widget': const Projects(
+        smallCard: false,
+      )
+    },
+    {
+      'name': 'Contact',
+      'visibility': false,
+      'widget': const Contact(
+        isWeb: false,
+      )
+    },
+  ];
+  List<Map<String, dynamic>> desktopMenuList = [
+    {
+      'name': 'About',
+      'visibility': true,
+      'widget': const About()
+    },
+    {
+      'name': 'Experience',
+      'visibility': false,
+      'widget': const Experience(
+        smallCard: false,
+      )
+    },
+    {
+      'name': 'Portfolio',
+      'visibility': false,
+      'widget': const Portfolio(
+        smallCard: false,
+      )
+    },
+    {'name': 'Skills', 'visibility': false, 'widget': const Skills()},
+    {
+      'name': 'Projects',
+      'visibility': false,
+      'widget': const Projects(
+        smallCard: false,
+      )
+    },
+    {
+      'name': 'Contact',
+      'visibility': false,
+      'widget': const Contact(
+        isWeb: true,
+      )
+    },
+  ];
+
   GlobalKey scrollKeyValue(int index) {
     if (index == 0) {
       return aboutScrollKey;
@@ -58,22 +172,17 @@ class UserInfo extends ChangeNotifier {
     }
   }
 
-  // the sidebar elements
-  List<Map<String, dynamic>> menuList = [
-    {'name':'About', 'visibility': true, 'widget' : const About(mobileImg: true,)},
-    {'name':'Experience', 'visibility': false, 'widget' : const Experience(smallCard: true,)},
-    {'name':'Portfolio', 'visibility': false, 'widget' : const Portfolio(smallCard: true,)},
-    {'name':'Skills', 'visibility': false, 'widget' : const Skills()},
-    {'name':'Projects', 'visibility': false, 'widget' : const Projects(smallCard: true,)},
-    {'name':'Contact', 'visibility': false, 'widget' : const Contact(isWeb: false,)},
-  ];
 
   updateVisibility(int index) {
-    for (int a = 0; a < menuList.length; a++) {
+    for (int a = 0; a < desktopMenuList.length; a++) {
       if (a == index) {
-        menuList[a]['visibility'] = true;
+        desktopMenuList[a]['visibility'] = true;
+        mobileMenuList[a]['visibility'] = true;
+        tabMenuList[a]['visibility'] = true;
       } else {
-        menuList[a]['visibility'] = false;
+        desktopMenuList[a]['visibility'] = false;
+        mobileMenuList[a]['visibility'] = false;
+        tabMenuList[a]['visibility'] = false;
       }
     }
     notifyListeners();

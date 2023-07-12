@@ -31,7 +31,7 @@ class TabletHomeUI extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        for(int a=0; a<provider.menuList.length; a++)
+                        for(int a=0; a<provider.mobileMenuList.length; a++)
                           VisibilityDetector(
                             key: provider.scrollKeyValue(a),
                             onVisibilityChanged: (visibilityInfo) {
@@ -39,7 +39,7 @@ class TabletHomeUI extends StatelessWidget {
                                 provider.updateVisibility(a);
                               }
                             },
-                            child: provider.menuList[a]['widget'],
+                            child: provider.mobileMenuList[a]['widget'],
                           ),
                       ],
                     ),

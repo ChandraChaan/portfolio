@@ -43,14 +43,14 @@ Drawer drawerMobile(BuildContext context) {
               const SizedBox(
                 height: 20,
               ),
-              for (int a = 0; a < provider.menuList.length; a++) ...[
+              for (int a = 0; a < provider.mobileMenuList.length; a++) ...[
                 TextButton(
                   onPressed: () {
                     scrollSmooth(provider.scrollKeyValue(a).currentContext!);
                   },
                   child: CommonText(
-                      text: '${provider.menuList[a]['name']}'.toUpperCase(),
-                      color: provider.menuList[a]['visibility']
+                      text: '${provider.mobileMenuList[a]['name']}'.toUpperCase(),
+                      color: provider.mobileMenuList[a]['visibility']
                           ? (Theme.of(context).focusColor)
                           : null),
                 ),

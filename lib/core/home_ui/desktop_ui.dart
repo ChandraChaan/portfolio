@@ -57,7 +57,7 @@ class DesktopHomeUI extends StatelessWidget {
                               height: 20,
                             ),
                             for (int a = 0;
-                                a < provider.menuList.length;
+                                a < provider.desktopMenuList.length;
                                 a++) ...[
                               TextButton(
                                 onPressed: () {
@@ -66,9 +66,9 @@ class DesktopHomeUI extends StatelessWidget {
                                       .currentContext!);
                                 },
                                 child: CommonText(
-                                    text: '${provider.menuList[a]['name']}'
+                                    text: '${provider.desktopMenuList[a]['name']}'
                                         .toUpperCase(),
-                                    color: provider.menuList[a]['visibility']
+                                    color: provider.desktopMenuList[a]['visibility'] == true
                                         ? (Theme.of(context).focusColor)
                                         : null),
                               ),
@@ -88,7 +88,7 @@ class DesktopHomeUI extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            for (int a = 0; a < provider.menuList.length; a++)
+                            for (int a = 0; a < provider.desktopMenuList.length; a++)
                               VisibilityDetector(
                                 key: provider.scrollKeyValue(a),
                                 onVisibilityChanged: (visibilityInfo) {
@@ -96,7 +96,7 @@ class DesktopHomeUI extends StatelessWidget {
                                     provider.updateVisibility(a);
                                   }
                                 },
-                                child: provider.menuList[a]['widget'],
+                                child: provider.desktopMenuList[a]['widget'],
                               ),
                           ],
                         ),
