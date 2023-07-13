@@ -4,6 +4,7 @@ import 'package:portfoli_web/utils/headLine.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_info.dart';
+import '../utils/constants.dart';
 import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
 
@@ -22,7 +23,7 @@ class Experience extends StatelessWidget {
             padding: const EdgeInsets.all(12.0),
             child: smallCard
                 ? ListView.builder(
-                    itemCount: provider.expData.length,
+                    itemCount: Constants.expData.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
@@ -30,17 +31,17 @@ class Experience extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: cardItem(
                             context: context,
-                            iconName: provider.expData[index]["icon"],
-                            title: "${provider.expData[index]["title"]}",
-                            summery: "${provider.expData[index]["summary"]}",
+                            iconName: Constants.expData[index]["icon"],
+                            title: "${Constants.expData[index]["title"]}",
+                            summery: "${Constants.expData[index]["summary"]}",
                             startDate:
-                                "${provider.expData[index]["startDate"]}",
+                                "${Constants.expData[index]["startDate"]}",
                             endDate:
-                                " - ${provider.expData[index]["present"] != true ? provider.expData[index]["endDate"] : 'Present'}"),
+                                " - ${Constants.expData[index]["present"] != true ? Constants.expData[index]["endDate"] : 'Present'}"),
                       );
                     })
                 : GridView.builder(
-                    itemCount: provider.expData.length,
+                    itemCount: Constants.expData.length,
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate:
@@ -52,12 +53,12 @@ class Experience extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return cardItem(
                           context: context,
-                          iconName: provider.expData[index]["icon"],
-                          title: "${provider.expData[index]["title"]}",
-                          summery: "${provider.expData[index]["summary"]}",
-                          startDate: "${provider.expData[index]["startDate"]}",
+                          iconName: Constants.expData[index]["icon"],
+                          title: "${Constants.expData[index]["title"]}",
+                          summery: "${Constants.expData[index]["summary"]}",
+                          startDate: "${Constants.expData[index]["startDate"]}",
                           endDate:
-                              " - ${provider.expData[index]["present"] != true ? provider.expData[index]["endDate"] : 'Present'}");
+                              " - ${Constants.expData[index]["present"] != true ? Constants.expData[index]["endDate"] : 'Present'}");
                     },
                   ),
           ),

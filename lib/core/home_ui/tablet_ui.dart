@@ -12,44 +12,36 @@ class TabletHomeUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<UserInfo>(
-          builder: (context, provider, child) {
-          return Column(
-            children: [
-              const ScrollIndicator(),
-              Expanded(
-                child: Scaffold(
-                  backgroundColor: Theme.of(context).cardColor,
-                  appBar: AppBar(
-                    backgroundColor: Colors.transparent,
-                    elevation: 0.0,
-                    iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+      body: Consumer<UserInfo>(builder: (context, provider, child) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).cardColor,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+          ),
+          drawer: drawerMobile(context),
+          body: SingleChildScrollView(
+            controller:
+                Provider.of<UserInfo>(context, listen: false).scrollController,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                for (int a = 0; a < provider.tabMenuList.length; a++)
+                  VisibilityDetector(
+                    key: provider.scrollKeyValue(a),
+                    onVisibilityChanged: (visibilityInfo) {
+                      if (visibilityInfo.visibleFraction == 1) {
+                        provider.updateVisibility(a);
+                      }
+                    },
+                    child: provider.tabMenuList[a],
                   ),
-                  drawer: drawerMobile(context),
-                  body: SingleChildScrollView(
-                    controller: Provider.of<UserInfo>(context, listen: false).scrollController,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        for(int a=0; a<provider.mobileMenuList.length; a++)
-                          VisibilityDetector(
-                            key: provider.scrollKeyValue(a),
-                            onVisibilityChanged: (visibilityInfo) {
-                              if (visibilityInfo.visibleFraction == 1) {
-                                provider.updateVisibility(a);
-                              }
-                            },
-                            child: provider.mobileMenuList[a]['widget'],
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        }
-      ),
+              ],
+            ),
+          ),
+        );
+      }),
     );
   }
 }

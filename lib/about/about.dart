@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_info.dart';
 import 'dart:html' as html;
+import '../utils/constants.dart';
 import '../utils/font_style.dart';
 
 class About extends StatefulWidget {
@@ -74,7 +75,7 @@ class _AboutState extends State<About> {
                   Expanded(
                     flex: 3,
                     child:  CommonText(
-                      text: provider.smallTagline,
+                      text: Constants.smallTagline,
                       style: FontStyles.heading6,
                       color: Colors.white,
                     ),
@@ -94,7 +95,7 @@ class _AboutState extends State<About> {
                   Expanded(
                     flex: 2,
                     child: CommonText(
-                      text: provider.bigTagline,
+                      text: Constants.bigTagline,
                       style: FontStyles.caption,
                       color: Colors.white,
                     ),

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 import '../providers/user_info.dart';
+import '../utils/constants.dart';
 
 class Projects extends StatelessWidget {
   final bool smallCard;
@@ -22,19 +23,19 @@ class Projects extends StatelessWidget {
             child: Column(
               children: [
                 const HeadLineText(heading: 'PROJECTS'),
-                for (int a = 0; a < provider.projectsData.length; a++)
+                for (int a = 0; a < Constants.projectsData.length; a++)
                   smallCard
                       ? timelineWidget(context,
-                          title: "${provider.projectsData[a]['title']}",
-                          summary: "${provider.projectsData[a]['summary']}",
-                          date: "${provider.projectsData[a]['date']}",
+                          title: "${Constants.projectsData[a]['title']}",
+                          summary: "${Constants.projectsData[a]['summary']}",
+                          date: "${Constants.projectsData[a]['date']}",
                           isStartChild: false,
                           singleElement: true)
                       : timelineWidget(
                           context,
-                          title: "${provider.projectsData[a]['title']}",
-                          summary: "${provider.projectsData[a]['summary']}",
-                          date: "${provider.projectsData[a]['date']}",
+                          title: "${Constants.projectsData[a]['title']}",
+                          summary: "${Constants.projectsData[a]['summary']}",
+                          date: "${Constants.projectsData[a]['date']}",
                           isStartChild: a.isOdd ? false : true,
                         ),
                 const SizedBox(

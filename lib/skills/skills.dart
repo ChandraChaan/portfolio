@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_info.dart';
+import '../utils/constants.dart';
 import '../utils/dynamic_size.dart';
 import '../utils/font_style.dart';
 
@@ -34,7 +35,7 @@ class Skills extends StatelessWidget {
                   const CommonText(text: "CODING SKILLS", style: FontStyles.heading4,),
                   Wrap(
                     children: [
-                      for (int i = 0; i < provider.skillData.length; i++)
+                      for (int i = 0; i < Constants.skillData.length; i++)
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
@@ -49,12 +50,12 @@ class Skills extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Image.asset(
-                                    "${provider.skillData[i]["icon"]}",
+                                    "${Constants.skillData[i]["icon"]}",
                                     height: 30,
                                     width: 30,
                                   ),
-                                  CommonText(text: "${provider.skillData[i]["score"]}",style: FontStyles.body,),
-                                  CommonText(text: "${provider.skillData[i]["name"]}", style: FontStyles.body),
+                                  CommonText(text: "${Constants.skillData[i]["score"]}",style: FontStyles.body,),
+                                  CommonText(text: "${Constants.skillData[i]["name"]}", style: FontStyles.body),
                                 ],
                               ),
                             ),
