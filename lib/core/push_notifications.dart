@@ -59,7 +59,6 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
             print('android firebase initiated');
           }
           return const ChatGame(hideBackButton: true);
-          // return const HomePage();
         }
         // Otherwise, show something whilst waiting for initialization to complete
         return const Center(
