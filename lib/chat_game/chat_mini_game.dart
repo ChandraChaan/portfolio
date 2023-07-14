@@ -21,24 +21,9 @@ import 'message_domain.dart';
 class ChatGame extends StatelessWidget {
   final bool hideBackButton;
 
-  ChatGame({super.key, this.hideBackButton = false});
+   ChatGame({super.key, this.hideBackButton = false});
 
   FocusNode textFocus = FocusNode();
-
-
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  // }
-  //
-
-  //
-  // @override
-  // void dispose() {
-  //   inputController.dispose();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
