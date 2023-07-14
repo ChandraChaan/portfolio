@@ -8,117 +8,69 @@ import '../../projects/projects.dart';
 import '../../skills/skills.dart';
 
 class Constants {
-// the sidebar elements
-  static List<Map<String, dynamic>> mobileMenuList = [
-    {
-      'name': 'About',
-      'visibility': true,
-      'widget': const About(
-        mobileImg: true,
-      )
-    },
-    {
-      'name': 'Experience',
-      'visibility': false,
-      'widget': const Experience(
-        smallCard: true,
-      )
-    },
-    {
-      'name': 'Portfolio',
-      'visibility': false,
-      'widget': const Portfolio(
-        smallCard: true,
-      )
-    },
-    {'name': 'Skills', 'visibility': false, 'widget': const Skills()},
-    {
-      'name': 'Projects',
-      'visibility': false,
-      'widget': const Projects(
-        smallCard: true,
-      )
-    },
-    {
-      'name': 'Contact',
-      'visibility': false,
-      'widget': const Contact(
-        isWeb: false,
-      )
-    },
+
+
+  static List<Widget> mobileMenuList = [
+    const About(
+      mobileImg: true,
+    ),
+    const Experience(
+      smallCard: true,
+    ),
+    const Portfolio(
+      smallCard: true,
+    ),
+    const Skills(),
+    const Projects(
+      smallCard: true,
+    ),
+    const Contact(
+      isWeb: false,
+    ),
   ];
-  static List<Map<String, dynamic>> tabMenuList = [
-    {
-      'name': 'About',
-      'visibility': true,
-      'widget': const About(
-        mobileImg: true,
-        tabImg: true,
-      )
-    },
-    {
-      'name': 'Experience',
-      'visibility': false,
-      'widget': const Experience(
-        smallCard: false,
-      )
-    },
-    {
-      'name': 'Portfolio',
-      'visibility': false,
-      'widget': const Portfolio(
-        smallCard: false,
-      )
-    },
-    {'name': 'Skills', 'visibility': false, 'widget': const Skills()},
-    {
-      'name': 'Projects',
-      'visibility': false,
-      'widget': const Projects(
-        smallCard: false,
-      )
-    },
-    {
-      'name': 'Contact',
-      'visibility': false,
-      'widget': const Contact(
-        isWeb: false,
-      )
-    },
+  static List<Widget> tabMenuList = [
+    const About(
+      mobileImg: true,
+      tabImg: true,
+    ),
+    const Experience(
+      smallCard: false,
+    ),
+    const Portfolio(
+      smallCard: false,
+    ),
+    const Skills(),
+    const Projects(
+      smallCard: false,
+    ),
+    const Contact(
+      isWeb: false,
+    ),
   ];
-  static List<Map<String, dynamic>> desktopMenuList = [
-    {'name': 'About', 'visibility': true, 'widget': const About()},
-    {
-      'name': 'Experience',
-      'visibility': false,
-      'widget': const Experience(
-        smallCard: false,
-      )
-    },
-    {
-      'name': 'Portfolio',
-      'visibility': false,
-      'widget': const Portfolio(
-        smallCard: false,
-      )
-    },
-    {'name': 'Skills', 'visibility': false, 'widget': const Skills()},
-    {
-      'name': 'Projects',
-      'visibility': false,
-      'widget': const Projects(
-        smallCard: false,
-      )
-    },
-    {
-      'name': 'Contact',
-      'visibility': false,
-      'widget': const Contact(
-        isWeb: true,
-      )
-    },
+  static List<Widget> desktopMenuList = [
+    const About(),
+    const Experience(
+      smallCard: false,
+    ),
+    const Portfolio(
+      smallCard: false,
+    ),
+    const Skills(),
+    const Projects(
+      smallCard: false,
+    ),
+    const Contact(
+      isWeb: true,
+    ),
   ];
 
+  static List<String> suggestions = [
+    'show some images of ',
+    'Hello',
+    'create a container',
+    'create a circle',
+    'play',
+  ];
   static List<Map<String, dynamic>> expData = [
     {
       "icon": Icons.laptop_outlined,

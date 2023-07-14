@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../providers/user_info.dart';
+import '../../utils/constants.dart';
 import '../common/drawer_ui.dart';
 import '../common/scroll.dart';
 
@@ -30,7 +31,7 @@ class DesktopHomeUI extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      for (int index = 0; index < provider.desktopMenuList.length; index++)
+                      for (int index = 0; index < Constants.desktopMenuList.length; index++)
                         VisibilityDetector(
                           key: provider.scrollKeyValue(index),
                           onVisibilityChanged: (visibilityInfo) {
@@ -38,7 +39,7 @@ class DesktopHomeUI extends StatelessWidget {
                               provider.updateVisibility(index);
                             }
                           },
-                          child: provider.desktopMenuList[index],
+                          child: Constants.desktopMenuList[index],
                         ),
                     ],
                   ),

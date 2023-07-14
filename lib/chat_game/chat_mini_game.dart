@@ -25,31 +25,14 @@ class ChatGame extends StatelessWidget {
 
   FocusNode textFocus = FocusNode();
 
-  List<String> suggestions = [
-    'show some images of ',
-    'Hello',
-    'create a container',
-    'create a circle',
-    'play',
-  ];
-  List<String> filteredSuggestions = [];
-  int selectedIndex = -1;
 
   // @override
   // void initState() {
   //   super.initState();
-  //   selectedIndex = filteredSuggestions.length-1;
-  //   inputController.addListener(filterSuggestions);
+
   // }
   //
-  // void filterSuggestions() {
-  //   setState(() {
-  //     String searchText = inputController.text.toLowerCase();
-  //     filteredSuggestions = suggestions
-  //         .where((suggestion) => suggestion.toLowerCase().contains(searchText))
-  //         .toList();
-  //   });
-  // }
+
   //
   // @override
   // void dispose() {
@@ -61,6 +44,8 @@ class ChatGame extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserInfo>(
         builder: (context, provider, child) {
+          provider.ctx = context;
+        provider.chatInit();
         return Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: PreferredSize(
@@ -237,13 +222,13 @@ class ChatGame extends StatelessWidget {
                     if (provider.chatInputController.text.isNotEmpty)
                       ListView.builder(
                         shrinkWrap: true,
-                        itemCount: filteredSuggestions.length,
+                        itemCount: provider.filteredSuggestions.length,
                         itemBuilder: (context, index) {
                           return ListTile(
-                                selected: selectedIndex == index ? true:false,
-                                title: CommonText(text:filteredSuggestions[index]),
+                                selected: provider.selectedIndex == index ? true:false,
+                                title: CommonText(text:provider.filteredSuggestions[index]),
                                 onTap: () {
-                                  provider.chatInputController.text = filteredSuggestions[index];
+                                  provider.chatInputController.text = provider.filteredSuggestions[index];
                                 },
                               );
                         },
@@ -265,17 +250,16 @@ class ChatGame extends StatelessWidget {
                               bindings: <ShortcutActivator, VoidCallback>{
                                 const SingleActivator(LogicalKeyboardKey.arrowUp):
                                     () {
-                                  if(filteredSuggestions.length > selectedIndex) {
-                                    selectedIndex++;
-                                    provider.chatInputController.text = filteredSuggestions[selectedIndex];
+                                  if(provider.filteredSuggestions.length > provider.selectedIndex) {
+                                    provider.selectedIndex++;
+                                    provider.chatInputController.text = provider.filteredSuggestions[provider.selectedIndex];
                                   }
-
                                 },
                                 const SingleActivator(LogicalKeyboardKey.arrowDown):
                                     () {
-                                  if(filteredSuggestions.length > selectedIndex) {
-                                    selectedIndex--;
-                                    provider.chatInputController.text = filteredSuggestions[selectedIndex];
+                                  if(provider.filteredSuggestions.length > provider.selectedIndex) {
+                                    provider.selectedIndex--;
+                                    provider.chatInputController.text = provider.filteredSuggestions[provider.selectedIndex];
                                   }
 
                                 },

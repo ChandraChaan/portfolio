@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../providers/user_info.dart';
+import '../../utils/constants.dart';
 import '../common/drawer_ui.dart';
 import '../common/scroll.dart';
 
@@ -27,7 +28,7 @@ class MobileHomeUI extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  for(int a=0; a<provider.mobileMenuList.length; a++)
+                  for(int a=0; a<Constants.mobileMenuList.length; a++)
                   VisibilityDetector(
                     key: provider.scrollKeyValue(a),
                     onVisibilityChanged: (visibilityInfo) {
@@ -35,7 +36,7 @@ class MobileHomeUI extends StatelessWidget {
                         provider.updateVisibility(a);
                       }
                     },
-                    child: provider.mobileMenuList[a],
+                    child: Constants.mobileMenuList[a],
                   ),
                 ],
               ),

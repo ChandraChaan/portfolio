@@ -45,60 +45,6 @@ class UserInfo extends ChangeNotifier {
   final GlobalKey projectsScrollKey = GlobalKey();
   final GlobalKey contactScrollKey = GlobalKey();
 
-  List<Widget> mobileMenuList = [
-    const About(
-      mobileImg: true,
-    ),
-    const Experience(
-      smallCard: true,
-    ),
-    const Portfolio(
-      smallCard: true,
-    ),
-    const Skills(),
-    const Projects(
-      smallCard: true,
-    ),
-    const Contact(
-      isWeb: false,
-    ),
-  ];
-  List<Widget> tabMenuList = [
-     const About(
-        mobileImg: true,
-        tabImg: true,
-      ),
-     const Experience(
-        smallCard: false,
-      ),
-     const Portfolio(
-        smallCard: false,
-      ),
-     const Skills(),
-     const Projects(
-        smallCard: false,
-      ),
-     const Contact(
-        isWeb: false,
-      ),
-  ];
-  List<Widget> desktopMenuList = [
-     const About(),
-     const Experience(
-        smallCard: false,
-      ),
-     const Portfolio(
-        smallCard: false,
-      ),
-    const Skills(),
-    const Projects(
-        smallCard: false,
-      ),
-     const Contact(
-        isWeb: true,
-      ),
-  ];
-
   List<Map<String, dynamic>> menuList = [
     {
       'name': 'About',
@@ -676,7 +622,7 @@ class UserInfo extends ChangeNotifier {
 
     notifyListeners();
   }
-
+  BuildContext? ctx ;
   chatGetReply() async {
     final String userGivenText = chatInputController.text.trim();
     if (userGivenText.isNotEmpty) {
@@ -712,18 +658,18 @@ class UserInfo extends ChangeNotifier {
           } else {
             rText = "I didn't get";
           }
-        } /*else if (name[0] == 'open') {
+        } else if (name[0] == 'open') {
           if (name.contains('admin')) {
             rText = 'Sorry...';
-            Navigator.of(context).push(AdminPageRoot());
+            Navigator.of(ctx!).push(AdminPageRoot());
           } else if (name.contains('resume')) {
             rText = 'Opening...';
-            Navigator.of(context)
+            Navigator.of(ctx!)
                 .push(MaterialPageRoute(builder: (context) => const HomePage()));
           } else {
             rText = "I didn't get";
           }
-        }*/ else if (name[0] == 'play') {
+        } else if (name[0] == 'play') {
           rText = 'Here we go...';
           songName = await playVideo(userText) ?? '';
         } else if (name.contains('show') &&
@@ -765,6 +711,20 @@ class UserInfo extends ChangeNotifier {
     }
   }
 
+  List<String> filteredSuggestions = [];
+  int selectedIndex = -1;
+
+  void filterSuggestions() {
+      String searchText = chatInputController.text.toLowerCase();
+      filteredSuggestions = Constants.suggestions
+          .where((suggestion) => suggestion.toLowerCase().contains(searchText))
+          .toList();
+      notifyListeners();
+  }
+  chatInit(){
+    selectedIndex = filteredSuggestions.length-1;
+    chatInputController.addListener(filterSuggestions);
+  }
   // API endpoint for playing a video
   Future<String?> playVideo(String videoName) async {
     try {
