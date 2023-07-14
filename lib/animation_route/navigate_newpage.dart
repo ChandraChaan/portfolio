@@ -3,7 +3,7 @@ import '../chat_game/chat_mini_game.dart';
 import '../admin/admin_screen.dart';
 
 class ChatGameRoute extends CupertinoPageRoute {
-  ChatGameRoute() : super(builder: (BuildContext context) => const ChatGame());
+  ChatGameRoute() : super(builder: (BuildContext context) => ChatGame());
 
   // OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
   @override
@@ -15,7 +15,7 @@ class ChatGameRoute extends CupertinoPageRoute {
           scale: animation,
           child: FadeTransition(
             opacity: animation,
-            child: const ChatGame(),
+            child:  ChatGame(),
           ),
         ));
   }

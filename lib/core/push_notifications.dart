@@ -58,7 +58,7 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
           if (kDebugMode) {
             print('android firebase initiated');
           }
-          return const ChatGame(hideBackButton: true);
+          return ChatGame(hideBackButton: true);
         }
         // Otherwise, show something whilst waiting for initialization to complete
         return const Center(

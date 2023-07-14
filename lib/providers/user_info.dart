@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,12 +12,16 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../about/about.dart';
+import '../animation_route/navigate_newpage.dart';
+import '../chat_game/message_domain.dart';
 import '../contact/contact.dart';
+import '../core/home_page.dart';
 import '../experience/experience.dart';
 import '../portfolio/portfolio.dart';
 import '../projects/projects.dart';
 import '../skills/skills.dart';
 import '../utils/constants.dart';
+import '../utils/getReplayList.dart';
 
 class UserInfo extends ChangeNotifier {
   bool musicMode = false;
@@ -368,6 +374,7 @@ class UserInfo extends ChangeNotifier {
     final addressloc = await getAddress(latitude, longitude);
 
     address = addressloc;
+    notifyListeners();
   }
 
   Future<String> getAddress(double latitude, double longitude) async {
@@ -384,10 +391,12 @@ class UserInfo extends ChangeNotifier {
     }
 
     return 'Address not found';
+
   }
 
   getSystemName() {
     systemName = html.window.navigator.platform!;
+    notifyListeners();
   }
 
   getBrowserName() {
@@ -408,6 +417,7 @@ class UserInfo extends ChangeNotifier {
     } else {
       browserName = userAgent;
     }
+    notifyListeners();
   }
 
   final Connectivity _connectivity = Connectivity();
@@ -420,6 +430,7 @@ class UserInfo extends ChangeNotifier {
     final batteryLevel = await battery.batteryLevel;
 
     chargingStatus = '$batteryLevel';
+    notifyListeners();
   }
 
   Future<void> getWifiNetworkType() async {
@@ -433,6 +444,7 @@ class UserInfo extends ChangeNotifier {
 
       wifiNetworkTypeLoc = wifiNetworkType;
     }
+    notifyListeners();
   }
 
   // api call
@@ -632,4 +644,193 @@ class UserInfo extends ChangeNotifier {
     await getWifiNetworkType();
     roleAppUsersPost();
   }
+
+  // Chat mini game
+  TextEditingController chatInputController = TextEditingController();
+
+  String apiKey = 'AIzaSyCcyArg2tLT6FgAIvfe_mU2Q1DAzGC1gD4';
+  String searchEngineId = '23ca64046b86840ed';
+  String yutubeApiKey = 'AIzaSyDNtdImGrUc9SUOCw3Fm8bnbRoa48jfoXg';
+
+  String userText = "Type Something";
+  String replyTest = "See The Result";
+  bool showTable = false;
+  bool container = false;
+  bool circle = false;
+  int rNumber = 0;
+  List<Messages> listMesseges = [];
+
+  final ScrollController chatScrollController = ScrollController();
+
+  void addItemToList(Messages message) {
+      listMesseges.add(message);
+
+    // Delay the scroll animation slightly
+    Future.delayed(const Duration(milliseconds: 100), () {
+      chatScrollController.animateTo(
+        chatScrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    });
+
+    notifyListeners();
+  }
+
+  chatGetReply() async {
+    final String userGivenText = chatInputController.text.trim();
+    if (userGivenText.isNotEmpty) {
+      userText = userGivenText;
+      chatInputController.clear();
+      String inputText = userGivenText.toLowerCase();
+      List<String> listImages = [];
+      String songName = '';
+      showTable = false;
+      container = false;
+      circle = false;
+      addItemToList(Messages(
+          msg: userText,
+          left: false,
+          song: songName,
+          shape: 'null',
+          images: []));
+
+      String? rText;
+      if (userGivenText.isNumeric) {
+        rNumber = int.parse(userGivenText);
+        rText = rNumber.toString();
+        showTable = true;
+      } else {
+        List<String> name = userGivenText.split(' ');
+        if (name[0] == 'create') {
+          if (name.contains('container')) {
+            container = true;
+            rText = 'Container';
+          } else if (name.contains('circle')) {
+            circle = true;
+            rText = 'Circle';
+          } else {
+            rText = "I didn't get";
+          }
+        } /*else if (name[0] == 'open') {
+          if (name.contains('admin')) {
+            rText = 'Sorry...';
+            Navigator.of(context).push(AdminPageRoot());
+          } else if (name.contains('resume')) {
+            rText = 'Opening...';
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => const HomePage()));
+          } else {
+            rText = "I didn't get";
+          }
+        }*/ else if (name[0] == 'play') {
+          rText = 'Here we go...';
+          songName = await playVideo(userText) ?? '';
+        } else if (name.contains('show') &&
+            name.contains('images') &&
+            name.contains('of')) {
+          // Extract the keyword after 'of'
+          int index = name.indexOf('of');
+          if (index < name.length - 1) {
+            String keyword = name[index + 1];
+            rText = 'Here we go...';
+            listImages = await fetchGoogleImages(keyword);
+          } else {
+            rText = "I didn't get";
+          }
+        }
+
+        List<String> checkKeys = CommonUse().getReplayList.keys.toList();
+
+        await Future.forEach(checkKeys, (key) async {
+          if (key.toLowerCase() == inputText) {
+            rText = CommonUse().getReplayList[key].toString();
+          }
+        });
+        if (rText.toString() == 'null' || rText == "I didn't get") {
+          rText = await generateGoogleResponse(userText);
+        }
+      }
+
+      String shape = container ? 'container' : (circle ? 'circle' : 'null');
+      addItemToList(Messages(
+          msg: rText ?? "I didn't get",
+          left: true,
+          song: songName,
+          shape: shape,
+          images: listImages));
+
+        replyTest = rText ?? "I didn't get";
+      notifyListeners();
+    }
+  }
+
+  // API endpoint for playing a video
+  Future<String?> playVideo(String videoName) async {
+    try {
+      // Search for the video on YouTube
+      String searchQuery = Uri.encodeQueryComponent(videoName);
+      final Uri searchUri = Uri.parse(
+          'https://www.googleapis.com/youtube/v3/search?part=snippet&q=$searchQuery&type=video&key=$yutubeApiKey');
+      final searchResponse = await http.get(searchUri);
+
+      if (searchResponse.statusCode == 200) {
+        Map<String, dynamic> searchData = json.decode(searchResponse.body);
+        if (searchData.containsKey('items')) {
+          List<dynamic> items = searchData['items'];
+          if (items.isNotEmpty) {
+            String videoId = items[0]['id']['videoId'];
+            print(videoId);
+            String videoUrl = 'https://www.youtube.com/watch?v=$videoId';
+            // You can implement your video playback logic here using the videoUrl
+            return videoId;
+          }
+        }
+      }
+    } catch (e) {
+      print('Error playing video: $e');
+    }
+
+    return null;
+  }
+
+  Future<List<String>> fetchGoogleImages(String keyword) async {
+    final Uri uri = Uri.parse(
+      'https://www.googleapis.com/customsearch/v1?key=$apiKey&cx=$searchEngineId&q=$keyword&searchType=image',
+    );
+
+    final response = await http.get(uri);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = json.decode(response.body);
+      if (data.containsKey('items')) {
+        List<dynamic> items = data['items'];
+        if (items.isNotEmpty) {
+          return items.map((item) => item['link']).cast<String>().toList();
+          // return 'Showing images of $keyword';
+        }
+      }
+    }
+    return [];
+  }
+
+  Future<String?> generateGoogleResponse(String query) async {
+    final Uri uri = Uri.parse(
+      'https://www.googleapis.com/customsearch/v1?key=$apiKey&cx=$searchEngineId&q=$query',
+    );
+
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = json.decode(response.body);
+      if (data.containsKey('items')) {
+        List<dynamic> items = data['items'];
+        if (items.isNotEmpty) {
+          return items[0]['snippet'];
+        }
+      }
+    }
+
+    return null;
+  }
+
 }
