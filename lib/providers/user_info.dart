@@ -342,7 +342,7 @@ class UserInfo extends ChangeNotifier {
 
   getSystemName() {
     systemName = html.window.navigator.platform!;
-    notifyListeners();
+    // notifyListeners();
   }
 
   getBrowserName() {

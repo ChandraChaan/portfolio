@@ -44,7 +44,8 @@ class RoleApp extends StatelessWidget {
         cardColor: themeMode.themeLightMode ? Colors.white : Colors.black,
       ),
       debugShowCheckedModeBanner: false,
-      home: AnimationScreen(),
+      home: const PushNotificationApp(),
+      // home: AnimationScreen(),
     );
   }
 }

@@ -4,7 +4,6 @@ class AnimationScreen extends StatefulWidget {
   @override
   _AnimationScreenState createState() => _AnimationScreenState();
 }
-
 class _AnimationScreenState extends State<AnimationScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
@@ -16,12 +15,12 @@ class _AnimationScreenState extends State<AnimationScreen>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 300),
     );
     _animation = Tween<Offset>(
       begin: Offset.zero,
       end: const Offset(1.89, 0.0),
-    ).animate(_controller);
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
   }
 
   @override
@@ -46,7 +45,7 @@ class _AnimationScreenState extends State<AnimationScreen>
     return Scaffold(
       body: Stack(
         children: [
-          buildBackgroundImage(),
+          buildBackgroundImage(context),
           buildForm(),
         ],
       ),
@@ -149,16 +148,27 @@ class _AnimationScreenState extends State<AnimationScreen>
     );
   }
 
-  Widget buildBackgroundImage() {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.fastOutSlowIn,
+  Widget buildBackgroundImage(BuildContext context) {
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      child: Image.asset(
-        _isLoginFormVisible ? 'assets/images/img1.png' : 'assets/images/img2.png',
-        fit: BoxFit.cover,
+      child: AnimatedCrossFade(
+        duration: const Duration(milliseconds: 500),
+        crossFadeState: _isLoginFormVisible
+            ? CrossFadeState.showFirst
+            : CrossFadeState.showSecond,
+        firstChild: Image.asset(
+          'assets/images/img1.png',
+          key: const ValueKey<String>('img1'),
+          fit: BoxFit.cover,
+        ),
+        secondChild: Image.asset(
+          'assets/images/img2.png',
+          key: const ValueKey<String>('img2'),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
+
 }

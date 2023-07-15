@@ -1,29 +1,49 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:portfoli_web/chat_game/text_animation.dart';
 import 'package:portfoli_web/chat_game/youtube_play.dart';
-import 'package:portfoli_web/utils/constants.dart';
-import 'package:portfoli_web/utils/slide_show.dart';
-import 'package:portfoli_web/core/home_page.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
-import 'dart:async';
 import '../utils/dynamic_image.dart';
 import '../utils/font_style.dart';
-import '../utils/getReplayList.dart';
-import '../animation_route/navigate_newpage.dart';
 import 'package:flutter/services.dart';
 
-import 'message_domain.dart';
+import 'package:flutter/animation.dart';
+import 'package:flutter/physics.dart';
+import 'package:flutter/scheduler.dart';
 
-class ChatGame extends StatelessWidget {
+
+class ChatGame extends StatefulWidget {
   final bool hideBackButton;
 
    ChatGame({super.key, this.hideBackButton = false});
 
+  @override
+  State<ChatGame> createState() => _ChatGameState();
+}
+
+class _ChatGameState extends State<ChatGame>  with SingleTickerProviderStateMixin{
   FocusNode textFocus = FocusNode();
+
+  bool showChairAnimation = false;
+
+  double chairSize = 0.0;
+
+  late AnimationController _chairController;
+
+  @override
+  void initState() {
+    super.initState();
+    _chairController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+  }
+
+  @override
+  void dispose() {
+    _chairController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +62,50 @@ class ChatGame extends StatelessWidget {
                   const SizedBox(width: 18.0),
                   IconButton(
                     padding: EdgeInsets.zero,
-                    onPressed: hideBackButton
-                        ? null
-                        : () {
-                            Navigator.pop(context);
-                          },
-                    icon: Icon(
-                      hideBackButton ? Icons.chair : Icons.arrow_back,
-                      color: Theme.of(context).primaryColor,
-                      size: 35.0,
+                      onPressed: widget.hideBackButton
+                          ? () {
+                        if (!showChairAnimation) {
+                          setState(() {
+                            showChairAnimation = true;
+                          });
+                          _chairController.forward().then((_) {
+                            _chairController.reverse().then((_) {
+                              setState(() {
+                                showChairAnimation = false;
+                              });
+                              Navigator.pop(context);
+                            });
+                          });
+                        }
+                      }
+                          : () {
+                        Navigator.pop(context);
+                      },
+
+                    icon: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOut,
+                      transform: Matrix4.translationValues(showChairAnimation ? 300.0 :0.0, showChairAnimation ? 300.0 : 0.0, showChairAnimation ? 300.0 :0.0),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeOutBack,
+                        width: chairSize,
+                        height: chairSize,
+                        child: Icon(
+                          Icons.chair,
+                          color: Theme.of(context).primaryColor,
+                          size: 35.0,
+                        ),
+                        onEnd: () {
+                          if (showChairAnimation) {
+                            setState(() {
+                              chairSize = 160.0;
+                            });
+                          }
+                        },
+                      ),
                     ),
+
                   ),
                   const SizedBox(width: 18.0),
                   Expanded(
