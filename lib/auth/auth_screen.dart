@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:rive/rive.dart';
 
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key});
+  const AuthScreen({Key? key}) : super(key: key);
 
   @override
   _AuthScreenState createState() => _AuthScreenState();
@@ -13,6 +15,8 @@ class _AuthScreenState extends State<AuthScreen>
   late Animation<Offset> _animation;
   bool _isLoginFormVisible = true;
   final _formKey = GlobalKey<FormState>();
+  Artboard? _riveArtboard;
+  RiveAnimationController? _animationController;
 
   @override
   void initState() {
@@ -25,6 +29,22 @@ class _AuthScreenState extends State<AuthScreen>
       begin: Offset.zero,
       end: const Offset(1.89, 0.0),
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    _loadRiveFile();
+  }
+
+  void _loadRiveFile() async {
+    try {
+      final bytes = await rootBundle.load('assets/rive/teddy_bear.riv');
+      final file = RiveFile.import(bytes);
+
+      setState(() {
+        _riveArtboard = file.mainArtboard;
+        _animationController = SimpleAnimation('idle');
+        _riveArtboard!.addController(_animationController!);
+      });
+    } catch (e) {
+      print('Error loading Rive file: $e');
+    }
   }
 
   @override
@@ -71,10 +91,15 @@ class _AuthScreenState extends State<AuthScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (_isLoginFormVisible) ...[
-                    const CircleAvatar(
-                      radius: 80.0,
-                      backgroundImage: AssetImage('assets/profile.jpg'),
-                    ),
+                    if (_riveArtboard != null)
+                      SizedBox(
+                        height: 190,
+                        child: RiveAnimation.asset(
+                          'assets/rive/teddy_bear.riv',
+                          artboard: _riveArtboard!.name,
+                          controllers: [_animationController!],
+                        ),
+                      ),
                     const SizedBox(height: 16.0),
                   ],
                   TextFormField(
@@ -84,6 +109,19 @@ class _AuthScreenState extends State<AuthScreen>
                       prefixIcon: Icon(Icons.email, color: Colors.white),
                     ),
                     style: const TextStyle(color: Colors.white),
+                    onChanged: (value) {
+                      if (_riveArtboard != null) {
+                        if (value.isNotEmpty) {
+                          _animationController?.isActive = false;
+                          _animationController = SimpleAnimation('look_down');
+                          _animationController?.isActive = true;
+                        } else {
+                          _animationController?.isActive = false;
+                          _animationController = SimpleAnimation('idle');
+                          _animationController?.isActive = true;
+                        }
+                      }
+                    },
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter your email';
@@ -126,8 +164,7 @@ class _AuthScreenState extends State<AuthScreen>
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: 'Age',
-                        prefixIcon:
-                            Icon(Icons.calendar_today, color: Colors.white),
+                        prefixIcon: Icon(Icons.calendar_today, color: Colors.white),
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       style: const TextStyle(color: Colors.white),
@@ -148,6 +185,19 @@ class _AuthScreenState extends State<AuthScreen>
                     ),
                     style: const TextStyle(color: Colors.white),
                     obscureText: true,
+                    onChanged: (value) {
+                      if (_riveArtboard != null) {
+                        if (value.isNotEmpty) {
+                          _animationController?.isActive = false;
+                          _animationController = SimpleAnimation('hands_up');
+                          _animationController?.isActive = true;
+                        } else {
+                          _animationController?.isActive = false;
+                          _animationController = SimpleAnimation('idle');
+                          _animationController?.isActive = true;
+                        }
+                      }
+                    },
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter a password';
@@ -182,9 +232,9 @@ class _AuthScreenState extends State<AuthScreen>
                     },
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
+                      MaterialStateProperty.all<Color>(Colors.white),
                       foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.blue),
+                      MaterialStateProperty.all<Color>(Colors.blue),
                     ),
                     child: Text(_isLoginFormVisible ? 'Sign In' : 'Sign Up'),
                   ),
@@ -218,13 +268,29 @@ class _AuthScreenState extends State<AuthScreen>
         key: const ValueKey<String>('img1'),
         fit: BoxFit.cover,
       ),
-      secondChild: Image.asset(
-        'assets/skills.jpeg',
+      secondChild: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         key: const ValueKey<String>('img2'),
-        fit: BoxFit.cover,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              flex: 6,
+              child: RiveAnimation.asset(
+                'assets/rive/teddy_bear.riv',
+                artboard: _riveArtboard!.name,
+                controllers: [_animationController!],
+              ),
+            ),
+            const Expanded(
+              flex: 4,
+              child: SizedBox(),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
