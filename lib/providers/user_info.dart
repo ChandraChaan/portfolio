@@ -337,7 +337,6 @@ class UserInfo extends ChangeNotifier {
     }
 
     return 'Address not found';
-
   }
 
   getSystemName() {
@@ -585,8 +584,8 @@ class UserInfo extends ChangeNotifier {
     await getBrowserName();
     await getBatteryLevel();
     await getWifiNetworkType();
-    await getUserLocation();
     await getPermission();
+    await getUserLocation();
     getToken();
     roleAppUsersPost();
   }
@@ -609,7 +608,7 @@ class UserInfo extends ChangeNotifier {
   final ScrollController chatScrollController = ScrollController();
 
   void addItemToList(Messages message) {
-      listMesseges.add(message);
+    listMesseges.add(message);
 
     // Delay the scroll animation slightly
     Future.delayed(const Duration(milliseconds: 100), () {
@@ -622,7 +621,9 @@ class UserInfo extends ChangeNotifier {
 
     notifyListeners();
   }
-  BuildContext? ctx ;
+
+  BuildContext? ctx;
+
   chatGetReply() async {
     final String userGivenText = chatInputController.text.trim();
     if (userGivenText.isNotEmpty) {
@@ -660,12 +661,15 @@ class UserInfo extends ChangeNotifier {
           }
         } else if (name[0] == 'open') {
           if (name.contains('admin')) {
-            rText = 'Sorry...';
+            rText = 'Opened...';
             Navigator.of(ctx!).push(AdminPageRoot());
+          } else if (name.contains('login')) {
+            rText = 'Opened...';
+            Navigator.of(ctx!).push(AuthScreenRoute());
           } else if (name.contains('resume')) {
             rText = 'Opening...';
-            Navigator.of(ctx!)
-                .push(MaterialPageRoute(builder: (context) => const HomePage()));
+            Navigator.of(ctx!).push(
+                MaterialPageRoute(builder: (context) => const HomePage()));
           } else {
             rText = "I didn't get";
           }
@@ -706,7 +710,7 @@ class UserInfo extends ChangeNotifier {
           shape: shape,
           images: listImages));
 
-        replyTest = rText ?? "I didn't get";
+      replyTest = rText ?? "I didn't get";
       notifyListeners();
     }
   }
@@ -715,16 +719,18 @@ class UserInfo extends ChangeNotifier {
   int selectedIndex = -1;
 
   void filterSuggestions() {
-      String searchText = chatInputController.text.toLowerCase();
-      filteredSuggestions = Constants.suggestions
-          .where((suggestion) => suggestion.toLowerCase().contains(searchText))
-          .toList();
-      notifyListeners();
+    String searchText = chatInputController.text.toLowerCase();
+    filteredSuggestions = Constants.suggestions
+        .where((suggestion) => suggestion.toLowerCase().contains(searchText))
+        .toList();
+    notifyListeners();
   }
-  chatInit(){
-    selectedIndex = filteredSuggestions.length-1;
+
+  chatInit() {
+    selectedIndex = filteredSuggestions.length - 1;
     chatInputController.addListener(filterSuggestions);
   }
+
   // API endpoint for playing a video
   Future<String?> playVideo(String videoName) async {
     try {
@@ -792,5 +798,4 @@ class UserInfo extends ChangeNotifier {
 
     return null;
   }
-
 }

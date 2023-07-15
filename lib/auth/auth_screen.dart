@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-class AnimationScreen extends StatefulWidget {
+class AuthScreen extends StatefulWidget {
+  const AuthScreen({super.key});
+
   @override
-  _AnimationScreenState createState() => _AnimationScreenState();
+  _AuthScreenState createState() => _AuthScreenState();
 }
-class _AnimationScreenState extends State<AnimationScreen>
+class _AuthScreenState extends State<AuthScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _animation;
