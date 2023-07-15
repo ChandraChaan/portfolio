@@ -3,6 +3,7 @@ import 'package:portfoli_web/core/home_page.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'auth/auth_screen.dart';
 import 'core/push_notifications.dart';
 
 void main() async {
@@ -43,7 +44,7 @@ class RoleApp extends StatelessWidget {
         cardColor: themeMode.themeLightMode ? Colors.white : Colors.black,
       ),
       debugShowCheckedModeBanner: false,
-      home: const PushNotificationApp(),
+      home: AnimationScreen(),
     );
   }
 }

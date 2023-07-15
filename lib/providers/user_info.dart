@@ -581,13 +581,13 @@ class UserInfo extends ChangeNotifier {
   }
 
   initFun() async {
-    await getPermission();
-    getToken();
-    await getUserLocation();
     await getSystemName();
     await getBrowserName();
     await getBatteryLevel();
     await getWifiNetworkType();
+    await getUserLocation();
+    await getPermission();
+    getToken();
     roleAppUsersPost();
   }
 
