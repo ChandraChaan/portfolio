@@ -90,6 +90,7 @@ flutter:
     - assets/images/
     - assets/portfolio/
     - assets/skills/
+    - assets/rive/
     - assets/audio/
 #     - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

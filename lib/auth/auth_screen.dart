@@ -6,11 +6,13 @@ class AuthScreen extends StatefulWidget {
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
+
 class _AuthScreenState extends State<AuthScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _animation;
   bool _isLoginFormVisible = true;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -63,86 +65,139 @@ class _AuthScreenState extends State<AuthScreen>
         child: Padding(
           padding: const EdgeInsets.all(32.0),
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    hintStyle: TextStyle(color: Colors.white),
-                    prefixIcon: Icon(Icons.email, color: Colors.white),
-                  ),
-                  style: TextStyle(color: Colors.white),
-                ),
-                if (!_isLoginFormVisible) ...[
-                  const SizedBox(height: 16.0),
-                  const TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Phone',
-                      prefixIcon: Icon(Icons.phone, color: Colors.white),
-                      hintStyle: TextStyle(color: Colors.white),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (_isLoginFormVisible) ...[
+                    const CircleAvatar(
+                      radius: 80.0,
+                      backgroundImage: AssetImage('assets/profile.jpg'),
                     ),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  const SizedBox(height: 16.0),
-                  const TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Name',
-                      prefixIcon: Icon(Icons.person, color: Colors.white),
+                    const SizedBox(height: 16.0),
+                  ],
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Email',
                       hintStyle: TextStyle(color: Colors.white),
+                      prefixIcon: Icon(Icons.email, color: Colors.white),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
                   ),
-                  const SizedBox(height: 16.0),
-                  const TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Age',
-                      prefixIcon: Icon(Icons.calendar_today, color: Colors.white),
-                      hintStyle: TextStyle(color: Colors.white),
+                  if (!_isLoginFormVisible) ...[
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Phone',
+                        prefixIcon: Icon(Icons.phone, color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your phone number';
+                        }
+                        return null;
+                      },
                     ),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-                const SizedBox(height: 16.0),
-                const TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    hintStyle: TextStyle(color: Colors.white),
-                    prefixIcon: Icon(Icons.lock, color: Colors.white),
-                  ),
-                  style: TextStyle(color: Colors.white),
-                  obscureText: true,
-                ),
-                if (!_isLoginFormVisible) ...[
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Name',
+                        prefixIcon: Icon(Icons.person, color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Age',
+                        prefixIcon:
+                            Icon(Icons.calendar_today, color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your age';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                   const SizedBox(height: 16.0),
-                  const TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Confirm Password',
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Password',
                       hintStyle: TextStyle(color: Colors.white),
                       prefixIcon: Icon(Icons.lock, color: Colors.white),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     obscureText: true,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a password';
+                      }
+                      return null;
+                    },
+                  ),
+                  if (!_isLoginFormVisible) ...[
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Confirm Password',
+                        hintStyle: TextStyle(color: Colors.white),
+                        prefixIcon: Icon(Icons.lock, color: Colors.white),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please confirm your password';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                  const SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // Form is valid, perform login or signup logic
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue),
+                    ),
+                    child: Text(_isLoginFormVisible ? 'Sign In' : 'Sign Up'),
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextButton(
+                    onPressed: _toggleForms,
+                    child: Text(
+                      _isLoginFormVisible ? 'Sign Up' : 'Sign In',
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
-                const SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                  ),
-                  child: Text(_isLoginFormVisible ? 'Sign In' : 'Sign Up'),
-                ),
-                const SizedBox(height: 16.0),
-                TextButton(
-                  onPressed: _toggleForms,
-                  child: Text(
-                    _isLoginFormVisible ? 'Sign Up' : 'Sign In',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),
@@ -151,26 +206,25 @@ class _AuthScreenState extends State<AuthScreen>
   }
 
   Widget buildBackgroundImage(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: AnimatedCrossFade(
-        duration: const Duration(milliseconds: 500),
-        crossFadeState: _isLoginFormVisible
-            ? CrossFadeState.showFirst
-            : CrossFadeState.showSecond,
-        firstChild: Image.asset(
-          'assets/images/img1.png',
-          key: const ValueKey<String>('img1'),
-          fit: BoxFit.cover,
-        ),
-        secondChild: Image.asset(
-          'assets/images/img2.png',
-          key: const ValueKey<String>('img2'),
-          fit: BoxFit.cover,
-        ),
+    return AnimatedCrossFade(
+      duration: const Duration(milliseconds: 500),
+      crossFadeState: _isLoginFormVisible
+          ? CrossFadeState.showFirst
+          : CrossFadeState.showSecond,
+      firstChild: Image.asset(
+        'assets/backGround-image.jpg',
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        key: const ValueKey<String>('img1'),
+        fit: BoxFit.cover,
+      ),
+      secondChild: Image.asset(
+        'assets/skills.jpeg',
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        key: const ValueKey<String>('img2'),
+        fit: BoxFit.cover,
       ),
     );
   }
-
 }
