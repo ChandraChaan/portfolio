@@ -1,25 +1,19 @@
-import 'dart:js';
+import 'dart:html' as html;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:html' as html;
 import 'package:geolocator/geolocator.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-import '../about/about.dart';
 import '../animation_route/navigate_newpage.dart';
 import '../chat_game/message_domain.dart';
-import '../contact/contact.dart';
 import '../core/home_page.dart';
-import '../experience/experience.dart';
-import '../portfolio/portfolio.dart';
-import '../projects/projects.dart';
-import '../skills/skills.dart';
 import '../utils/constants.dart';
 import '../utils/getReplayList.dart';
 
@@ -341,25 +335,80 @@ class UserInfo extends ChangeNotifier {
 
   getSystemName() {
     systemName = html.window.navigator.platform!;
-    // notifyListeners();
+    printAllBrowserInformation();
   }
+
+  void printAllBrowserInformation() async{
+    // Get the screen resolution
+    int? screenWidth = html.window.screen?.width;
+    int? screenHeight = html.window.screen?.height;
+
+    // Get specific browser-related information
+    String appName = html.window.navigator.appName;
+    String? appVersion = html.window.navigator.appVersion;
+    String? userAgent = html.window.navigator.userAgent;
+    String? platform = html.window.navigator.platform;
+    String? language = html.window.navigator.language;
+    List<String>? languages = html.window.navigator.languages;
+    bool? cookieEnabled = html.window.navigator.cookieEnabled;
+    String? doNotTrack = html.window.navigator.doNotTrack;
+    int? maxTouchPoints = html.window.navigator.maxTouchPoints;
+    String? product = html.window.navigator.product;
+    String? vendor = html.window.navigator.vendor;
+    String? vendorSub = html.window.navigator.vendorSub;
+    String? productSub = html.window.navigator.productSub;
+    int? hardwareConcurrency = html.window.navigator.hardwareConcurrency;
+    double? deviceMemory = html.window.navigator.deviceMemory as double?;
+    List<html.MimeType>? mimeTypes = html.window.navigator.mimeTypes;
+    bool? onLine = html.window.navigator.onLine;
+    bool? webdriver = html.window.navigator.webdriver;
+
+
+    // Display the information
+    print('Screen Resolution: $screenWidth x $screenHeight');
+    print('App Name: $appName');
+    print('App Version: $appVersion');
+    print('User Agent: $userAgent');
+    print('Platform: $platform');
+    print('Language: $language');
+    print('Languages: $languages');
+    print('Cookie Enabled: $cookieEnabled');
+    print('Do Not Track: $doNotTrack');
+    print('Max Touch Points: $maxTouchPoints');
+    print('Product: $product');
+    print('Vendor: $vendor');
+    print('Vendor Sub: $vendorSub');
+    print('Product Sub: $productSub');
+    print('Hardware Concurrency: $hardwareConcurrency');
+    print('Device Memory (GB): $deviceMemory');
+    print('Number of Mime Types: ${mimeTypes?.length ?? 0}');
+    print('Online Status: $onLine');
+    print('Is WebDriver: $webdriver');
+  }
+
 
   getBrowserName() {
     String userAgent = html.window.navigator.userAgent;
 
     if (userAgent.contains('Chrome')) {
       browserName = 'Chrome';
-    } else if (userAgent.contains('Firefox')) {
+    }
+    else if (userAgent.contains('Firefox')) {
       browserName = 'Firefox';
-    } else if (userAgent.contains('Safari')) {
+    }
+    else if (userAgent.contains('Safari')) {
       browserName = 'Safari';
-    } else if (userAgent.contains('Opera') || userAgent.contains('OPR')) {
+    }
+    else if (userAgent.contains('Opera') || userAgent.contains('OPR')) {
       browserName = 'Opera';
-    } else if (userAgent.contains('Edge')) {
+    }
+    else if (userAgent.contains('Edge')) {
       browserName = 'Edge';
-    } else if (userAgent.contains('MSIE') || userAgent.contains('Trident/')) {
+    }
+    else if (userAgent.contains('MSIE') || userAgent.contains('Trident/')) {
       browserName = 'Internet Explorer';
-    } else {
+    }
+    else {
       browserName = userAgent;
     }
     notifyListeners();
