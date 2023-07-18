@@ -139,7 +139,7 @@ class _ChatGameState extends State<ChatGame>
                         ),
                         const SizedBox(height: 10.0),
                         SelectableText(
-                          '${provider.systemName.isNotEmpty ? 'System name: ${provider.systemName}' : ''}\n${provider.browserName.isNotEmpty ? 'Browser name: ${provider.browserName}' : ''}',
+                          '${provider.systemName != null ? 'System name: ${provider.systemName}' : ''}\n${provider.browserName != null ? 'Browser name: ${provider.browserName}' : ''}',
                           style: FontStyles.body.copyWith(
                             color: Theme.of(context).primaryColor,
                           ),
@@ -160,7 +160,7 @@ class _ChatGameState extends State<ChatGame>
                     ),
                   ),
                   const SizedBox(width: 18.0),
-                  if (provider.chargingStatus != 'Unknown')
+                  if (provider.batteryStatus != 'Unknown')
                     Row(
                       children: [
                         Icon(
@@ -169,12 +169,12 @@ class _ChatGameState extends State<ChatGame>
                         ),
                         const SizedBox(width: 5),
                         CommonText(
-                          text: '${provider.chargingStatus}%',
+                          text: '${provider.batteryStatus}%',
                         ),
                       ],
                     ),
                   const SizedBox(width: 18.0),
-                  if (provider.wifiNetworkTypeLoc != 'Unknown')
+                  if (provider.wifiNetworkStatus != 'Unknown')
                     Row(
                       children: [
                         Icon(
@@ -183,7 +183,7 @@ class _ChatGameState extends State<ChatGame>
                         ),
                         const SizedBox(width: 5),
                         CommonText(
-                          text: provider.wifiNetworkTypeLoc,
+                          text: provider.wifiNetworkStatus,
                         ),
                       ],
                     ),

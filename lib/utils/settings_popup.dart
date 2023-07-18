@@ -552,22 +552,22 @@ class GeneralSettingsSection extends StatelessWidget {
                           )),
                     ],
                   ),
-                  TextButton(
-                      onPressed: provider.nLoading == false
-                          ? () {
-                              // sendNotificationThis();
-                            }
-                          : null,
-                      child: provider.nLoading
-                          ? Text(
-                              'Loading...',
-                              style: styl,
-                            )
-                          : Text('Notification', style: styl).animate(effects: [
-                              const ShakeEffect(
-                                  duration: Duration(minutes: 2),
-                                  delay: Duration(seconds: 5))
-                            ])),
+                  // TextButton(
+                  //     onPressed: provider.nLoading == false
+                  //         ? () {
+                  //             // sendNotificationThis();
+                  //           }
+                  //         : null,
+                  //     child: provider.nLoading
+                  //         ? Text(
+                  //             'Loading...',
+                  //             style: styl,
+                  //           )
+                  //         : Text('Notification', style: styl).animate(effects: [
+                  //             const ShakeEffect(
+                  //                 duration: Duration(minutes: 2),
+                  //                 delay: Duration(seconds: 5))
+                  //           ])),
                 ],
               );
             },

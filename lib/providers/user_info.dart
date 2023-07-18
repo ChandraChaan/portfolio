@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:portfoli_web/providers/user_repo.dart';
 
 import '../animation_route/navigate_newpage.dart';
 import '../chat_game/message_domain.dart';
@@ -29,6 +30,21 @@ class UserInfo extends ChangeNotifier {
   String userFirstName = '';
   String imageFilterString = 'all';
   bool imageLoaded = false;
+
+  final Connectivity _connectivity = Connectivity();
+
+  DeviceType deviceType = DeviceType.unknown;
+  String deviceTypeName = 'Unknown';
+  int? screenWidth;
+  int? screenHeight;
+  double? deviceMemory;
+  String? systemName;
+  String? browserName;
+  String batteryStatus = 'Unknown';
+  String wifiNetworkStatus = 'Unknown';
+  String address = '';
+  double latitude = 0.0;
+  double longitude = 0.0;
 
   // home page properties,
   ScrollController? scrollController = ScrollController();
@@ -106,13 +122,13 @@ class UserInfo extends ChangeNotifier {
 
   changeThemeMode() {
     themeLightMode = !themeLightMode;
-    roleAppUsersPut();
+    updateUserDeviceInfo();
     notifyListeners();
   }
 
   changeMusicMode() {
     musicMode = !musicMode;
-    roleAppUsersPut();
+    updateUserDeviceInfo();
     notifyListeners();
   }
 
@@ -185,7 +201,7 @@ class UserInfo extends ChangeNotifier {
     themeColor = cl;
     themeStringColor = colorHex;
     oppositeColor = getOppositeColor(cl);
-    roleAppUsersPut();
+    updateUserDeviceInfo();
     notifyListeners();
   }
 
@@ -298,11 +314,6 @@ class UserInfo extends ChangeNotifier {
     nLoading = false;
   }
 
-  String address = '';
-  double latitude = 0.0;
-  double longitude = 0.0;
-  String systemName = '';
-  String browserName = '';
 
   Future<void> getUserLocation() async {
     Position position = await Geolocator.getCurrentPosition(
@@ -333,113 +344,74 @@ class UserInfo extends ChangeNotifier {
     return 'Address not found';
   }
 
-  getSystemName() {
-    systemName = html.window.navigator.platform!;
-    printAllBrowserInformation();
-  }
-
-  void printAllBrowserInformation() async{
-    // Get the screen resolution
-    int? screenWidth = html.window.screen?.width;
-    int? screenHeight = html.window.screen?.height;
-
-    // Get specific browser-related information
-    String appName = html.window.navigator.appName;
-    String? appVersion = html.window.navigator.appVersion;
-    String? userAgent = html.window.navigator.userAgent;
-    String? platform = html.window.navigator.platform;
-    String? language = html.window.navigator.language;
-    List<String>? languages = html.window.navigator.languages;
-    bool? cookieEnabled = html.window.navigator.cookieEnabled;
-    String? doNotTrack = html.window.navigator.doNotTrack;
-    int? maxTouchPoints = html.window.navigator.maxTouchPoints;
-    String? product = html.window.navigator.product;
-    String? vendor = html.window.navigator.vendor;
-    String? vendorSub = html.window.navigator.vendorSub;
-    String? productSub = html.window.navigator.productSub;
-    int? hardwareConcurrency = html.window.navigator.hardwareConcurrency;
-    double? deviceMemory = html.window.navigator.deviceMemory as double?;
-    List<html.MimeType>? mimeTypes = html.window.navigator.mimeTypes;
-    bool? onLine = html.window.navigator.onLine;
-    bool? webdriver = html.window.navigator.webdriver;
-
-
-    // Display the information
-    print('Screen Resolution: $screenWidth x $screenHeight');
-    print('App Name: $appName');
-    print('App Version: $appVersion');
-    print('User Agent: $userAgent');
-    print('Platform: $platform');
-    print('Language: $language');
-    print('Languages: $languages');
-    print('Cookie Enabled: $cookieEnabled');
-    print('Do Not Track: $doNotTrack');
-    print('Max Touch Points: $maxTouchPoints');
-    print('Product: $product');
-    print('Vendor: $vendor');
-    print('Vendor Sub: $vendorSub');
-    print('Product Sub: $productSub');
-    print('Hardware Concurrency: $hardwareConcurrency');
-    print('Device Memory (GB): $deviceMemory');
-    print('Number of Mime Types: ${mimeTypes?.length ?? 0}');
-    print('Online Status: $onLine');
-    print('Is WebDriver: $webdriver');
-  }
-
-
-  getBrowserName() {
-    String userAgent = html.window.navigator.userAgent;
-
-    if (userAgent.contains('Chrome')) {
-      browserName = 'Chrome';
-    }
-    else if (userAgent.contains('Firefox')) {
-      browserName = 'Firefox';
-    }
-    else if (userAgent.contains('Safari')) {
-      browserName = 'Safari';
-    }
-    else if (userAgent.contains('Opera') || userAgent.contains('OPR')) {
-      browserName = 'Opera';
-    }
-    else if (userAgent.contains('Edge')) {
-      browserName = 'Edge';
-    }
-    else if (userAgent.contains('MSIE') || userAgent.contains('Trident/')) {
-      browserName = 'Internet Explorer';
-    }
-    else {
-      browserName = userAgent;
-    }
+  Future<void> updateDeviceInfo() async {
+    await _updateScreenInfo();
+    await _updateBatteryStatus();
+    await _updateWifiNetworkStatus();
+     _updateDeviceType();
+    _updateBrowserName();
     notifyListeners();
   }
 
-  final Connectivity _connectivity = Connectivity();
+  Future<void> _updateScreenInfo() async {
+    screenWidth = html.window.screen?.width;
+    screenHeight = html.window.screen?.height;
+    deviceMemory = html.window.navigator.deviceMemory as double?;
+    systemName = html.window.navigator.platform;
+  }
 
-  String chargingStatus = 'Unknown';
-  String wifiNetworkTypeLoc = 'Unknown';
-
-  Future<void> getBatteryLevel() async {
+  Future<void> _updateBatteryStatus() async {
     final battery = Battery();
     final batteryLevel = await battery.batteryLevel;
-
-    chargingStatus = '$batteryLevel';
-    notifyListeners();
+    batteryStatus = '$batteryLevel';
   }
 
-  Future<void> getWifiNetworkType() async {
+  Future<void> _updateWifiNetworkStatus() async {
     final connectivityResult = await _connectivity.checkConnectivity();
     if (connectivityResult == ConnectivityResult.wifi) {
-      const wifiNetworkType = 'Connected';
-
-      wifiNetworkTypeLoc = wifiNetworkType;
+      wifiNetworkStatus = 'Connected';
     } else {
-      const wifiNetworkType = 'Not connected';
-
-      wifiNetworkTypeLoc = wifiNetworkType;
+      wifiNetworkStatus = 'Not connected';
     }
-    notifyListeners();
   }
+
+  void _updateDeviceType() {
+    if (screenWidth != null) {
+      if (screenWidth! < 600) {
+        deviceTypeName = 'Mobile';
+        deviceType = DeviceType.mobile;
+      } else if (screenWidth! < 1200) {
+        deviceTypeName = 'Tablet';
+        deviceType = DeviceType.tablet;
+      } else {
+        deviceTypeName = 'Desktop';
+        deviceType = DeviceType.desktop;
+      }
+    } else {
+      deviceTypeName = 'Unknown';
+      deviceType = DeviceType.unknown;
+    }
+  }
+
+  void _updateBrowserName() {
+    String userAgent = html.window.navigator.userAgent;
+    if (userAgent.contains('Chrome')) {
+      browserName = 'Chrome';
+    } else if (userAgent.contains('Firefox')) {
+      browserName = 'Firefox';
+    } else if (userAgent.contains('Safari')) {
+      browserName = 'Safari';
+    } else if (userAgent.contains('Opera') || userAgent.contains('OPR')) {
+      browserName = 'Opera';
+    } else if (userAgent.contains('Edge')) {
+      browserName = 'Edge';
+    } else if (userAgent.contains('MSIE') || userAgent.contains('Trident/')) {
+      browserName = 'Internet Explorer';
+    } else {
+      browserName = userAgent;
+    }
+  }
+
 
   // api call
 
@@ -455,166 +427,172 @@ class UserInfo extends ChangeNotifier {
     return colorValue;
   }
 
-  Future<void> roleAppUsersPost() async {
-    final tokenFcmF = tokenFirebqse;
-    final browserNameF = browserName;
-    final systemNameF = systemName;
-    final addressF = address;
-
-    final collectionRef = FirebaseFirestore.instance.collection('visiters');
-
-    if (tokenFcmF != null && tokenFcmF.isNotEmpty) {
-      final querySnapshot =
-          await collectionRef.where('token_fcm', isEqualTo: tokenFcmF).get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        final existingRecord = querySnapshot.docs.first;
-
-        final data = {
-          'system_name': systemNameF,
-          'browser_name': browserNameF,
-          'address': addressF,
-          'token_fcm': tokenFcmF,
-          'battery': chargingStatus,
-          'wifi': wifiNetworkTypeLoc,
-          'sound': musicMode ? 'true' : 'false',
-          'dark_theme': themeLightMode ? 'false' : 'true',
-          'color_theme': themeStringColor,
-          'seen_chat_screen': '0',
-          'seen_full_resume': '0',
-          'date': DateTime.now().toString()
-        };
-
-        await existingRecord.reference.update(data);
-
-        final updatedRecordSnapshot = await existingRecord.reference.get();
-        deviceId = updatedRecordSnapshot.id;
-      } else {
-        final data = {
-          'system_name': systemNameF,
-          'browser_name': browserNameF,
-          'token_fcm': tokenFcmF,
-          'address': addressF,
-          'battery': chargingStatus,
-          'wifi': wifiNetworkTypeLoc,
-          'sound': musicMode ? 'true' : 'false',
-          'dark_theme': themeLightMode ? 'false' : 'true',
-          'color_theme': themeStringColor,
-          'seen_chat_screen': '0',
-          'seen_full_resume': '0',
-          'date': DateTime.now().toString()
-        };
-
-        final newDocumentRef = await collectionRef.add(data);
-        final newDocumentSnapshot = await newDocumentRef.get();
-        deviceId = newDocumentSnapshot.id;
-      }
-    }
-    notifyListeners();
-  }
-
-  Future<void> roleAppUsersPut() async {
-    final id = deviceId;
-
-    final collectionRef = FirebaseFirestore.instance.collection('visiters');
-    final documentSnapshot = await collectionRef.doc(id).get();
-    if (documentSnapshot.exists) {
-      final existingRecord = documentSnapshot.reference;
-      final data = {
-        'system_name': systemName,
-        'browser_name': browserName,
-        'token_fcm': tokenFirebqse,
-        'address': address,
-        'battery': chargingStatus,
-        'wifi': wifiNetworkTypeLoc,
-        'sound': '$musicMode'.toString(),
-        'dark_theme': '${!themeLightMode}'.toString(),
-        'color_theme': themeStringColor,
-        'seen_chat_screen': '0',
-        'seen_full_resume': '0',
-        'date': DateTime.now().toString()
-      };
-
-      await existingRecord.update(data);
-    }
-    notifyListeners();
-  }
-
-  // Future<void> postData() async {
-  //   const apiUrl = 'https://chandrachaan.in/randac/item/role_app_users';
-  //   final requestBody = {
-  //     'system_name': systemName,
-  //     'browser_name': browserName,
-  //     'token_fcm': '$tokenFirebqse'.toString(),
-  //     'address': address,
-  //     'battery': chargingStatus,
-  //     'wifi': wifiNetworkTypeLoc,
-  //     'sound': '$musicMode'.toString(),
-  //     'dark_theme': '${!themeLightMode}'.toString(),
-  //     'color_theme': '$themeColor'.toString(),
-  //     'seen_chat_screen': '',
-  //     'seen_full_resume': '',
-  //   };
-  //   try {
-  //     final response = await http.post(
-  //       Uri.parse(apiUrl),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: jsonEncode(requestBody),
-  //     );
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> jsonData = json.decode(response.body);
-  //       Map<String, dynamic> apiResponse = jsonData['data'];
-  //       Color tcolor =
-  //           getColorFromColorRepresentation(apiResponse['color_theme']);
-  //       deviceId = apiResponse['id'];
-  //       musicMode = apiResponse['sound'].toString() == '0' ? false : true;
-  //       themeLightMode =
-  //           apiResponse['dark_theme'].toString() == '0' ? true : false;
-  //       themeColor = tcolor;
-  //     } else {
-  //       // Request failed
-  //     }
-  //   } catch (e) {
-  //     // Exception occurred during API call
-  //   }
-  //   notifyListeners();
-  // }
+  // Future<void> updateUserDeviceInfo() async {
+  //   print('Starting roleAppUsersPost function.');
   //
-  // Future<void> updateData() async {
-  //   const apiUrl = 'https://chandrachaan.in/randac/item/role_app_users';
-  //   final requestBody = {
-  //     'id': deviceId,
-  //     'system_name': systemName,
-  //     'browser_name': browserName,
-  //     'token_fcm': '$tokenFirebqse'.toString(),
-  //     'address': address,
-  //     'battery': chargingStatus,
-  //     'wifi': wifiNetworkTypeLoc,
-  //     'sound': '$musicMode'.toString(),
-  //     'dark_theme': '${!themeLightMode}'.toString(),
-  //     'color_theme': '$themeColor'.toString(),
-  //     'seen_chat_screen': '',
-  //     'seen_full_resume': '',
-  //   };
-  //   try {
-  //     final response = await http.put(
-  //       Uri.parse(apiUrl),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: jsonEncode(requestBody),
-  //     );
-  //     if (response.statusCode == 200) {
-  //     } else {
-  //       // Request failed
+  //   final collectionRef = FirebaseFirestore.instance.collection('visiters');
+  //
+  //   final id = html.window.localStorage['token'] ?? deviceId;
+  //   if(id.isNotEmpty){
+  //     final documentSnapshot = await collectionRef.doc(id).get();
+  //     if (documentSnapshot.exists) {
+  //       final existingRecord = documentSnapshot.reference;
+  //       final data = {
+  //         'device_type': deviceTypeName,
+  //         'system_name': systemName,
+  //         'browser_name': browserName,
+  //         'address': address.toString(),
+  //         'ram_memory': deviceMemory,
+  //         'latitude': latitude,
+  //         'longitude': longitude,
+  //         'screenWidth': screenWidth,
+  //         'screenHeight': screenHeight,
+  //         'battery': batteryStatus,
+  //         'wifi': wifiNetworkStatus,
+  //         'sound': musicMode ? 'true' : 'false',
+  //         'dark_theme': themeLightMode ? 'false' : 'true',
+  //         'color_theme': themeStringColor,
+  //         'seen_chat_screen': '0',
+  //         'seen_full_resume': '0',
+  //         'date': DateTime.now().toString()
+  //       };
+  //
+  //       await existingRecord.update(data);
   //     }
-  //   } catch (e) {
-  //     // Exception occurred during API call
+  //   else {
+  //     print('No existing record found in Firestore.');
+  //
+  //     final data = {
+  //       'device_type': deviceTypeName,
+  //       'system_name': systemName,
+  //       'browser_name': browserName,
+  //       'address': address.toString(),
+  //       'ram_memory': deviceMemory,
+  //       'latitude': latitude,
+  //       'longitude': longitude,
+  //       'screenWidth': screenWidth,
+  //       'screenHeight': screenHeight,
+  //       'battery': batteryStatus,
+  //       'wifi': wifiNetworkStatus,
+  //       'sound': musicMode ? 'true' : 'false',
+  //       'dark_theme': themeLightMode ? 'false' : 'true',
+  //       'color_theme': themeStringColor,
+  //       'seen_chat_screen': '0',
+  //       'seen_full_resume': '0',
+  //       'date': DateTime.now().toString()
+  //     };
+  //
+  //     print('Adding new document to Firestore.');
+  //     final newDocumentRef = await collectionRef.add(data);
+  //     final newDocumentSnapshot = await newDocumentRef.get();
+  //     deviceId = newDocumentSnapshot.id;
+  //     html.window.localStorage['token'] = deviceId;
   //   }
+  //
+  //   }
+  //   else {
+  //       print('No existing record found in Firestore.');
+  //
+  //       final data = {
+  //         'device_type': deviceTypeName,
+  //         'system_name': systemName,
+  //         'browser_name': browserName,
+  //         'address': address.toString(),
+  //         'ram_memory': deviceMemory,
+  //         'latitude': latitude,
+  //         'longitude': longitude,
+  //         'screenWidth': screenWidth,
+  //         'screenHeight': screenHeight,
+  //         'battery': batteryStatus,
+  //         'wifi': wifiNetworkStatus,
+  //         'sound': musicMode ? 'true' : 'false',
+  //         'dark_theme': themeLightMode ? 'false' : 'true',
+  //         'color_theme': themeStringColor,
+  //         'seen_chat_screen': '0',
+  //         'seen_full_resume': '0',
+  //         'date': DateTime.now().toString()
+  //       };
+  //
+  //       print('Adding new document to Firestore.');
+  //       final newDocumentRef = await collectionRef.add(data);
+  //       final newDocumentSnapshot = await newDocumentRef.get();
+  //       deviceId = newDocumentSnapshot.id;
+  //       html.window.localStorage['token'] = deviceId;
+  //     }
+  //
+  //   print('Notifying listeners.');
   //   notifyListeners();
+  //   print('roleAppUsersPost function completed.');
   // }
+
+  Future<void> updateUserDeviceInfo() async {
+    print('Starting updateUserDeviceInfo function.');
+
+    final UserRecordRepository repository = UserRecordRepository();
+
+    UserRecord? userRecord;
+    String deviceId = html.window.localStorage['token'] ?? '';
+
+    if (deviceId.isNotEmpty) {
+      print('Fetching user record from Firestore...');
+      userRecord = await repository.getRecord(deviceId);
+    } else {
+      print('No token found in localStorage. Creating a new user record.');
+    }
+
+    if (userRecord != null) {
+      print('Updating existing user record in Firestore...');
+      userRecord.deviceTypeName = deviceTypeName;
+      userRecord.systemName = systemName!;
+      userRecord.browserName = browserName!;
+      userRecord.address = address.toString();
+      userRecord.deviceMemory = deviceMemory;
+      userRecord.latitude = latitude;
+      userRecord.longitude = longitude;
+      userRecord.screenWidth = screenWidth;
+      userRecord.screenHeight = screenHeight;
+      userRecord.batteryStatus = batteryStatus;
+      userRecord.wifiNetworkStatus = wifiNetworkStatus;
+      userRecord.musicMode = musicMode;
+      userRecord.themeLightMode = themeLightMode;
+      userRecord.themeStringColor = themeStringColor;
+      userRecord.seenChatScreen = '0';
+      userRecord.seenFullResume = '0';
+      userRecord.date = DateTime.now().toString();
+
+      await repository.updateRecord(userRecord);
+    } else {
+      print('Creating new user record in Firestore...');
+      final newRecord = UserRecord(
+        id: deviceId.isEmpty ? DateTime.now().millisecondsSinceEpoch.toString() : deviceId,
+        deviceTypeName: deviceTypeName,
+        systemName: systemName!,
+        browserName: browserName!,
+        address: address.toString(),
+        deviceMemory: deviceMemory,
+        latitude: latitude,
+        longitude: longitude,
+        screenWidth: screenWidth,
+        screenHeight: screenHeight,
+        batteryStatus: batteryStatus,
+        wifiNetworkStatus: wifiNetworkStatus,
+        musicMode: musicMode,
+        themeLightMode: themeLightMode,
+        themeStringColor: themeStringColor,
+        seenChatScreen: '0',
+        seenFullResume: '0',
+        date: DateTime.now().toString(),
+      );
+
+      final newDeviceId = await repository.addNewRecord(newRecord);
+      deviceId = newDeviceId;
+      html.window.localStorage['token'] = deviceId;
+    }
+
+    print('Notifying listeners.');
+    notifyListeners();
+    print('updateUserDeviceInfo function completed.');
+  }
 
   void setToken(String? token) {
     insertToeken(token);
@@ -629,14 +607,11 @@ class UserInfo extends ChangeNotifier {
   }
 
   initFun() async {
-    await getSystemName();
-    await getBrowserName();
-    await getBatteryLevel();
-    await getWifiNetworkType();
+    await updateDeviceInfo();
     await getPermission();
     await getUserLocation();
     getToken();
-    roleAppUsersPost();
+    updateUserDeviceInfo();
   }
 
   // Chat mini game
@@ -848,3 +823,6 @@ class UserInfo extends ChangeNotifier {
     return null;
   }
 }
+enum DeviceType { mobile, tablet, desktop, unknown }
+enum WifiNetworkType { connected, notConnected, unknown }
+

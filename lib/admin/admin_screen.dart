@@ -1,13 +1,10 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:portfoli_web/admin/send_notification.dart';
 import 'package:portfoli_web/admin/user_data.dart';
-import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../providers/user_info.dart';
+import '../providers/user_repo.dart';
 
 class AdminData extends StatefulWidget {
   const AdminData({Key? key}) : super(key: key);
@@ -17,44 +14,8 @@ class AdminData extends StatefulWidget {
 }
 
 class _AdminDataState extends State<AdminData> {
-  List<dynamic> usersData = [];
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   callAPI();
-  // }
-  //
-  // Future<void> callAPI() async {
-  //   final response = await http
-  //       .get(Uri.parse('https://chandrachaan.in/randac/item/role_app_users'));
-  //
-  //   if (response.statusCode == 200) {
-  //     Map<String, dynamic> jsonData = json.decode(response.body);
-  //     usersData.clear();
-  //     usersData.addAll(jsonData["data"]);
-  //
-  //     setState(() {
-  //       // Update your state variables here if needed
-  //     });
-  //
-  //     // Do something with the response data
-  //   } else {
-  //     print('status code is:${response.statusCode}');
-  //   }
-  // }
-
-  void showNotificationPopup(BuildContext context, String tokenF) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SendNotificationPopup(ftkn: tokenF,);
-      },
-    );
-  }
-
   CollectionReference visitorsCollection =
-      FirebaseFirestore.instance.collection('visiters');
+      FirebaseFirestore.instance.collection('visitors');
 
   @override
   Widget build(BuildContext context) {
@@ -63,62 +24,63 @@ class _AdminDataState extends State<AdminData> {
         title: const Text('User Data'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: visitorsCollection.snapshots(),
+        stream:
+            visitorsCollection.orderBy('date', descending: true).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
 
-          final sortedDocs = snapshot.data!.docs..sort((a, b) {
-            final aDateString = (a.data() as Map<String, dynamic>)['date'] as String?;
-            final bDateString = (b.data() as Map<String, dynamic>)['date'] as String?;
-            final aDate = aDateString != null ? DateTime.parse(aDateString) : DateTime.now();
-            final bDate = bDateString != null ? DateTime.parse(bDateString) : DateTime.now();
-            return bDate.compareTo(aDate);
-          });
+          final sortedDocs = snapshot.data!.docs;
+          final userDataList = sortedDocs.map((DocumentSnapshot document) {
+            final userRecord = UserRecord.fromSnapshot(document);
+            return UserDataScreen(
+              address: userRecord.address,
+              deviceType: userRecord.deviceTypeName,
+              deviceRam: '${userRecord.deviceMemory ?? '0'}',
+              systemName: userRecord.systemName,
+              date: formatDate(userRecord.date),
+              browserName: userRecord.browserName,
+              tokenFcm: '',
+              battery: userRecord.batteryStatus,
+              wifi: userRecord.wifiNetworkStatus,
+              sound: userRecord.musicMode ? 'true' : 'false',
+              darkTheme: userRecord.themeLightMode ? 'false' : 'true',
+              colorTheme: userRecord.themeStringColor,
+              seenChatScreen: userRecord.seenChatScreen,
+              seenFullResume: userRecord.seenFullResume,
+              onPre: () {
+                // showNotificationPopup(context, userRecord.tokenFcm);
+              },
+            );
+          }).toList();
 
           return ListView(
-            children: sortedDocs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data =
-              document.data() as Map<String, dynamic>;
-
-              String formattedDate =
-              formatDate(data['date'] ?? DateTime.now().toString());
-              return UserDataScreen(
-                address: data['address'] ?? '',
-                systemName: data['system_name'] ?? '',
-                date: formattedDate,
-                browserName: data['browser_name'] ?? '',
-                tokenFcm: data['token_fcm'].toString(),
-                battery: data['battery'] ?? '',
-                wifi: data['wifi'] ?? '',
-                sound: data['sound'].toString(),
-                darkTheme: data['dark_theme'].toString(),
-                colorTheme: data['color_theme'] ?? '',
-                seenChatScreen: data['seen_chat_screen'] ?? '',
-                seenFullResume: data['seen_full_resume'] ?? '',
-                onPre: () {
-                  showNotificationPopup(context, data['token_fcm'].toString());
-                },
-              );
-            }).toList(),
+            children: userDataList,
           );
         },
       ),
     );
   }
 
+  void showNotificationPopup(BuildContext context, String tokenF) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SendNotificationPopup(ftkn: tokenF);
+      },
+    );
+  }
 
   String formatDate(String dateTimeString) {
     if (dateTimeString.isNotEmpty) {
       DateTime dateTime = DateTime.parse(dateTimeString);
-      return DateFormat('EEEE, MMMM d, y - h:mm a').format(dateTime);
+      return DateFormat('h:mm a - EEEE, MMMM d, y').format(dateTime);
     }
     return '';
   }
 }
-
