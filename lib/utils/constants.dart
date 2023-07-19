@@ -74,7 +74,7 @@ class Constants {
   static List<Map<String, dynamic>> expData = [
     {
       "icon": Icons.laptop_outlined,
-      "title": "Senior Software Developer",
+      "title": "Senior Software Engineer",
       "summary":
           "As an experienced Flutter Web Developer at Softdel Systems, I specialize in responsive web design, PWAs, and Provider state management. With a strong focus on Flutter Web 3.0, I excel at creating stunning and fully responsive web designs, ensuring exceptional user experiences across various platforms. My expertise lies in implementing responsive UI solutions that seamlessly adapt to mobile, tablet, and desktop web environments. I am skilled at integrating Progressive Web App (PWA) features, allowing for offline functionality, push notifications, and an immersive user experience akin to native mobile apps. To optimize performance and maintainability, I rely on the efficient Provider state management architecture for effective state handling and communication between different components of the application. Additionally, I have successfully developed visually appealing graphs and charts, elevating data visualization and making complex information easily digestible for users. My passion for delivering exceptional Flutter Web experiences drives me to stay updated with the latest industry trends and best practices.",
       "startDate": "June 2022",

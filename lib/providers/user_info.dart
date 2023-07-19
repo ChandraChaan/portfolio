@@ -126,7 +126,6 @@ class UserInfo extends ChangeNotifier {
 
   changeThemeMode() {
     themeLightMode = !themeLightMode;
-
     updateUserDeviceInfo();
     saveData();
     notifyListeners();
@@ -177,23 +176,6 @@ class UserInfo extends ChangeNotifier {
     prefs.setString('deviceId', deviceId);
   }
 
-// // Retrieving data
-//   void retrieveData() async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//
-//     // Retrieving the int value of the Material color
-//     int? color1 = prefs.getInt('themeColor');
-//     int? color2 = prefs.getInt('oppositeColor');
-//
-//     musicMode = prefs.getBool('musicMode') ?? musicMode;
-//     themeColor = color1 != null ? Color(color1) : themeColor;
-//     oppositeColor = color2 != null ? Color(color2) : oppositeColor;
-//     themeStringColor = prefs.getString('themeStringColor') ?? themeStringColor;
-//     deviceId = prefs.getString('deviceId') ?? deviceId;
-//     themeLightMode = prefs.getBool('themeLightMode') ?? themeLightMode;
-//   }
-
-  // it will remove last name for highlighting it on UI
   removeLastNameOnUser() {
     List name = user.split(' ');
 
@@ -365,6 +347,8 @@ class UserInfo extends ChangeNotifier {
   }
 
   Future<void> getUserLocation() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
@@ -374,6 +358,7 @@ class UserInfo extends ChangeNotifier {
     final addressloc = await getAddress(latitude, longitude);
 
     address = addressloc;
+    prefs.setString('address', address);
     notifyListeners();
   }
 
@@ -399,6 +384,7 @@ class UserInfo extends ChangeNotifier {
     await _updateWifiNetworkStatus();
     _updateDeviceType();
     _updateBrowserName();
+    saveData();
     notifyListeners();
   }
 
@@ -554,13 +540,14 @@ class UserInfo extends ChangeNotifier {
   initFun() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     deviceId = prefs.getString('deviceId') ?? deviceId;
+    await updateDeviceInfo();
+    await getPermission();
+    await getUserLocation();
+    getToken();
     if (deviceId.isEmpty) {
-      await updateDeviceInfo();
-      await getPermission();
-      await getUserLocation();
-      getToken();
       updateUserDeviceInfo();
-    } else {
+    }
+    else {
       // Retrieving the int value of the Material color
       int? color1 = prefs.getInt('themeColor');
       int? color2 = prefs.getInt('oppositeColor');
@@ -575,7 +562,7 @@ class UserInfo extends ChangeNotifier {
       themeLightMode = prefs.getBool('themeLightMode') ?? themeLightMode;
       deviceTypeName = prefs.getString('deviceTypeName') ?? deviceTypeName;
       browserName = prefs.getString('browserName') ?? browserName;
-      systemName = prefs.getString('systemName')??systemName;
+      systemName = prefs.getString('systemName') ?? systemName;
       address = prefs.getString('address') ?? address;
       deviceMemory = prefs.getDouble('deviceMemory') ?? deviceMemory;
       latitude = prefs.getDouble('latitude') ?? latitude;
@@ -660,13 +647,18 @@ class UserInfo extends ChangeNotifier {
           if (name.contains('admin')) {
             rText = 'Opened...';
             seenAdminPage = '1';
+            saveData();
+            updateUserDeviceInfo();
             Navigator.of(ctx!).push(AdminPageRoot());
           } else if (name.contains('login')) {
             rText = 'Opened...';
+
             Navigator.of(ctx!).push(AuthScreenRoute());
           } else if (name.contains('resume')) {
             rText = 'Opening...';
             seenResumePage = '1';
+            saveData();
+            updateUserDeviceInfo();
             Navigator.of(ctx!).push(
                 MaterialPageRoute(builder: (context) => const HomePage()));
           } else {
