@@ -35,11 +35,11 @@ class UserInfo extends ChangeNotifier {
   final Connectivity _connectivity = Connectivity();
 
   String deviceTypeName = 'Unknown';
-  int? screenWidth;
-  int? screenHeight;
-  double? deviceMemory;
-  String? systemName;
-  String? browserName;
+  int screenWidth =0;
+  int screenHeight =0;
+  double deviceMemory=0;
+  String systemName='';
+  String browserName='';
   String batteryStatus = 'Unknown';
   String wifiNetworkStatus = 'Unknown';
   String seenChatPage = '0';
@@ -154,6 +154,18 @@ class UserInfo extends ChangeNotifier {
   // Storing data
   void saveData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('deviceTypeName', deviceTypeName);
+    prefs.setString('browserName', browserName);
+    prefs.setString('systemName', systemName);
+    prefs.setString('address', address.toString());
+    prefs.setDouble('deviceMemory', deviceMemory);
+    prefs.setDouble('latitude', latitude);
+    prefs.setDouble('latitude', latitude);
+    prefs.setInt('screenWidth', screenWidth);
+    prefs.setInt('screenHeight', screenHeight);
+    prefs.setString('batteryStatus', batteryStatus);
+    prefs.setString('wifiNetworkStatus', wifiNetworkStatus);
     prefs.setBool('themeLightMode', themeLightMode);
     prefs.setBool('musicMode', musicMode);
     prefs.setInt('themeColor', themeColor.value);
@@ -391,10 +403,10 @@ class UserInfo extends ChangeNotifier {
   }
 
   Future<void> _updateScreenInfo() async {
-    screenWidth = html.window.screen?.width;
-    screenHeight = html.window.screen?.height;
-    deviceMemory = html.window.navigator.deviceMemory as double?;
-    systemName = html.window.navigator.platform;
+    screenWidth = html.window.screen?.width ?? screenWidth;
+    screenHeight = html.window.screen?.height ?? screenHeight;
+    deviceMemory = html.window.navigator.deviceMemory as double? ?? deviceMemory;
+    systemName = html.window.navigator.platform ?? '';
   }
 
   Future<void> _updateBatteryStatus() async {
@@ -413,10 +425,10 @@ class UserInfo extends ChangeNotifier {
   }
 
   void _updateDeviceType() {
-    if (screenWidth != null) {
-      if (screenWidth! < 600) {
+    if (screenWidth != 0) {
+      if (screenWidth< 600) {
         deviceTypeName = 'Mobile';
-      } else if (screenWidth! < 1200) {
+      } else if (screenWidth < 1200) {
         deviceTypeName = 'Tablet';
       } else {
         deviceTypeName = 'Desktop';
@@ -476,8 +488,8 @@ class UserInfo extends ChangeNotifier {
     if (userRecord != null) {
       print('Updating existing user record in Firestore...');
       userRecord.deviceTypeName = deviceTypeName;
-      userRecord.systemName = systemName ?? '';
-      userRecord.browserName = browserName ?? '';
+      userRecord.systemName = systemName;
+      userRecord.browserName = browserName;
       userRecord.address = address.toString();
       userRecord.deviceMemory = deviceMemory;
       userRecord.latitude = latitude;
@@ -502,8 +514,8 @@ class UserInfo extends ChangeNotifier {
             ? DateTime.now().millisecondsSinceEpoch.toString()
             : deviceId,
         deviceTypeName: deviceTypeName,
-        systemName: systemName!,
-        browserName: browserName!,
+        systemName: systemName,
+        browserName: browserName,
         address: address.toString(),
         deviceMemory: deviceMemory,
         latitude: latitude,
@@ -559,10 +571,19 @@ class UserInfo extends ChangeNotifier {
       seenAdminPage = prefs.getString('seenAdminPage') ?? seenAdminPage;
       seenResumePage = prefs.getString('seenResumePage') ?? seenResumePage;
       seenChatPage = prefs.getString('seenChatPage') ?? seenChatPage;
-      themeStringColor =
-          prefs.getString('themeStringColor') ?? themeStringColor;
-
+      themeStringColor = prefs.getString('themeStringColor') ?? themeStringColor;
       themeLightMode = prefs.getBool('themeLightMode') ?? themeLightMode;
+      deviceTypeName = prefs.getString('deviceTypeName') ?? deviceTypeName;
+      browserName = prefs.getString('browserName') ?? browserName;
+      systemName = prefs.getString('systemName')??systemName;
+      address = prefs.getString('address') ?? address;
+      deviceMemory = prefs.getDouble('deviceMemory') ?? deviceMemory;
+      latitude = prefs.getDouble('latitude') ?? latitude;
+      latitude = prefs.getDouble('latitude') ?? latitude;
+      screenWidth = prefs.getInt('screenWidth') ?? screenWidth;
+      screenHeight = prefs.getInt('screenHeight') ?? screenHeight;
+      batteryStatus = prefs.getString('batteryStatus') ?? batteryStatus;
+      wifiNetworkStatus = prefs.getString('wifiNetworkStatus') ?? wifiNetworkStatus;
     }
   }
 
