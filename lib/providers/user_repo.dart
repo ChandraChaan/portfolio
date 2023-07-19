@@ -18,6 +18,7 @@ class UserRecord {
   String themeStringColor;
   String seenChatScreen;
   String seenFullResume;
+  String seenAdminScreen;
   String date;
 
   UserRecord({
@@ -38,6 +39,7 @@ class UserRecord {
     required this.themeStringColor,
     required this.seenChatScreen,
     required this.seenFullResume,
+    required this.seenAdminScreen,
     required this.date,
   });
 
@@ -61,6 +63,7 @@ class UserRecord {
       themeStringColor: data['color_theme'],
       seenChatScreen: data['seen_chat_screen'],
       seenFullResume: data['seen_full_resume'],
+      seenAdminScreen: data['seen_admin_screen'] ?? '0',
       date: data['date'],
     );
   }
@@ -83,6 +86,7 @@ class UserRecord {
       'color_theme': themeStringColor,
       'seen_chat_screen': seenChatScreen,
       'seen_full_resume': seenFullResume,
+      'seen_admin_screen': seenAdminScreen,
       'date': date,
     };
   }

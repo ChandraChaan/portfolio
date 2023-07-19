@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/user_info.dart';
 
 class UserDataScreen extends StatelessWidget {
   final String systemName;
@@ -14,6 +17,7 @@ class UserDataScreen extends StatelessWidget {
   final String colorTheme;
   final String seenChatScreen;
   final String seenFullResume;
+  final String seenAdminScreen;
   final String date;
   final Function()? onPre;
 
@@ -31,15 +35,36 @@ class UserDataScreen extends StatelessWidget {
     required this.colorTheme,
     required this.seenChatScreen,
     required this.seenFullResume,
+    required this.seenAdminScreen,
     required this.date,
     required this.onPre,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+
+    return Container(
       margin: const EdgeInsets.all(8.0),
-      color: darkTheme.toString() == 'true' ? Colors.black : Colors.white,
+      decoration: BoxDecoration(
+        color: darkTheme.toString() == 'true' ? Colors.black26 : Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+        gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  if (seenChatScreen != '0') Colors.blue.shade600 else Colors.grey.shade400,
+                  if (seenAdminScreen != '0') Colors.deepPurple.shade600 else Colors.grey.shade400,
+                  if (seenFullResume != '0') Colors.amber.shade600 else Colors.grey.shade400,
+                ],
+              ),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Wrap(
@@ -84,7 +109,7 @@ class UserDataScreen extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
         decoration: BoxDecoration(
-          color: Colors.grey[300],
+          color: darkTheme.toString() == 'true' ? Colors.black : Colors.white,
           borderRadius: BorderRadius.circular(16.0),
         ),
         child: Row(
@@ -95,7 +120,9 @@ class UserDataScreen extends StatelessWidget {
               color: (colorTheme.toString() != 'null' &&
                       colorTheme.toString().isNotEmpty)
                   ? Color(int.parse(colorTheme))
-                  : null,
+                  : (darkTheme.toString() == 'true'
+                      ? Colors.white
+                      : Colors.black),
             ),
             if (label != null) ...[
               const SizedBox(width: 8.0),

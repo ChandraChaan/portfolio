@@ -32,7 +32,7 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
 
   // updateDta() async {
   //   final CollectionReference collectionRef =
-  //       FirebaseFirestore.instance.collection('visiters');
+  //       FirebaseFirestore.instance.collection('visitors');
   //   final QuerySnapshot snapshot = await collectionRef.get();
   //   for (final DocumentSnapshot doc in snapshot.docs) {
   //     await collectionRef.doc(doc.id).update({

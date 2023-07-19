@@ -22,13 +22,16 @@ class _HomePageState extends State<HomePage> {
   double? _maxscrollpercentage;
 
   _scrollListener() {
-    setState(() {
-      _scrollPosition = _scrollController?.position.pixels;
-      _maxscroll = _scrollController?.position.maxScrollExtent;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _scrollPosition = _scrollController?.position.pixels;
+        _maxscroll = _scrollController?.position.maxScrollExtent;
 
-      _maxscrollpercentage =
-          double.parse((_scrollPosition! / _maxscroll! * 1).toStringAsFixed(1));
+        _maxscrollpercentage =
+            double.parse((_scrollPosition! / _maxscroll! * 1).toStringAsFixed(1));
+      });
     });
+
   }
 
   @override

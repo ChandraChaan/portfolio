@@ -3,7 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:portfoli_web/admin/send_notification.dart';
 import 'package:portfoli_web/admin/user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:portfoli_web/utils/font_style.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/user_info.dart';
 import '../providers/user_repo.dart';
 
 class AdminData extends StatefulWidget {
@@ -21,7 +24,9 @@ class _AdminDataState extends State<AdminData> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Data'),
+        backgroundColor: Theme.of(context).indicatorColor,
+        centerTitle: true,
+        title: const Text('User Data', style: FontStyles.heading5,),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream:
@@ -53,6 +58,7 @@ class _AdminDataState extends State<AdminData> {
               colorTheme: userRecord.themeStringColor,
               seenChatScreen: userRecord.seenChatScreen,
               seenFullResume: userRecord.seenFullResume,
+              seenAdminScreen: userRecord.seenAdminScreen,
               onPre: () {
                 // showNotificationPopup(context, userRecord.tokenFcm);
               },
@@ -60,6 +66,7 @@ class _AdminDataState extends State<AdminData> {
           }).toList();
 
           return ListView(
+            shrinkWrap: true,
             children: userDataList,
           );
         },

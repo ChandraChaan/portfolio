@@ -6,12 +6,14 @@ import '../providers/user_info.dart';
 import '../ui/responsive_ui.dart';
 
 class LunchSettings extends StatelessWidget {
-  const LunchSettings({super.key});
+  final bool noALine;
+
+  const LunchSettings({super.key, this.noALine = false});
 
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.topRight,
+      alignment: noALine ? Alignment.center : Alignment.topRight,
       child: TextButton(
           onPressed: () {
             showDialog(
@@ -21,7 +23,10 @@ class LunchSettings extends StatelessWidget {
                   return const SettingsPopup();
                 });
           },
-          child: Icon(Icons.settings, color: Theme.of(context).primaryColor,)),
+          child: Icon(
+            Icons.settings,
+            color: Theme.of(context).primaryColor,
+          )),
     );
   }
 }

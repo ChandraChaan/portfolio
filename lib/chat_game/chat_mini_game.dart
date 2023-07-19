@@ -9,6 +9,8 @@ import '../utils/dynamic_image.dart';
 import '../utils/font_style.dart';
 import 'package:flutter/services.dart';
 
+import '../utils/settings_popup.dart';
+
 class ChatGame extends StatefulWidget {
   final bool hideBackButton;
 
@@ -159,6 +161,8 @@ class _ChatGameState extends State<ChatGame>
                       ],
                     ),
                   ),
+                  const SizedBox(width: 18.0),
+                  const LunchSettings(noALine: true,),
                   const SizedBox(width: 18.0),
                   if (provider.batteryStatus != 'Unknown')
                     Row(

@@ -59,6 +59,7 @@ dependencies:
   youtube_player_iframe: ^4.0.4
   video_player:
   rive: ^0.11.4
+  shared_preferences: ^2.0.10
 
 
 

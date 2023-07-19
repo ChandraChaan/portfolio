@@ -11,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:portfoli_web/providers/user_repo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../animation_route/navigate_newpage.dart';
 import '../chat_game/message_domain.dart';
@@ -33,7 +34,6 @@ class UserInfo extends ChangeNotifier {
 
   final Connectivity _connectivity = Connectivity();
 
-  DeviceType deviceType = DeviceType.unknown;
   String deviceTypeName = 'Unknown';
   int? screenWidth;
   int? screenHeight;
@@ -42,12 +42,16 @@ class UserInfo extends ChangeNotifier {
   String? browserName;
   String batteryStatus = 'Unknown';
   String wifiNetworkStatus = 'Unknown';
+  String seenChatPage = '0';
+  String seenAdminPage = '0';
+  String seenResumePage = '0';
   String address = '';
   double latitude = 0.0;
   double longitude = 0.0;
 
   // home page properties,
-  ScrollController? scrollController = ScrollController();
+  ScrollController scrollController =
+      ScrollController(initialScrollOffset: 2.0);
   final GlobalKey aboutScrollKey = GlobalKey();
   final GlobalKey expScrollKey = GlobalKey();
   final GlobalKey portfoScrollKey = GlobalKey();
@@ -122,15 +126,60 @@ class UserInfo extends ChangeNotifier {
 
   changeThemeMode() {
     themeLightMode = !themeLightMode;
+
     updateUserDeviceInfo();
+    saveData();
     notifyListeners();
   }
 
   changeMusicMode() {
     musicMode = !musicMode;
     updateUserDeviceInfo();
+    saveData();
     notifyListeners();
   }
+
+  themeColorChange(Color cl) {
+    int colorCode = cl.value;
+    String colorHex =
+        '0x${colorCode.toRadixString(16).padLeft(8, '0').toUpperCase()}';
+    themeColor = cl;
+    themeStringColor = colorHex;
+    oppositeColor = getOppositeColor(cl);
+    saveData();
+    updateUserDeviceInfo();
+    notifyListeners();
+  }
+
+  // Storing data
+  void saveData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('themeLightMode', themeLightMode);
+    prefs.setBool('musicMode', musicMode);
+    prefs.setInt('themeColor', themeColor.value);
+    prefs.setInt('oppositeColor', oppositeColor.value);
+    prefs.setString('themeStringColor', themeStringColor);
+    prefs.setString('seenChatPage', seenChatPage);
+    prefs.setString('seenResumePage', seenResumePage);
+    prefs.setString('seenAdminPage', seenAdminPage);
+    prefs.setString('deviceId', deviceId);
+  }
+
+// // Retrieving data
+//   void retrieveData() async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//
+//     // Retrieving the int value of the Material color
+//     int? color1 = prefs.getInt('themeColor');
+//     int? color2 = prefs.getInt('oppositeColor');
+//
+//     musicMode = prefs.getBool('musicMode') ?? musicMode;
+//     themeColor = color1 != null ? Color(color1) : themeColor;
+//     oppositeColor = color2 != null ? Color(color2) : oppositeColor;
+//     themeStringColor = prefs.getString('themeStringColor') ?? themeStringColor;
+//     deviceId = prefs.getString('deviceId') ?? deviceId;
+//     themeLightMode = prefs.getBool('themeLightMode') ?? themeLightMode;
+//   }
 
   // it will remove last name for highlighting it on UI
   removeLastNameOnUser() {
@@ -191,17 +240,6 @@ class UserInfo extends ChangeNotifier {
     }
     imageFilterString = typ;
     imageLoaded = true;
-    notifyListeners();
-  }
-
-  themeColorChange(Color cl) {
-    int colorCode = cl.value;
-    String colorHex =
-        '0x${colorCode.toRadixString(16).padLeft(8, '0').toUpperCase()}';
-    themeColor = cl;
-    themeStringColor = colorHex;
-    oppositeColor = getOppositeColor(cl);
-    updateUserDeviceInfo();
     notifyListeners();
   }
 
@@ -314,7 +352,6 @@ class UserInfo extends ChangeNotifier {
     nLoading = false;
   }
 
-
   Future<void> getUserLocation() async {
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
@@ -348,7 +385,7 @@ class UserInfo extends ChangeNotifier {
     await _updateScreenInfo();
     await _updateBatteryStatus();
     await _updateWifiNetworkStatus();
-     _updateDeviceType();
+    _updateDeviceType();
     _updateBrowserName();
     notifyListeners();
   }
@@ -379,17 +416,13 @@ class UserInfo extends ChangeNotifier {
     if (screenWidth != null) {
       if (screenWidth! < 600) {
         deviceTypeName = 'Mobile';
-        deviceType = DeviceType.mobile;
       } else if (screenWidth! < 1200) {
         deviceTypeName = 'Tablet';
-        deviceType = DeviceType.tablet;
       } else {
         deviceTypeName = 'Desktop';
-        deviceType = DeviceType.desktop;
       }
     } else {
       deviceTypeName = 'Unknown';
-      deviceType = DeviceType.unknown;
     }
   }
 
@@ -412,7 +445,6 @@ class UserInfo extends ChangeNotifier {
     }
   }
 
-
   // api call
 
   int getColorFromColorRepresentation(String colorRepresentation) {
@@ -427,112 +459,13 @@ class UserInfo extends ChangeNotifier {
     return colorValue;
   }
 
-  // Future<void> updateUserDeviceInfo() async {
-  //   print('Starting roleAppUsersPost function.');
-  //
-  //   final collectionRef = FirebaseFirestore.instance.collection('visiters');
-  //
-  //   final id = html.window.localStorage['token'] ?? deviceId;
-  //   if(id.isNotEmpty){
-  //     final documentSnapshot = await collectionRef.doc(id).get();
-  //     if (documentSnapshot.exists) {
-  //       final existingRecord = documentSnapshot.reference;
-  //       final data = {
-  //         'device_type': deviceTypeName,
-  //         'system_name': systemName,
-  //         'browser_name': browserName,
-  //         'address': address.toString(),
-  //         'ram_memory': deviceMemory,
-  //         'latitude': latitude,
-  //         'longitude': longitude,
-  //         'screenWidth': screenWidth,
-  //         'screenHeight': screenHeight,
-  //         'battery': batteryStatus,
-  //         'wifi': wifiNetworkStatus,
-  //         'sound': musicMode ? 'true' : 'false',
-  //         'dark_theme': themeLightMode ? 'false' : 'true',
-  //         'color_theme': themeStringColor,
-  //         'seen_chat_screen': '0',
-  //         'seen_full_resume': '0',
-  //         'date': DateTime.now().toString()
-  //       };
-  //
-  //       await existingRecord.update(data);
-  //     }
-  //   else {
-  //     print('No existing record found in Firestore.');
-  //
-  //     final data = {
-  //       'device_type': deviceTypeName,
-  //       'system_name': systemName,
-  //       'browser_name': browserName,
-  //       'address': address.toString(),
-  //       'ram_memory': deviceMemory,
-  //       'latitude': latitude,
-  //       'longitude': longitude,
-  //       'screenWidth': screenWidth,
-  //       'screenHeight': screenHeight,
-  //       'battery': batteryStatus,
-  //       'wifi': wifiNetworkStatus,
-  //       'sound': musicMode ? 'true' : 'false',
-  //       'dark_theme': themeLightMode ? 'false' : 'true',
-  //       'color_theme': themeStringColor,
-  //       'seen_chat_screen': '0',
-  //       'seen_full_resume': '0',
-  //       'date': DateTime.now().toString()
-  //     };
-  //
-  //     print('Adding new document to Firestore.');
-  //     final newDocumentRef = await collectionRef.add(data);
-  //     final newDocumentSnapshot = await newDocumentRef.get();
-  //     deviceId = newDocumentSnapshot.id;
-  //     html.window.localStorage['token'] = deviceId;
-  //   }
-  //
-  //   }
-  //   else {
-  //       print('No existing record found in Firestore.');
-  //
-  //       final data = {
-  //         'device_type': deviceTypeName,
-  //         'system_name': systemName,
-  //         'browser_name': browserName,
-  //         'address': address.toString(),
-  //         'ram_memory': deviceMemory,
-  //         'latitude': latitude,
-  //         'longitude': longitude,
-  //         'screenWidth': screenWidth,
-  //         'screenHeight': screenHeight,
-  //         'battery': batteryStatus,
-  //         'wifi': wifiNetworkStatus,
-  //         'sound': musicMode ? 'true' : 'false',
-  //         'dark_theme': themeLightMode ? 'false' : 'true',
-  //         'color_theme': themeStringColor,
-  //         'seen_chat_screen': '0',
-  //         'seen_full_resume': '0',
-  //         'date': DateTime.now().toString()
-  //       };
-  //
-  //       print('Adding new document to Firestore.');
-  //       final newDocumentRef = await collectionRef.add(data);
-  //       final newDocumentSnapshot = await newDocumentRef.get();
-  //       deviceId = newDocumentSnapshot.id;
-  //       html.window.localStorage['token'] = deviceId;
-  //     }
-  //
-  //   print('Notifying listeners.');
-  //   notifyListeners();
-  //   print('roleAppUsersPost function completed.');
-  // }
-
   Future<void> updateUserDeviceInfo() async {
     print('Starting updateUserDeviceInfo function.');
 
     final UserRecordRepository repository = UserRecordRepository();
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     UserRecord? userRecord;
-    String deviceId = html.window.localStorage['token'] ?? '';
-
     if (deviceId.isNotEmpty) {
       print('Fetching user record from Firestore...');
       userRecord = await repository.getRecord(deviceId);
@@ -543,8 +476,8 @@ class UserInfo extends ChangeNotifier {
     if (userRecord != null) {
       print('Updating existing user record in Firestore...');
       userRecord.deviceTypeName = deviceTypeName;
-      userRecord.systemName = systemName!;
-      userRecord.browserName = browserName!;
+      userRecord.systemName = systemName ?? '';
+      userRecord.browserName = browserName ?? '';
       userRecord.address = address.toString();
       userRecord.deviceMemory = deviceMemory;
       userRecord.latitude = latitude;
@@ -556,15 +489,18 @@ class UserInfo extends ChangeNotifier {
       userRecord.musicMode = musicMode;
       userRecord.themeLightMode = themeLightMode;
       userRecord.themeStringColor = themeStringColor;
-      userRecord.seenChatScreen = '0';
-      userRecord.seenFullResume = '0';
+      userRecord.seenChatScreen = seenChatPage;
+      userRecord.seenFullResume = seenResumePage;
+      userRecord.seenAdminScreen = seenAdminPage;
       userRecord.date = DateTime.now().toString();
 
       await repository.updateRecord(userRecord);
     } else {
       print('Creating new user record in Firestore...');
       final newRecord = UserRecord(
-        id: deviceId.isEmpty ? DateTime.now().millisecondsSinceEpoch.toString() : deviceId,
+        id: deviceId.isEmpty
+            ? DateTime.now().millisecondsSinceEpoch.toString()
+            : deviceId,
         deviceTypeName: deviceTypeName,
         systemName: systemName!,
         browserName: browserName!,
@@ -579,19 +515,16 @@ class UserInfo extends ChangeNotifier {
         musicMode: musicMode,
         themeLightMode: themeLightMode,
         themeStringColor: themeStringColor,
-        seenChatScreen: '0',
-        seenFullResume: '0',
+        seenChatScreen: seenChatPage,
+        seenFullResume: seenResumePage,
+        seenAdminScreen: seenAdminPage,
         date: DateTime.now().toString(),
       );
-
       final newDeviceId = await repository.addNewRecord(newRecord);
       deviceId = newDeviceId;
-      html.window.localStorage['token'] = deviceId;
+      prefs.setString('deviceId', deviceId);
     }
-
-    print('Notifying listeners.');
     notifyListeners();
-    print('updateUserDeviceInfo function completed.');
   }
 
   void setToken(String? token) {
@@ -607,11 +540,30 @@ class UserInfo extends ChangeNotifier {
   }
 
   initFun() async {
-    await updateDeviceInfo();
-    await getPermission();
-    await getUserLocation();
-    getToken();
-    updateUserDeviceInfo();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    deviceId = prefs.getString('deviceId') ?? deviceId;
+    if (deviceId.isEmpty) {
+      await updateDeviceInfo();
+      await getPermission();
+      await getUserLocation();
+      getToken();
+      updateUserDeviceInfo();
+    } else {
+      // Retrieving the int value of the Material color
+      int? color1 = prefs.getInt('themeColor');
+      int? color2 = prefs.getInt('oppositeColor');
+
+      musicMode = prefs.getBool('musicMode') ?? musicMode;
+      themeColor = color1 != null ? Color(color1) : themeColor;
+      oppositeColor = color2 != null ? Color(color2) : oppositeColor;
+      seenAdminPage = prefs.getString('seenAdminPage') ?? seenAdminPage;
+      seenResumePage = prefs.getString('seenResumePage') ?? seenResumePage;
+      seenChatPage = prefs.getString('seenChatPage') ?? seenChatPage;
+      themeStringColor =
+          prefs.getString('themeStringColor') ?? themeStringColor;
+
+      themeLightMode = prefs.getBool('themeLightMode') ?? themeLightMode;
+    }
   }
 
   // Chat mini game
@@ -642,7 +594,6 @@ class UserInfo extends ChangeNotifier {
         curve: Curves.easeInOut,
       );
     });
-
     notifyListeners();
   }
 
@@ -653,6 +604,7 @@ class UserInfo extends ChangeNotifier {
     if (userGivenText.isNotEmpty) {
       userText = userGivenText;
       chatInputController.clear();
+      seenChatPage = '1';
       String inputText = userGivenText.toLowerCase();
       List<String> listImages = [];
       String songName = '';
@@ -686,12 +638,14 @@ class UserInfo extends ChangeNotifier {
         } else if (name[0] == 'open') {
           if (name.contains('admin')) {
             rText = 'Opened...';
+            seenAdminPage = '1';
             Navigator.of(ctx!).push(AdminPageRoot());
           } else if (name.contains('login')) {
             rText = 'Opened...';
             Navigator.of(ctx!).push(AuthScreenRoute());
           } else if (name.contains('resume')) {
             rText = 'Opening...';
+            seenResumePage = '1';
             Navigator.of(ctx!).push(
                 MaterialPageRoute(builder: (context) => const HomePage()));
           } else {
@@ -823,6 +777,3 @@ class UserInfo extends ChangeNotifier {
     return null;
   }
 }
-enum DeviceType { mobile, tablet, desktop, unknown }
-enum WifiNetworkType { connected, notConnected, unknown }
-
