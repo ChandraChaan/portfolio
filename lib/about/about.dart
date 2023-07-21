@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_info.dart';
-import 'dart:html' as html;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../utils/constants.dart';
 import '../utils/font_style.dart';
 
@@ -74,7 +74,7 @@ class _AboutState extends State<About> {
                 children: [
                   Expanded(
                     flex: 3,
-                    child:  CommonText(
+                    child: CommonText(
                       text: Constants.smallTagline,
                       style: FontStyles.heading6,
                       color: Colors.white,
@@ -116,10 +116,7 @@ class _AboutState extends State<About> {
                     icon: const FaIcon(FontAwesomeIcons.github),
                     // iconSize: 40,
                     onPressed: () {
-                      html.window
-                          .open('https://github.com/ChandraChaan', 'new tab');
-
-                      // https://github.com/ChandraChaan
+                      launch('https://github.com/ChandraChaan', isNewTab: true);
                     },
                   ),
                   const SizedBox(
@@ -130,9 +127,9 @@ class _AboutState extends State<About> {
                       icon: const FaIcon(FontAwesomeIcons.linkedin),
                       // iconSize: 40,
                       onPressed: () {
-                        html.window.open(
+                        launch(
                             'https://www.linkedin.com/in/chandra-obul-reddy-dumpala-a7ba6415a/',
-                            'new tab');
+                            isNewTab: true);
                       }),
                   const SizedBox(
                     width: 20,
@@ -144,12 +141,10 @@ class _AboutState extends State<About> {
                       ),
                       // iconSize: 40,
                       onPressed: () {
-                        html.window.open(
+                        launch(
                             'https://stackoverflow.com/users/16990621/chandra-chaan',
-                            'new tab');
-                      }
-                      // https://www.linkedin.com/in/chandra-obul-reddy-dumpala-a7ba6415a/                      },
-                      ),
+                            isNewTab: true);
+                      }),
                   const SizedBox(
                     width: 20,
                   ),

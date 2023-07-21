@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../about/about.dart';
 import '../../contact/contact.dart';
@@ -310,4 +311,11 @@ double calculateAspectRatio(String imageUrl) {
   double imageHeight = 600.0;
 
   return imageWidth / imageHeight;
+}
+
+Future<void> launch(String url, {bool isNewTab = true}) async {
+  await launchUrl(
+    Uri.parse(url),
+    webOnlyWindowName: isNewTab ? '_blank' : '_self',
+  );
 }
