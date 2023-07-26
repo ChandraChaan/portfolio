@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:portfoli_web/utils/font_style.dart';
 
@@ -49,7 +48,10 @@ class _TypewriterTextAnimationState extends State<TypewriterTextAnimation>
         final animatedText = widget.text.substring(0, _textAnimation.value);
         return Container(
           constraints: widget.constraints,
-          child: CommonText(text: animatedText),
+          child: SelectableText(animatedText,
+              style: FontStyles.body.copyWith(
+                color: Theme.of(context).primaryColor,
+              )),
         );
       },
     );
