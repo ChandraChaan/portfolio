@@ -1,4 +1,4 @@
-import 'dart:html' as html;
+// import 'dart:html' as html;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -383,16 +383,16 @@ class UserInfo extends ChangeNotifier {
     await _updateBatteryStatus();
     await _updateWifiNetworkStatus();
     _updateDeviceType();
-    _updateBrowserName();
+    // _updateBrowserName();
     saveData();
     notifyListeners();
   }
 
   Future<void> _updateScreenInfo() async {
-    screenWidth = html.window.screen?.width ?? screenWidth;
-    screenHeight = html.window.screen?.height ?? screenHeight;
-    deviceMemory = html.window.navigator.deviceMemory as double? ?? deviceMemory;
-    systemName = html.window.navigator.platform ?? '';
+    // screenWidth = html.window.screen?.width ?? screenWidth;
+    // screenHeight = html.window.screen?.height ?? screenHeight;
+    // deviceMemory = html.window.navigator.deviceMemory as double? ?? deviceMemory;
+    // systemName = html.window.navigator.platform ?? '';
   }
 
   Future<void> _updateBatteryStatus() async {
@@ -424,24 +424,24 @@ class UserInfo extends ChangeNotifier {
     }
   }
 
-  void _updateBrowserName() {
-    String userAgent = html.window.navigator.userAgent;
-    if (userAgent.contains('Chrome')) {
-      browserName = 'Chrome';
-    } else if (userAgent.contains('Firefox')) {
-      browserName = 'Firefox';
-    } else if (userAgent.contains('Safari')) {
-      browserName = 'Safari';
-    } else if (userAgent.contains('Opera') || userAgent.contains('OPR')) {
-      browserName = 'Opera';
-    } else if (userAgent.contains('Edge')) {
-      browserName = 'Edge';
-    } else if (userAgent.contains('MSIE') || userAgent.contains('Trident/')) {
-      browserName = 'Internet Explorer';
-    } else {
-      browserName = userAgent;
-    }
-  }
+  // void _updateBrowserName() {
+  //   String userAgent = html.window.navigator.userAgent;
+  //   if (userAgent.contains('Chrome')) {
+  //     browserName = 'Chrome';
+  //   } else if (userAgent.contains('Firefox')) {
+  //     browserName = 'Firefox';
+  //   } else if (userAgent.contains('Safari')) {
+  //     browserName = 'Safari';
+  //   } else if (userAgent.contains('Opera') || userAgent.contains('OPR')) {
+  //     browserName = 'Opera';
+  //   } else if (userAgent.contains('Edge')) {
+  //     browserName = 'Edge';
+  //   } else if (userAgent.contains('MSIE') || userAgent.contains('Trident/')) {
+  //     browserName = 'Internet Explorer';
+  //   } else {
+  //     browserName = userAgent;
+  //   }
+  // }
 
   // api call
 
@@ -631,7 +631,8 @@ class UserInfo extends ChangeNotifier {
         rNumber = int.parse(userGivenText);
         rText = rNumber.toString();
         showTable = true;
-      } else {
+      }
+      else {
         List<String> name = userGivenText.split(' ');
         if (name[0] == 'create') {
           if (name.contains('container')) {
@@ -643,7 +644,8 @@ class UserInfo extends ChangeNotifier {
           } else {
             rText = "I didn't get";
           }
-        } else if (name[0] == 'open') {
+        }
+        else if (name[0] == 'open') {
           if (name.contains('admin')) {
             rText = 'Opened...';
             seenAdminPage = '1';
@@ -664,10 +666,12 @@ class UserInfo extends ChangeNotifier {
           } else {
             rText = "I didn't get";
           }
-        } else if (name[0] == 'play') {
+        }
+        else if (name[0] == 'play') {
           rText = 'Here we go...';
           songName = await playVideo(userText) ?? '';
-        } else if (name.contains('show') &&
+        }
+        else if (name.contains('show') &&
             name.contains('images') &&
             name.contains('of')) {
           // Extract the keyword after 'of'
