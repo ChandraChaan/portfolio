@@ -1,8 +1,7 @@
 name: Flutter Web Release
 
 on:
-  release:
-    types: [created]
+  push:
 
 jobs:
   build_and_release:
