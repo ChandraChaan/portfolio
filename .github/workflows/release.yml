@@ -20,7 +20,7 @@ jobs:
         run: flutter test
 
       - name: Build Web
-        run: flutter build web --release
+        run: flutter build web --release --no-tree-shake-icons
 
       - name: Zip the build
         run: |
