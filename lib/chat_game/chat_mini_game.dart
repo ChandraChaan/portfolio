@@ -140,12 +140,12 @@ class _ChatGameState extends State<ChatGame>
                           style: FontStyles.heading5,
                         ),
                         const SizedBox(height: 10.0),
-                        SelectableText(
-                          '${provider.systemName != null ? 'System name: ${provider.systemName}' : ''}\n${provider.browserName != null ? 'Browser name: ${provider.browserName}' : ''}',
-                          style: FontStyles.body.copyWith(
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
+                        // SelectableText(
+                        //   '${provider.systemName != null ? 'System name: ${provider.systemName}' : ''}\n${provider.browserName != null ? 'Browser name: ${provider.browserName}' : ''}',
+                        //   style: FontStyles.body.copyWith(
+                        //     color: Theme.of(context).primaryColor,
+                        //   ),
+                        // ),
                         Expanded(
                           child: SelectableText(
                             provider.address.isNotEmpty
@@ -162,7 +162,9 @@ class _ChatGameState extends State<ChatGame>
                     ),
                   ),
                   const SizedBox(width: 18.0),
-                  const LunchSettings(noALine: true,),
+                  const LunchSettings(
+                    noALine: true,
+                  ),
                   const SizedBox(width: 18.0),
                   if (provider.batteryStatus != 'Unknown')
                     Row(

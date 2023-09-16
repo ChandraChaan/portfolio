@@ -63,6 +63,7 @@ dependencies:
   url_launcher:
   device_info:
   flutter_screenutil: ^5.0.0
+  client_information: ^2.1.3
 
 
 

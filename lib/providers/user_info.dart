@@ -1,5 +1,8 @@
 // import 'dart:html' as html;
 
+import 'dart:js';
+
+import 'package:client_information/client_information.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -389,10 +392,8 @@ class UserInfo extends ChangeNotifier {
   }
 
   Future<void> _updateScreenInfo() async {
-    // screenWidth = html.window.screen?.width ?? screenWidth;
-    // screenHeight = html.window.screen?.height ?? screenHeight;
-    // deviceMemory = html.window.navigator.deviceMemory as double? ?? deviceMemory;
-    // systemName = html.window.navigator.platform ?? '';
+    ClientInformation info = await ClientInformation.fetch();
+    systemName = info.osName ?? '';
   }
 
   Future<void> _updateBatteryStatus() async {
@@ -538,6 +539,7 @@ class UserInfo extends ChangeNotifier {
   }
 
   initFun() async {
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     deviceId = prefs.getString('deviceId') ?? deviceId;
     await updateDeviceInfo();
