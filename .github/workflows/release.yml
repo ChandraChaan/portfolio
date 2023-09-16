@@ -22,20 +22,13 @@ jobs:
       - name: Build Web
         run: flutter build web --release --no-tree-shake-icons
 
-      - name: Zip the build
-        run: |
-          cd build/web
-          zip -r ../flutter_web_build.zip *
-
-      - name: FTP Upload ZIP
+      - name: FTP Upload Web Build
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: build/
-          exclude: "**/*" # Exclude everything...
-          include: "flutter_web_build.zip" # ...except the zip file
+          local-dir: build/web/
 
       - name: Upload Web Build to Release
         if: github.event_name == 'release'
