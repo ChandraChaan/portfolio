@@ -27,6 +27,16 @@ jobs:
           cd build/web
           zip -r ../flutter_web_build.zip *
 
+      - name: FTP Upload ZIP
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: build/
+          exclude: "**/*" # Exclude everything...
+          include: "flutter_web_build.zip" # ...except the zip file
+
       - name: Upload Web Build to Release
         if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
