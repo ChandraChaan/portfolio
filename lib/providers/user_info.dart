@@ -1,9 +1,6 @@
 // import 'dart:html' as html;
 
-import 'dart:js';
-
 import 'package:client_information/client_information.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

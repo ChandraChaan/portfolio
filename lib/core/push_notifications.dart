@@ -4,8 +4,6 @@ import 'package:portfoli_web/chat_game/chat_mini_game.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import '../admin/admin_screen.dart';
-import 'home_page.dart';
 import '../providers/user_info.dart';
 import '../utils/notification_dailog.dart';
 
