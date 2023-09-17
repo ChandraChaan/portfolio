@@ -6,6 +6,7 @@ class UserRecord {
   String systemName;
   String browserName;
   String address;
+  String token;
   double? deviceMemory;
   double? latitude;
   double? longitude;
@@ -24,6 +25,7 @@ class UserRecord {
   UserRecord({
     required this.id,
     required this.deviceTypeName,
+    required this.token,
     required this.systemName,
     required this.browserName,
     required this.address,
@@ -48,6 +50,7 @@ class UserRecord {
     return UserRecord(
       id: snapshot.id,
       deviceTypeName: data['device_type'],
+      token: data['token_id'],
       systemName: data['system_name'],
       browserName: data['browser_name'],
       address: data['address'],
@@ -72,6 +75,7 @@ class UserRecord {
     return {
       'device_type': deviceTypeName,
       'system_name': systemName,
+      'token_id': token,
       'browser_name': browserName,
       'address': address,
       'ram_memory': deviceMemory,

@@ -157,6 +157,7 @@ class UserInfo extends ChangeNotifier {
     prefs.setString('deviceTypeName', deviceTypeName);
     prefs.setString('browserName', browserName);
     prefs.setString('systemName', systemName);
+    prefs.setString('token_id', tokenFirebqse.toString());
     prefs.setString('address', address.toString());
     prefs.setDouble('deviceMemory', deviceMemory);
     prefs.setDouble('latitude', latitude);
@@ -255,7 +256,11 @@ class UserInfo extends ChangeNotifier {
   String? tokenFirebqse;
 
   insertToeken(String? tok) {
+    print('token is there');
     tokenFirebqse = tok;
+    print('token is assigning and $tokenFirebqse');
+    updateUserDeviceInfo();
+    saveData();
     notifyListeners();
   }
 
@@ -475,6 +480,7 @@ class UserInfo extends ChangeNotifier {
       print('Updating existing user record in Firestore...');
       userRecord.deviceTypeName = deviceTypeName;
       userRecord.systemName = systemName;
+      userRecord.token = tokenFirebqse ?? 'no';
       userRecord.browserName = browserName;
       userRecord.address = address.toString();
       userRecord.deviceMemory = deviceMemory;
@@ -493,7 +499,8 @@ class UserInfo extends ChangeNotifier {
       userRecord.date = DateTime.now().toString();
 
       await repository.updateRecord(userRecord);
-    } else {
+    }
+    else {
       print('Creating new user record in Firestore...');
       final newRecord = UserRecord(
         id: deviceId.isEmpty
@@ -501,6 +508,7 @@ class UserInfo extends ChangeNotifier {
             : deviceId,
         deviceTypeName: deviceTypeName,
         systemName: systemName,
+        token: tokenFirebqse ?? 'no',
         browserName: browserName,
         address: address.toString(),
         deviceMemory: deviceMemory,
@@ -556,6 +564,7 @@ class UserInfo extends ChangeNotifier {
       themeColor = color1 != null ? Color(color1) : themeColor;
       oppositeColor = color2 != null ? Color(color2) : oppositeColor;
       seenAdminPage = prefs.getString('seenAdminPage') ?? seenAdminPage;
+      tokenFirebqse = prefs.getString('token_id') ?? tokenFirebqse;
       seenResumePage = prefs.getString('seenResumePage') ?? seenResumePage;
       seenChatPage = prefs.getString('seenChatPage') ?? seenChatPage;
       themeStringColor = prefs.getString('themeStringColor') ?? themeStringColor;

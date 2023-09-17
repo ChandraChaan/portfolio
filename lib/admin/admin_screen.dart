@@ -4,9 +4,7 @@ import 'package:portfoli_web/admin/send_notification.dart';
 import 'package:portfoli_web/admin/user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:portfoli_web/utils/font_style.dart';
-import 'package:provider/provider.dart';
 
-import '../providers/user_info.dart';
 import '../providers/user_repo.dart';
 
 class AdminData extends StatefulWidget {
@@ -26,7 +24,10 @@ class _AdminDataState extends State<AdminData> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).indicatorColor,
         centerTitle: true,
-        title: const Text('User Data', style: FontStyles.heading5,),
+        title: const Text(
+          'User Data',
+          style: FontStyles.heading5,
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream:
@@ -50,7 +51,7 @@ class _AdminDataState extends State<AdminData> {
               systemName: userRecord.systemName,
               date: formatDate(userRecord.date),
               browserName: userRecord.browserName,
-              tokenFcm: '',
+              tokenFcm: userRecord.token,
               battery: userRecord.batteryStatus,
               wifi: userRecord.wifiNetworkStatus,
               sound: userRecord.musicMode ? 'true' : 'false',
@@ -60,7 +61,9 @@ class _AdminDataState extends State<AdminData> {
               seenFullResume: userRecord.seenFullResume,
               seenAdminScreen: userRecord.seenAdminScreen,
               onPre: () {
-                // showNotificationPopup(context, userRecord.tokenFcm);
+                // if (userRecord.token.isNotEmpty && userRecord.token.toString() == 'no') {
+                  showNotificationPopup(context, userRecord.token);
+                // }
               },
             );
           }).toList();
@@ -74,11 +77,11 @@ class _AdminDataState extends State<AdminData> {
     );
   }
 
-  void showNotificationPopup(BuildContext context, String tokenF) {
+  void showNotificationPopup(BuildContext context, String? tokenF) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return SendNotificationPopup(ftkn: tokenF);
+        return SendNotificationPopup(ftkn: tokenF ?? '');
       },
     );
   }

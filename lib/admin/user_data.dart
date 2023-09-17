@@ -42,7 +42,6 @@ class UserDataScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -56,14 +55,23 @@ class UserDataScreen extends StatelessWidget {
           ),
         ],
         gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  if (seenChatScreen != '0') Colors.blue.shade600 else Colors.grey.shade400,
-                  if (seenAdminScreen != '0') Colors.deepPurple.shade600 else Colors.grey.shade400,
-                  if (seenFullResume != '0') Colors.amber.shade600 else Colors.grey.shade400,
-                ],
-              ),
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            if (seenChatScreen != '0')
+              Colors.blue.shade600
+            else
+              Colors.grey.shade400,
+            if (seenAdminScreen != '0')
+              Colors.deepPurple.shade600
+            else
+              Colors.grey.shade400,
+            if (seenFullResume != '0')
+              Colors.amber.shade600
+            else
+              Colors.grey.shade400,
+          ],
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -90,7 +98,9 @@ class UserDataScreen extends StatelessWidget {
                     ? Icons.brightness_2
                     : Icons.sunny),
             _buildChip(label: date, icon: Icons.calendar_today),
-            if (tokenFcm.toString().isNotEmpty && tokenFcm.toString() != 'null')
+            if (tokenFcm.toString().isNotEmpty &&
+                tokenFcm.toString() != 'null' &&
+                tokenFcm.toString() != 'no')
               ElevatedButton(
                 onPressed: onPre,
                 child: const Text('Send Message'),
@@ -128,6 +138,7 @@ class UserDataScreen extends StatelessWidget {
               const SizedBox(width: 8.0),
               Text(
                 label ?? '',
+                maxLines: 4,
                 style: TextStyle(
                   color: darkTheme.toString() == 'true'
                       ? Colors.white
