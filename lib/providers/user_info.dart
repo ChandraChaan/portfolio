@@ -1,6 +1,6 @@
-// import 'dart:html' as html;
+import 'dart:html' as html;
 
-import 'package:client_information/client_information.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -383,14 +383,16 @@ class UserInfo extends ChangeNotifier {
     await _updateBatteryStatus();
     await _updateWifiNetworkStatus();
     _updateDeviceType();
-    // _updateBrowserName();
+    _updateBrowserName();
     saveData();
     notifyListeners();
   }
 
   Future<void> _updateScreenInfo() async {
-    ClientInformation info = await ClientInformation.fetch();
-    systemName = info.osName ?? '';
+    screenWidth = html.window.screen?.width ?? screenWidth;
+    screenHeight = html.window.screen?.height ?? screenHeight;
+    deviceMemory = html.window.navigator.deviceMemory as double? ?? deviceMemory;
+    systemName = html.window.navigator.platform ?? '';
   }
 
   Future<void> _updateBatteryStatus() async {
@@ -422,26 +424,26 @@ class UserInfo extends ChangeNotifier {
     }
   }
 
-  // void _updateBrowserName() {
-  //   String userAgent = html.window.navigator.userAgent;
-  //   if (userAgent.contains('Chrome')) {
-  //     browserName = 'Chrome';
-  //   } else if (userAgent.contains('Firefox')) {
-  //     browserName = 'Firefox';
-  //   } else if (userAgent.contains('Safari')) {
-  //     browserName = 'Safari';
-  //   } else if (userAgent.contains('Opera') || userAgent.contains('OPR')) {
-  //     browserName = 'Opera';
-  //   } else if (userAgent.contains('Edge')) {
-  //     browserName = 'Edge';
-  //   } else if (userAgent.contains('MSIE') || userAgent.contains('Trident/')) {
-  //     browserName = 'Internet Explorer';
-  //   } else {
-  //     browserName = userAgent;
-  //   }
-  // }
+  void _updateBrowserName() {
+    String userAgent = html.window.navigator.userAgent;
+    if (userAgent.contains('Chrome')) {
+      browserName = 'Chrome';
+    } else if (userAgent.contains('Firefox')) {
+      browserName = 'Firefox';
+    } else if (userAgent.contains('Safari')) {
+      browserName = 'Safari';
+    } else if (userAgent.contains('Opera') || userAgent.contains('OPR')) {
+      browserName = 'Opera';
+    } else if (userAgent.contains('Edge')) {
+      browserName = 'Edge';
+    } else if (userAgent.contains('MSIE') || userAgent.contains('Trident/')) {
+      browserName = 'Internet Explorer';
+    } else {
+      browserName = userAgent;
+    }
+  }
 
-  // api call
+
 
   int getColorFromColorRepresentation(String colorRepresentation) {
     // Remove unnecessary parts from the string
@@ -536,7 +538,6 @@ class UserInfo extends ChangeNotifier {
   }
 
   initFun() async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     deviceId = prefs.getString('deviceId') ?? deviceId;
     await updateDeviceInfo();
