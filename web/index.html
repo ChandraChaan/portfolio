@@ -29,23 +29,23 @@
 
   <!-- Service Worker version -->
   <script>
-    // The value below is injected by flutter build, do not touch.
     var serviceWorkerVersion = null;
   </script>
   <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" defer></script>
   <script>
-  window.OneSignal = window.OneSignal || [];
-  OneSignal.push(function() {
-    OneSignal.init({
-      appId: "835471f1-af1b-4922-b560-7eba464b0ef5",
-      safari_web_id: "web.onesignal.auto.4a2f472e-2de1-469e-8f55-0b3384f6ae6c",
-      notifyButton: {
-        enable: true,
-      },
-      subdomainName: "chandrachaan",
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "835471f1-af1b-4922-b560-7eba464b0ef5",
+        safari_web_id: "web.onesignal.auto.4a2f472e-2de1-469e-8f55-0b3384f6ae6c",
+        notifyButton: {
+          enable: true,
+        },
+        subdomainName: "chandrachaan",
+      });
     });
-  });
-</script>
+  </script>
+
   <!-- Flutter initialization scripts -->
   <script src="flutter.js" defer=""></script>
 
@@ -58,21 +58,16 @@
   <!-- Custom scripts for splash screen and progress bar -->
   <script src="splash/splash.js"></script>
   <script src="progress.js"></script>
-
 </head>
 
 <body>
 <!-- Loading message -->
 <div class="loading">Loading...</div>
 
-</div>
-
 <!-- Main Dart script -->
 <script src="main.dart.js" type="application/javascript"></script>
 <script>
-    // Event listener for when the page finishes loading
     window.addEventListener('load', function(ev) {
-      // Download main.dart.js and initialize Flutter engine
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
@@ -83,6 +78,19 @@
         return appRunner.runApp();
       });
     });
+  </script>
+
+<!-- Service Worker Registration -->
+<script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then(function(registration) {
+        console.log('Service Worker Registered with scope:', registration.scope);
+      })
+      .catch(function(error) {
+        console.error('Service Worker Registration failed:', error);
+      });
+    }
   </script>
 </body>
 
