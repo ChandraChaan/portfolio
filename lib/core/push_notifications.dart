@@ -100,7 +100,7 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
 
   void showWebNotification(RemoteNotification notification) {
     try {
-      var webNotification = html.Notification(notification.title!, body: notification.body);
+      var webNotification = html.Notification(notification.title.toString(), body: notification.body);
     } catch (error) {
       print('Error showing web notification: $error');
     }

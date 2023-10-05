@@ -67,8 +67,7 @@ class _ChatGameState extends State<ChatGame>
   Widget build(BuildContext context) {
     return Consumer<UserInfo>(
       builder: (context, provider, child) {
-        provider.ctx = context;
-        provider.chatInit();
+        provider.chatInit(context);
         return Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: PreferredSize(

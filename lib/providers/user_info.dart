@@ -13,6 +13,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:portfoli_web/providers/user_repo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../admin/admin_screen.dart';
 import '../animation_route/navigate_newpage.dart';
 import '../chat_game/message_domain.dart';
 import '../core/home_page.dart';
@@ -35,11 +36,11 @@ class UserInfo extends ChangeNotifier {
   final Connectivity _connectivity = Connectivity();
 
   String deviceTypeName = 'Unknown';
-  int screenWidth =0;
-  int screenHeight =0;
-  double deviceMemory=0;
-  String systemName='';
-  String browserName='';
+  int screenWidth = 0;
+  int screenHeight = 0;
+  double deviceMemory = 0;
+  String systemName = '';
+  String browserName = '';
   String batteryStatus = 'Unknown';
   String wifiNetworkStatus = 'Unknown';
   String seenChatPage = '0';
@@ -396,7 +397,8 @@ class UserInfo extends ChangeNotifier {
   Future<void> _updateScreenInfo() async {
     screenWidth = html.window.screen?.width ?? screenWidth;
     screenHeight = html.window.screen?.height ?? screenHeight;
-    deviceMemory = html.window.navigator.deviceMemory as double? ?? deviceMemory;
+    deviceMemory =
+        html.window.navigator.deviceMemory as double? ?? deviceMemory;
     systemName = html.window.navigator.platform ?? '';
   }
 
@@ -417,7 +419,7 @@ class UserInfo extends ChangeNotifier {
 
   void _updateDeviceType() {
     if (screenWidth != 0) {
-      if (screenWidth< 600) {
+      if (screenWidth < 600) {
         deviceTypeName = 'Mobile';
       } else if (screenWidth < 1200) {
         deviceTypeName = 'Tablet';
@@ -447,8 +449,6 @@ class UserInfo extends ChangeNotifier {
       browserName = userAgent;
     }
   }
-
-
 
   int getColorFromColorRepresentation(String colorRepresentation) {
     // Remove unnecessary parts from the string
@@ -499,8 +499,7 @@ class UserInfo extends ChangeNotifier {
       userRecord.date = DateTime.now().toString();
 
       await repository.updateRecord(userRecord);
-    }
-    else {
+    } else {
       print('Creating new user record in Firestore...');
       final newRecord = UserRecord(
         id: deviceId.isEmpty
@@ -554,8 +553,7 @@ class UserInfo extends ChangeNotifier {
     getToken();
     if (deviceId.isEmpty) {
       updateUserDeviceInfo();
-    }
-    else {
+    } else {
       // Retrieving the int value of the Material color
       int? color1 = prefs.getInt('themeColor');
       int? color2 = prefs.getInt('oppositeColor');
@@ -567,7 +565,8 @@ class UserInfo extends ChangeNotifier {
       tokenFirebqse = prefs.getString('token_id') ?? tokenFirebqse;
       seenResumePage = prefs.getString('seenResumePage') ?? seenResumePage;
       seenChatPage = prefs.getString('seenChatPage') ?? seenChatPage;
-      themeStringColor = prefs.getString('themeStringColor') ?? themeStringColor;
+      themeStringColor =
+          prefs.getString('themeStringColor') ?? themeStringColor;
       themeLightMode = prefs.getBool('themeLightMode') ?? themeLightMode;
       deviceTypeName = prefs.getString('deviceTypeName') ?? deviceTypeName;
       browserName = prefs.getString('browserName') ?? browserName;
@@ -579,7 +578,8 @@ class UserInfo extends ChangeNotifier {
       screenWidth = prefs.getInt('screenWidth') ?? screenWidth;
       screenHeight = prefs.getInt('screenHeight') ?? screenHeight;
       batteryStatus = prefs.getString('batteryStatus') ?? batteryStatus;
-      wifiNetworkStatus = prefs.getString('wifiNetworkStatus') ?? wifiNetworkStatus;
+      wifiNetworkStatus =
+          prefs.getString('wifiNetworkStatus') ?? wifiNetworkStatus;
     }
   }
 
@@ -640,8 +640,7 @@ class UserInfo extends ChangeNotifier {
         rNumber = int.parse(userGivenText);
         rText = rNumber.toString();
         showTable = true;
-      }
-      else {
+      } else {
         List<String> name = userGivenText.split(' ');
         if (name[0] == 'create') {
           if (name.contains('container')) {
@@ -653,14 +652,15 @@ class UserInfo extends ChangeNotifier {
           } else {
             rText = "I didn't get";
           }
-        }
-        else if (name[0] == 'open') {
+        } else if (name[0] == 'open') {
           if (name.contains('admin')) {
             rText = 'Opened...';
             seenAdminPage = '1';
             saveData();
             updateUserDeviceInfo();
-            Navigator.of(ctx!).push(AdminPageRoot());
+            // Navigator.of(ctx!).push(AdminPageRoot());
+            Navigator.of(ctx!).push(
+                MaterialPageRoute(builder: (context) => const AdminData()));
           } else if (name.contains('login')) {
             rText = 'Opened...';
 
@@ -675,12 +675,10 @@ class UserInfo extends ChangeNotifier {
           } else {
             rText = "I didn't get";
           }
-        }
-        else if (name[0] == 'play') {
+        } else if (name[0] == 'play') {
           rText = 'Here we go...';
           songName = await playVideo(userText) ?? '';
-        }
-        else if (name.contains('show') &&
+        } else if (name.contains('show') &&
             name.contains('images') &&
             name.contains('of')) {
           // Extract the keyword after 'of'
@@ -730,7 +728,8 @@ class UserInfo extends ChangeNotifier {
     notifyListeners();
   }
 
-  chatInit() {
+  chatInit(BuildContext context) {
+    ctx = context;
     selectedIndex = filteredSuggestions.length - 1;
     chatInputController.addListener(filterSuggestions);
   }
