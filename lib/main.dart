@@ -59,7 +59,7 @@ class RoleApp extends StatelessWidget {
       title: 'Curriculum Vitae',
       theme: _buildThemeData(themeMode),
       debugShowCheckedModeBanner: false,
-      home: InvitationScreen(),
+      home: const PushNotificationApp(),
     );
   }
 }
