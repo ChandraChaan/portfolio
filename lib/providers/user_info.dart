@@ -17,6 +17,7 @@ import '../admin/admin_screen.dart';
 import '../animation_route/navigate_newpage.dart';
 import '../chat_game/message_domain.dart';
 import '../core/home_page.dart';
+import '../invitation_srceen/invitation_screen.dart';
 import '../utils/constants.dart';
 import '../utils/getReplayList.dart';
 
@@ -661,18 +662,29 @@ class UserInfo extends ChangeNotifier {
             // Navigator.of(ctx!).push(AdminPageRoot());
             Navigator.of(ctx!).push(
                 MaterialPageRoute(builder: (context) => const AdminData()));
-          } else if (name.contains('login')) {
+          }
+          else if (name.contains('login')) {
             rText = 'Opened...';
 
             Navigator.of(ctx!).push(AuthScreenRoute());
-          } else if (name.contains('resume')) {
+          }
+          else if (name.contains('resume')) {
             rText = 'Opening...';
             seenResumePage = '1';
             saveData();
             updateUserDeviceInfo();
             Navigator.of(ctx!).push(
                 MaterialPageRoute(builder: (context) => const HomePage()));
-          } else {
+          }
+          else if (name.contains('invi')) {
+            rText = 'Opening...';
+            seenResumePage = '1';
+            saveData();
+            updateUserDeviceInfo();
+            Navigator.of(ctx!).push(
+                MaterialPageRoute(builder: (context) => const InvitationScreen()));
+          }
+          else {
             rText = "I didn't get";
           }
         } else if (name[0] == 'play') {
