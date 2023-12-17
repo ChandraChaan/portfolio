@@ -593,7 +593,6 @@ class UserInfo extends ChangeNotifier {
 
   String userText = "Type Something";
   String replyTest = "See The Result";
-  bool showTable = false;
   bool container = false;
   bool circle = false;
   int rNumber = 0;
@@ -626,7 +625,6 @@ class UserInfo extends ChangeNotifier {
       String inputText = userGivenText.toLowerCase();
       List<String> listImages = [];
       String songName = '';
-      showTable = false;
       container = false;
       circle = false;
       addItemToList(Messages(
@@ -639,8 +637,12 @@ class UserInfo extends ChangeNotifier {
       String? rText;
       if (userGivenText.isNumeric) {
         rNumber = int.parse(userGivenText);
-        rText = rNumber.toString();
-        showTable = true;
+        List<String> reText = ['This is $userText table\n\n'];
+        for (int a = 1; a < 11; a++) {
+          reText.add(
+              '$userText x $a = ${(a * rNumber).toString()}\n${(a == 10) ? '\n' : ''}');
+        }
+        rText = reText.join('').toString();
       } else {
         List<String> name = userGivenText.split(' ');
         if (name[0] == 'create') {
@@ -662,29 +664,25 @@ class UserInfo extends ChangeNotifier {
             // Navigator.of(ctx!).push(AdminPageRoot());
             Navigator.of(ctx!).push(
                 MaterialPageRoute(builder: (context) => const AdminData()));
-          }
-          else if (name.contains('login')) {
+          } else if (name.contains('login')) {
             rText = 'Opened...';
 
             Navigator.of(ctx!).push(AuthScreenRoute());
-          }
-          else if (name.contains('resume')) {
+          } else if (name.contains('resume')) {
             rText = 'Opening...';
             seenResumePage = '1';
             saveData();
             updateUserDeviceInfo();
             Navigator.of(ctx!).push(
                 MaterialPageRoute(builder: (context) => const HomePage()));
-          }
-          else if (name.contains('invi')) {
+          } else if (name.contains('invi')) {
             rText = 'Opening...';
             seenResumePage = '1';
             saveData();
             updateUserDeviceInfo();
-            Navigator.of(ctx!).push(
-                MaterialPageRoute(builder: (context) => const InvitationScreen()));
-          }
-          else {
+            Navigator.of(ctx!).push(MaterialPageRoute(
+                builder: (context) => const InvitationScreen()));
+          } else {
             rText = "I didn't get";
           }
         } else if (name[0] == 'play') {
