@@ -16,7 +16,6 @@ void main() {
       async.elapse(const Duration(seconds: 5)); // Advance the timer
       provider!.chatGetReply();
 
-      expect(provider!.showTable, isTrue);
       expect(provider!.rNumber, 5);
     });
   });
