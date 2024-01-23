@@ -5,7 +5,7 @@ import '../chat_game/chat_mini_game.dart';
 import '../admin/admin_screen.dart';
 
 class ChatGameRoute extends CupertinoPageRoute {
-  ChatGameRoute() : super(builder: (BuildContext context) => ChatGame());
+  ChatGameRoute() : super(builder: (BuildContext context) => const ChatGame());
 
   // OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
   @override
@@ -17,14 +17,14 @@ class ChatGameRoute extends CupertinoPageRoute {
           scale: animation,
           child: FadeTransition(
             opacity: animation,
-            child:  ChatGame(),
+            child:  const ChatGame(),
           ),
         ));
   }
 }
 
 class AdminPageRoot extends CupertinoPageRoute {
-  AdminPageRoot() : super(builder: (BuildContext context) => AdminData());
+  AdminPageRoot() : super(builder: (BuildContext context) => const AdminData());
 
   // OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
   @override

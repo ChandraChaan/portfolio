@@ -6,7 +6,7 @@ class TypewriterTextAnimation extends StatefulWidget {
   final Duration duration;
   final BoxConstraints? constraints;
 
-  const TypewriterTextAnimation({
+  const TypewriterTextAnimation({super.key, 
     required this.text,
     required this.duration,
     this.constraints,

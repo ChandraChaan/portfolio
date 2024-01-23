@@ -12,7 +12,7 @@ Drawer drawerMobile(BuildContext context) {
   );
 }
 class SideBarUI extends StatelessWidget {
-  const SideBarUI({Key? key});
+  const SideBarUI({super.key});
 
   @override
   Widget build(BuildContext context) {

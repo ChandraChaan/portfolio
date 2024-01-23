@@ -8,7 +8,7 @@ import 'invitation_srceen/invitation_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeFirebase();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 Future<void> initializeFirebase() async {
@@ -47,8 +47,9 @@ class RoleApp extends StatelessWidget {
       primaryColor: themeMode.themeLightMode ? Colors.black : Colors.white,
       indicatorColor: themeMode.themeColor,
       focusColor: themeMode.oppositeColor,
-      backgroundColor: themeMode.themeLightMode ? Colors.white : Colors.black,
       cardColor: themeMode.themeLightMode ? Colors.white : Colors.black,
+      backgroundColor: themeMode.themeLightMode ? Colors.white : Colors.black,
+      // colorScheme: ColorScheme(background: themeMode.themeLightMode ? Colors.white : Colors.black, brightness: Brightness., primary: null, onPrimary: null, secondary: null, onSecondary: null, error: null, onError: null, onBackground: null, surface: null, onSurface: null),
     );
   }
 

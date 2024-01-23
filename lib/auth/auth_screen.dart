@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 
+import '../ui/responsive_ui.dart';
+
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
 
@@ -66,12 +68,199 @@ class _AuthScreenState extends State<AuthScreen>
 
   @override
   Widget build(BuildContext context) {
+    return ResponsiveWidget(
+      mobile: mobileForm(),
+      tablet: buildForm(),
+      desktop: webView(context),
+    );
+  }
+
+  Widget webView(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           buildBackgroundImage(context),
           buildForm(),
         ],
+      ),
+    );
+  }
+
+  Widget mobileForm() {
+    return Scaffold(
+      body: Container(
+        // width: MediaQuery.of(context).size.width * 0.35,
+        color: Colors.blue,
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Center(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (_isLoginFormVisible) ...[
+                    if (_riveArtboard != null)
+                      SizedBox(
+                        height: 190,
+                        child: RiveAnimation.asset(
+                          'assets/rive/teddy_bear.riv',
+                          artboard: _riveArtboard!.name,
+                          controllers: [_animationController!],
+                        ),
+                      ),
+                    const SizedBox(height: 16.0),
+                  ],
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Email',
+                      hintStyle: TextStyle(color: Colors.white),
+                      prefixIcon: Icon(Icons.email, color: Colors.white),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                    onChanged: (value) {
+                      if (_riveArtboard != null) {
+                        if (value.isNotEmpty) {
+                          _animationController?.isActive = false;
+                          _animationController = SimpleAnimation('look_down');
+                          _animationController?.isActive = true;
+                        } else {
+                          _animationController?.isActive = false;
+                          _animationController = SimpleAnimation('idle');
+                          _animationController?.isActive = true;
+                        }
+                      }
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
+                  ),
+                  if (!_isLoginFormVisible) ...[
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Phone',
+                        prefixIcon: Icon(Icons.phone, color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your phone number';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Name',
+                        prefixIcon: Icon(Icons.person, color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Age',
+                        prefixIcon:
+                            Icon(Icons.calendar_today, color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your age';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Password',
+                      hintStyle: TextStyle(color: Colors.white),
+                      prefixIcon: Icon(Icons.lock, color: Colors.white),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                    obscureText: true,
+                    onChanged: (value) {
+                      if (_riveArtboard != null) {
+                        if (value.isNotEmpty) {
+                          _animationController?.isActive = false;
+                          _animationController = SimpleAnimation('hands_up');
+                          _animationController?.isActive = true;
+                        } else {
+                          _animationController?.isActive = false;
+                          _animationController = SimpleAnimation('idle');
+                          _animationController?.isActive = true;
+                        }
+                      }
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a password';
+                      }
+                      return null;
+                    },
+                  ),
+                  if (!_isLoginFormVisible) ...[
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Confirm Password',
+                        hintStyle: TextStyle(color: Colors.white),
+                        prefixIcon: Icon(Icons.lock, color: Colors.white),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please confirm your password';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                  const SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // Form is valid, perform login or signup logic
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue),
+                    ),
+                    child: Text(_isLoginFormVisible ? 'Sign In' : 'Sign Up'),
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextButton(
+                    onPressed: _toggleForms,
+                    child: Text(
+                      _isLoginFormVisible ? 'Sign Up' : 'Sign In',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -164,7 +353,8 @@ class _AuthScreenState extends State<AuthScreen>
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: 'Age',
-                        prefixIcon: Icon(Icons.calendar_today, color: Colors.white),
+                        prefixIcon:
+                            Icon(Icons.calendar_today, color: Colors.white),
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       style: const TextStyle(color: Colors.white),
@@ -232,9 +422,9 @@ class _AuthScreenState extends State<AuthScreen>
                     },
                     style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
+                          MaterialStateProperty.all<Color>(Colors.white),
                       foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blue),
+                          MaterialStateProperty.all<Color>(Colors.blue),
                     ),
                     child: Text(_isLoginFormVisible ? 'Sign In' : 'Sign Up'),
                   ),
@@ -293,4 +483,3 @@ class _AuthScreenState extends State<AuthScreen>
     );
   }
 }
-

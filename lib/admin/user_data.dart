@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../providers/user_info.dart';
 
 class UserDataScreen extends StatelessWidget {
   final String systemName;
@@ -21,7 +19,7 @@ class UserDataScreen extends StatelessWidget {
   final String date;
   final Function()? onPre;
 
-  const UserDataScreen({
+  const UserDataScreen({super.key, 
     required this.systemName,
     required this.browserName,
     required this.deviceRam,

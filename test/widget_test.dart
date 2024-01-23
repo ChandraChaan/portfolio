@@ -10,7 +10,7 @@ void main() {
     await tester.pumpWidget(
       ChangeNotifierProvider<UserInfo>(
         create: (_) => UserInfo(), // Or your mock data for testing
-        child: RoleApp(),
+        child: const RoleApp(),
       ),
     );
 

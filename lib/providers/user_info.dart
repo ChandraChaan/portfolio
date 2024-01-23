@@ -1,10 +1,7 @@
 import 'dart:html' as html;
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
@@ -293,7 +290,8 @@ class UserInfo extends ChangeNotifier {
     if (grantedPermission == 1) {
       if (tokenFirebqse == null) {
         return;
-      } else {
+      }
+      else {
         try {
           await http
               .post(

@@ -1,7 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:portfoli_web/ui/responsive_ui.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CommonText extends StatelessWidget {
   final String text;

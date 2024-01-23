@@ -4,7 +4,6 @@ import 'package:portfoli_web/chat_game/youtube_play.dart';
 import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
 import '../animation_route/navigate_newpage.dart';
-import '../auth/auth_screen.dart';
 import '../core/home_page.dart';
 import '../ui/responsive_ui.dart';
 import '../utils/dynamic_image.dart';
@@ -16,7 +15,7 @@ import '../utils/settings_popup.dart';
 class ChatGame extends StatefulWidget {
   final bool hideBackButton;
 
-  ChatGame({Key? key, this.hideBackButton = false}) : super(key: key);
+  const ChatGame({Key? key, this.hideBackButton = false}) : super(key: key);
 
   @override
   State<ChatGame> createState() => _ChatGameState();

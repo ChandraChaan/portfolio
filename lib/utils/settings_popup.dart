@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_info.dart';
@@ -327,7 +326,7 @@ class SectionItem extends StatelessWidget {
   final int selectedIndex;
   final VoidCallback onTap;
 
-  SectionItem({
+  const SectionItem({super.key, 
     required this.title,
     required this.icon,
     required this.index,
@@ -587,7 +586,7 @@ class GeneralSettingsSection extends StatelessWidget {
 class ColorItem extends StatelessWidget {
   final Color color;
 
-  ColorItem({required this.color});
+  const ColorItem({super.key, required this.color});
 
   @override
   Widget build(BuildContext context) {

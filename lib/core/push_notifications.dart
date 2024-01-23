@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:portfoli_web/chat_game/chat_mini_game.dart';
@@ -70,7 +69,7 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChatGame(hideBackButton: true);
+    return const ChatGame(hideBackButton: true);
   }
 
   void messageListener(BuildContext context) {

@@ -5,7 +5,6 @@ import 'package:visibility_detector/visibility_detector.dart';
 import '../../providers/user_info.dart';
 import '../../utils/constants.dart';
 import '../common/drawer_ui.dart';
-import '../common/scroll.dart';
 
 class DesktopHomeUI extends StatelessWidget {
   const DesktopHomeUI({super.key});
