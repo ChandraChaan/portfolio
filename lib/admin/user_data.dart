@@ -12,6 +12,7 @@ import '../utils/font_style.dart';
 class UserDataScreen extends StatelessWidget {
   final String systemName;
   final String browserName;
+  final String docId;
   final String deviceType;
   final String deviceRam;
   final String tokenFcm;
@@ -31,6 +32,7 @@ class UserDataScreen extends StatelessWidget {
     super.key,
     required this.systemName,
     required this.browserName,
+    required this.docId,
     required this.deviceRam,
     required this.deviceType,
     required this.tokenFcm,
@@ -117,10 +119,7 @@ class UserDataScreen extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return ChatPopup(
-                        conversationId:
-                            Provider.of<UserInfo>(context, listen: false)
-                                .deviceId);
+                    return ChatPopup(conversationId: docId);
                   },
                 );
               },
@@ -211,6 +210,7 @@ class _ChatPopupState extends State<ChatPopup> {
         curve: Curves.easeInOut,
       );
     });
+    popupTextController.clear();
     setState(() {});
   }
 
@@ -244,55 +244,112 @@ class _ChatPopupState extends State<ChatPopup> {
                     return Text('Error: ${snapshot.error}');
                   }
                   final documents = snapshot.data!.docs;
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    controller: popupScrollController,
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    itemCount: documents.length,
-                    itemBuilder: (context, index) {
-                      final message = documents[index];
-                      return Column(
-                        crossAxisAlignment: message['left'] == false
-                            ? CrossAxisAlignment.start
-                            : CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 10,
-                            ),
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: message['left'] == true
-                                  ? Theme.of(context)
-                                      .focusColor
-                                      .withOpacity(0.5)
-                                  : Theme.of(context)
-                                      .indicatorColor
-                                      .withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: LayoutBuilder(
-                              builder: (context, constraints) {
-                                return message['left'] == false
-                                    ? SelectableText(
-                                        message['msg'],
-                                  style: FontStyles.body.copyWith(
-                                    color: Theme.of(context).primaryColor,
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          controller: popupScrollController,
+                          padding: const EdgeInsets.symmetric(vertical: 10.0),
+                          itemCount: documents.length,
+                          itemBuilder: (context, index) {
+                            final message = documents[index];
+                            return Column(
+                              crossAxisAlignment: message['left'] == false
+                                  ? CrossAxisAlignment.start
+                                  : CrossAxisAlignment.end,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: 10,
                                   ),
-                                      )
-                                    : SelectableText(
-                                        message['msg'],
-                                        style: FontStyles.body.copyWith(
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      );
-                              },
+                                  padding: const EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    color: message['left'] == true
+                                        ? Theme.of(context)
+                                            .focusColor
+                                            .withOpacity(0.5)
+                                        : Theme.of(context)
+                                            .indicatorColor
+                                            .withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: LayoutBuilder(
+                                    builder: (context, constraints) {
+                                      return message['left'] == false
+                                          ? SelectableText(
+                                              message['msg'],
+                                              style: FontStyles.body.copyWith(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
+                                            )
+                                          : SelectableText(
+                                              message['msg'],
+                                              style: FontStyles.body.copyWith(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
+                                            );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              width: 1.0,
+                              color: Colors.grey,
                             ),
                           ),
-                        ],
-                      );
-                    },
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Focus(
+                                autofocus: true,
+                                child: TextField(
+                                  controller: popupTextController,
+                                  textInputAction: TextInputAction.done,
+                                  onEditingComplete: provider.chatGetReply,
+                                  style: FontStyles.body.copyWith(
+                                      color: Theme.of(context).primaryColor),
+                                  decoration: InputDecoration(
+                                    hintStyle: FontStyles.body.copyWith(
+                                        color: Theme.of(context).primaryColor),
+                                    hintText: 'Type a message',
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                addItemToList(
+                                    Messages(
+                                        msg: popupTextController.text,
+                                        left: false,
+                                        shape: '',
+                                        song: '',
+                                        sender: 'admin',
+                                        images: []
+                                    ),
+                                    context);
+                              },
+                              icon: const Icon(Icons.send_sharp),
+                              color: Theme.of(context).indicatorColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),

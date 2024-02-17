@@ -47,6 +47,7 @@ class _AdminDataState extends State<AdminData> {
             return UserDataScreen(
               address: userRecord.address,
               deviceType: userRecord.deviceTypeName,
+              docId: userRecord.id,
               deviceRam: '${userRecord.deviceMemory ?? '0'}',
               systemName: userRecord.systemName,
               date: formatDate(userRecord.date),
