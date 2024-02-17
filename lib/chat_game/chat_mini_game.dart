@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:portfoli_web/chat_game/text_animation.dart';
 import 'package:portfoli_web/chat_game/youtube_play.dart';
@@ -949,100 +950,51 @@ class _ChatGameState extends State<ChatGame>
         body: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                controller: provider.chatScrollController,
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                itemCount: provider.listMesseges.length,
-                itemBuilder: (context, index) {
-                  final message = provider.listMesseges[index];
-                  return Column(
-                    crossAxisAlignment: message.left
-                        ? CrossAxisAlignment.start
-                        : CrossAxisAlignment.end,
-                    children: [
-                      Column(
-                        crossAxisAlignment: message.left
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('conversations')
+                    .doc(provider.deviceId)
+                    .collection('messages')
+                    .orderBy('timestamp', descending: false)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+                  final documents = snapshot.data!.docs;
+                  return ListView.builder(
+                    controller: provider.chatScrollController,
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    itemCount: documents.length,
+                    itemBuilder: (context, index) {
+                      final message = documents[index];
+                      return Column(
+                        crossAxisAlignment: message['left'] == true
                             ? CrossAxisAlignment.start
                             : CrossAxisAlignment.end,
                         children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 18.0, right: 18.0),
-                            child: Text(
-                              message.sender,
-                              style: TextStyle(
-                                  fontWeight: message.sender == 'admin'
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                  color: message.sender == 'admin'
-                                      ? Theme.of(context).primaryColor
-                                      : null),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 10,
-                            ),
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: message.left
-                                  ? Theme.of(context)
-                                      .focusColor
-                                      .withOpacity(0.5)
-                                  : Theme.of(context)
-                                      .indicatorColor
-                                      .withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Column(
-                              children: [
-                                LayoutBuilder(
-                                  builder: (context, constraints) {
-                                    return message.left
-                                        ? TypewriterTextAnimation(
-                                            text: message.msg,
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            constraints: constraints,
-                                          )
-                                        : SelectableText(
-                                            message.msg,
-                                            style: FontStyles.body.copyWith(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                            ),
-                                          );
-                                  },
+                          Column(
+                            crossAxisAlignment: message['left'] == true
+                                ? CrossAxisAlignment.start
+                                : CrossAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 18.0, right: 18.0),
+                                child: CommonText(
+                                  text:message['sender'],
+                                  style: TextStyle(
+                                      fontWeight: message['sender'] == 'admin'
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                      color: message['sender'] == 'admin'
+                                          ? Theme.of(context).primaryColor
+                                          : null),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (message.shape != 'null')
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 10,
-                          ),
-                          padding: const EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            color: Colors.redAccent,
-                            shape: message.shape == 'circle'
-                                ? BoxShape.circle
-                                : BoxShape.rectangle,
-                            borderRadius: message.shape == 'container'
-                                ? BorderRadius.circular(12)
-                                : null,
-                          ),
-                          height: 150,
-                          width: 150,
-                        ),
-                      if (message.images.isNotEmpty && message.left)
-                        Wrap(
-                          children: [
-                            for (int a = 0; a < message.images.length; a++)
+                              ),
                               Container(
                                 margin: const EdgeInsets.symmetric(
                                   vertical: 10,
@@ -1050,25 +1002,91 @@ class _ChatGameState extends State<ChatGame>
                                 ),
                                 padding: const EdgeInsets.all(15),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
+                                  color: message['left'] == true
+                                      ? Theme.of(context)
+                                          .focusColor
+                                          .withOpacity(0.5)
+                                      : Theme.of(context)
+                                          .indicatorColor
+                                          .withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                height: 150,
-                                width: 150,
-                                child: ImageDynamic(
-                                  img: message.images[a],
+                                child: Column(
+                                  children: [
+                                    LayoutBuilder(
+                                      builder: (context, constraints) {
+                                        return message['left'] == true
+                                            ? TypewriterTextAnimation(
+                                                text: message['msg'],
+                                                duration: const Duration(
+                                                    milliseconds: 500),
+                                                constraints: constraints,
+                                              )
+                                            : SelectableText(
+                                                message['msg'],
+                                                style: FontStyles.body.copyWith(
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                ),
+                                              );
+                                      },
+                                    ),
+                                  ],
                                 ),
-                              )
-                          ],
-                        ),
-                      if ((message.song.toString() != 'null' &&
-                              message.song.isNotEmpty) &&
-                          message.left)
-                        Center(
-                          child: YouTubePlayerWidget(
-                            videoId: message.song,
+                              ),
+                            ],
                           ),
-                        )
-                    ],
+                          if (message['shape'] != 'null')
+                            Container(
+                              margin: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 10,
+                              ),
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                shape: message['shape'] == 'circle'
+                                    ? BoxShape.circle
+                                    : BoxShape.rectangle,
+                                borderRadius: message['shape'] == 'container'
+                                    ? BorderRadius.circular(12)
+                                    : null,
+                              ),
+                              height: 150,
+                              width: 150,
+                            ),
+                          if (message['images'].isNotEmpty && message['left'])
+                            Wrap(
+                              children: [
+                                for (int a = 0; a < message['images'].length; a++)
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                      horizontal: 10,
+                                    ),
+                                    padding: const EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    height: 150,
+                                    width: 150,
+                                    child: ImageDynamic(
+                                      img: message['images'][a],
+                                    ),
+                                  )
+                              ],
+                            ),
+                          if ((message['song'].toString() != 'null' &&
+                                  message['song'].isNotEmpty) && message['song'].toString() != 'songName' &&
+                              message['left'])
+                            Center(
+                              child: YouTubePlayerWidget(
+                                videoId: message['song'],
+                              ),
+                            )
+                        ],
+                      );
+                    },
                   );
                 },
               ),
