@@ -4,7 +4,7 @@ import 'package:portfoli_web/chat_game/chat_mini_game.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import '../providers/user_info.dart';
-// import 'dart:html' as html;
+import 'dart:html' as html;
 
 class PushNotificationApp extends StatefulWidget {
   static const routeName = "/firebase-push";
@@ -79,27 +79,27 @@ class _PushNotificationAppState extends State<PushNotificationApp> {
         print('Message data: ${message.data}');
       }
 
-      // if (message.notification != null) {
-      //   if (html.Notification.permission == "granted") {
-      //     showWebNotification(message.notification!);
-      //   } else if (html.Notification.permission != "denied") {
-      //     html.Notification.requestPermission().then((permission) {
-      //       if (permission == "granted") {
-      //         showWebNotification(message.notification!);
-      //       }
-      //     }).catchError((error) {
-      //       print('Error requesting notification permissions: $error');
-      //     });
-      //   } else {
-      //     print('Notification permission has been denied. Please enable it from browser settings.');
-      //   }
-      // }
+      if (message.notification != null) {
+        if (html.Notification.permission == "granted") {
+          showWebNotification(message.notification!);
+        } else if (html.Notification.permission != "denied") {
+          html.Notification.requestPermission().then((permission) {
+            if (permission == "granted") {
+              showWebNotification(message.notification!);
+            }
+          }).catchError((error) {
+            print('Error requesting notification permissions: $error');
+          });
+        } else {
+          print('Notification permission has been denied. Please enable it from browser settings.');
+        }
+      }
     });
   }
 
   void showWebNotification(RemoteNotification notification) {
     try {
-      // var webNotification = html.Notification(notification.title.toString(), body: notification.body);
+      var webNotification = html.Notification(notification.title.toString(), body: notification.body);
     } catch (error) {
       print('Error showing web notification: $error');
     }
