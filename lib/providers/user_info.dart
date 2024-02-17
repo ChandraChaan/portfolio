@@ -617,7 +617,7 @@ class UserInfo extends ChangeNotifier {
       // Add a new message document to the messages sub-collection
       await conversationRef.collection('messages').add({
         'msg': content,
-        'left': false,
+        'left': sender == 'User' ? false : true,
         'song': 'songName',
         'shape': 'null',
         'sender': sender,

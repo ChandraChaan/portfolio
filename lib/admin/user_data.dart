@@ -202,9 +202,7 @@ class _ChatPopupState extends State<ChatPopup> {
 
   void addItemToList(Messages message, BuildContext context) {
     Provider.of<UserInfo>(context, listen: false).addMessageToConversation(
-        widget.conversationId,
-        message.sender,
-        message.msg);
+        widget.conversationId, message.sender, message.msg);
     // Delay the scroll animation slightly
     Future.delayed(const Duration(milliseconds: 100), () {
       popupScrollController.animateTo(
@@ -233,12 +231,14 @@ class _ChatPopupState extends State<ChatPopup> {
             Flexible(
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
-                    .collection('your_collection_name') // Replace with your collection name
+                    .collection('conversations')
+                    .doc(widget.conversationId)
+                    .collection('messages')
                     .orderBy('timestamp', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   }
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
@@ -251,13 +251,8 @@ class _ChatPopupState extends State<ChatPopup> {
                     itemCount: documents.length,
                     itemBuilder: (context, index) {
                       final message = documents[index];
-                      // Assuming message structure is something like:
-                      // {
-                      //   'msg': 'Your message',
-                      //   'left': true or false
-                      // }
                       return Column(
-                        crossAxisAlignment: message['left']
+                        crossAxisAlignment: message['left'] == false
                             ? CrossAxisAlignment.start
                             : CrossAxisAlignment.end,
                         children: [
@@ -268,25 +263,30 @@ class _ChatPopupState extends State<ChatPopup> {
                             ),
                             padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(
-                              color: message['left']
-                                  ? Theme.of(context).focusColor.withOpacity(0.5)
-                                  : Theme.of(context).indicatorColor.withOpacity(0.5),
+                              color: message['left'] == true
+                                  ? Theme.of(context)
+                                      .focusColor
+                                      .withOpacity(0.5)
+                                  : Theme.of(context)
+                                      .indicatorColor
+                                      .withOpacity(0.5),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: LayoutBuilder(
                               builder: (context, constraints) {
-                                return message['left']
-                                    ? TypewriterTextAnimation(
-                                  text: message['msg'],
-                                  duration: const Duration(milliseconds: 500),
-                                  constraints: constraints,
-                                )
-                                    : SelectableText(
-                                  message['msg'],
+                                return message['left'] == false
+                                    ? SelectableText(
+                                        message['msg'],
                                   style: FontStyles.body.copyWith(
                                     color: Theme.of(context).primaryColor,
                                   ),
-                                );
+                                      )
+                                    : SelectableText(
+                                        message['msg'],
+                                        style: FontStyles.body.copyWith(
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      );
                               },
                             ),
                           ),
@@ -296,7 +296,6 @@ class _ChatPopupState extends State<ChatPopup> {
                   );
                 },
               ),
-
             ),
           ],
         ),
