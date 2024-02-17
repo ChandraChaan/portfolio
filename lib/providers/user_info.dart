@@ -24,7 +24,7 @@ class UserInfo extends ChangeNotifier {
   Color themeColor = Colors.blue;
   Color oppositeColor = Colors.orange;
   String themeStringColor = '';
-  String deviceId = '';
+  String? deviceId;
   bool themeLightMode =
       (DateTime.now().hour > 6 && DateTime.now().hour < 18) ? true : false;
   String user = 'Chandra Obul Reddy';
@@ -153,28 +153,29 @@ class UserInfo extends ChangeNotifier {
   // Storing data
   void saveData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    prefs.setString('deviceTypeName', deviceTypeName);
-    prefs.setString('browserName', browserName);
-    prefs.setString('systemName', systemName);
-    prefs.setString('token_id', tokenFirebqse.toString());
-    prefs.setString('address', address.toString());
-    prefs.setDouble('deviceMemory', deviceMemory);
-    prefs.setDouble('latitude', latitude);
-    prefs.setDouble('latitude', latitude);
-    prefs.setInt('screenWidth', screenWidth);
-    prefs.setInt('screenHeight', screenHeight);
-    prefs.setString('batteryStatus', batteryStatus);
-    prefs.setString('wifiNetworkStatus', wifiNetworkStatus);
-    prefs.setBool('themeLightMode', themeLightMode);
-    prefs.setBool('musicMode', musicMode);
-    prefs.setInt('themeColor', themeColor.value);
-    prefs.setInt('oppositeColor', oppositeColor.value);
-    prefs.setString('themeStringColor', themeStringColor);
-    prefs.setString('seenChatPage', seenChatPage);
-    prefs.setString('seenResumePage', seenResumePage);
-    prefs.setString('seenAdminPage', seenAdminPage);
-    prefs.setString('deviceId', deviceId);
+    if (deviceId != null) {
+      prefs.setString('deviceTypeName', deviceTypeName);
+      prefs.setString('browserName', browserName);
+      prefs.setString('systemName', systemName);
+      prefs.setString('token_id', tokenFirebqse.toString());
+      prefs.setString('address', address.toString());
+      prefs.setDouble('deviceMemory', deviceMemory);
+      prefs.setDouble('latitude', latitude);
+      prefs.setDouble('latitude', latitude);
+      prefs.setInt('screenWidth', screenWidth);
+      prefs.setInt('screenHeight', screenHeight);
+      prefs.setString('batteryStatus', batteryStatus);
+      prefs.setString('wifiNetworkStatus', wifiNetworkStatus);
+      prefs.setBool('themeLightMode', themeLightMode);
+      prefs.setBool('musicMode', musicMode);
+      prefs.setInt('themeColor', themeColor.value);
+      prefs.setInt('oppositeColor', oppositeColor.value);
+      prefs.setString('themeStringColor', themeStringColor);
+      prefs.setString('seenChatPage', seenChatPage);
+      prefs.setString('seenResumePage', seenResumePage);
+      prefs.setString('seenAdminPage', seenAdminPage);
+      prefs.setString('deviceId', deviceId!);
+    }
   }
 
   removeLastNameOnUser() {
@@ -291,8 +292,7 @@ class UserInfo extends ChangeNotifier {
     if (grantedPermission == 1) {
       if (tokenFirebqse == null) {
         return;
-      }
-      else {
+      } else {
         try {
           await http
               .post(
@@ -462,8 +462,6 @@ class UserInfo extends ChangeNotifier {
     return colorValue;
   }
 
-
-
   Future<void> updateUserDeviceInfo() async {
     print('Starting updateUserDeviceInfo function.');
 
@@ -471,9 +469,9 @@ class UserInfo extends ChangeNotifier {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     UserRecord? userRecord;
-    if (deviceId.isNotEmpty) {
+    if (deviceId != null) {
       print('Fetching user record from Firestore...');
-      userRecord = await repository.getRecord(deviceId);
+      userRecord = await repository.getRecord(deviceId!);
     } else {
       print('No token found in localStorage. Creating a new user record.');
     }
@@ -504,9 +502,9 @@ class UserInfo extends ChangeNotifier {
     } else {
       print('Creating new user record in Firestore...');
       final newRecord = UserRecord(
-        id: deviceId.isEmpty
+        id: deviceId == null
             ? DateTime.now().millisecondsSinceEpoch.toString()
-            : deviceId,
+            : deviceId!,
         deviceTypeName: deviceTypeName,
         systemName: systemName,
         token: tokenFirebqse ?? 'no',
@@ -529,7 +527,7 @@ class UserInfo extends ChangeNotifier {
       );
       final newDeviceId = await repository.addNewRecord(newRecord);
       deviceId = newDeviceId;
-      prefs.setString('deviceId', deviceId);
+      prefs.setString('deviceId', deviceId!);
     }
     notifyListeners();
   }
@@ -548,12 +546,8 @@ class UserInfo extends ChangeNotifier {
 
   initFun() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    deviceId = prefs.getString('deviceId') ?? deviceId;
-    await updateDeviceInfo();
-    await getPermission();
-    await getUserLocation();
-    getToken();
-    if (deviceId.isEmpty) {
+    deviceId = prefs.getString('deviceId');
+    if (deviceId == null || deviceId!.isEmpty || deviceId == 'null') {
       updateUserDeviceInfo();
     } else {
       // Retrieving the int value of the Material color
@@ -583,6 +577,10 @@ class UserInfo extends ChangeNotifier {
       wifiNetworkStatus =
           prefs.getString('wifiNetworkStatus') ?? wifiNetworkStatus;
     }
+    await updateDeviceInfo();
+    await getPermission();
+    await getUserLocation();
+    getToken();
   }
 
   // Chat mini game
@@ -602,17 +600,17 @@ class UserInfo extends ChangeNotifier {
   final ScrollController chatScrollController = ScrollController();
 
   Future<void> addMessageToConversation(
-      String conversationId,
-      String sender,
-      String content,
-      ) async {
+    String conversationId,
+    String sender,
+    String content,
+  ) async {
     try {
       // Reference to the Firestore instance
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
       // Reference to the conversation document
       DocumentReference conversationRef =
-      firestore.collection('conversations').doc(conversationId);
+          firestore.collection('conversations').doc(conversationId);
 
       // Add a new message document to the messages sub-collection
       await conversationRef.collection('messages').add({
@@ -631,19 +629,18 @@ class UserInfo extends ChangeNotifier {
     }
   }
 
-
-
   void addItemToList(Messages message) {
     listMesseges.add(message);
-    addMessageToConversation(deviceId, message.sender, message.msg);
+    addMessageToConversation(deviceId!, message.sender, message.msg);
     // Delay the scroll animation slightly
-    Future.delayed(const Duration(milliseconds: 100), () {
-      chatScrollController.animateTo(
-        chatScrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    });
+      Future.delayed(const Duration(milliseconds: 100), () {
+        chatScrollController.animateTo(
+          chatScrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      });
+
     notifyListeners();
   }
 
@@ -660,14 +657,15 @@ class UserInfo extends ChangeNotifier {
       String songName = '';
       container = false;
       circle = false;
-      addItemToList(Messages(
+      addItemToList(
+        Messages(
           msg: userText,
           left: false,
           song: songName,
           shape: 'null',
           sender: 'User',
           images: [],
-      ),
+        ),
       );
 
       String? rText;

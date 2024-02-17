@@ -6,6 +6,7 @@ import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
 import '../animation_route/navigate_newpage.dart';
 import '../core/home_page.dart';
+import '../providers/user_repo.dart';
 import '../ui/responsive_ui.dart';
 import '../utils/dynamic_image.dart';
 import '../utils/font_style.dart';
@@ -966,6 +967,7 @@ class _ChatGameState extends State<ChatGame>
                   }
                   final documents = snapshot.data!.docs;
                   return ListView.builder(
+                    shrinkWrap: true,
                     controller: provider.chatScrollController,
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
                     itemCount: documents.length,
@@ -1160,7 +1162,10 @@ class _ChatGameState extends State<ChatGame>
                     ),
                   ),
                   IconButton(
-                    onPressed: provider.chatGetReply,
+                    onPressed: () async {
+                      await provider.chatGetReply();
+                      setState(() {});
+                    },
                     icon: const Icon(Icons.send_sharp),
                     color: Theme.of(context).indicatorColor,
                   ),
