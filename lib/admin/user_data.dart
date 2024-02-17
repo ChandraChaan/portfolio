@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
+import '../chat_game/message_domain.dart';
+import '../chat_game/text_animation.dart';
+import '../chat_game/youtube_play.dart';
+import '../providers/user_info.dart';
+import '../utils/font_style.dart';
 
 class UserDataScreen extends StatelessWidget {
   final String systemName;
@@ -19,7 +27,8 @@ class UserDataScreen extends StatelessWidget {
   final String date;
   final Function()? onPre;
 
-  const UserDataScreen({super.key, 
+  const UserDataScreen({
+    super.key,
     required this.systemName,
     required this.browserName,
     required this.deviceRam,
@@ -103,6 +112,20 @@ class UserDataScreen extends StatelessWidget {
                 onPressed: onPre,
                 child: const Text('Send Message'),
               ),
+            ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ChatPopup(
+                        conversationId:
+                            Provider.of<UserInfo>(context, listen: false)
+                                .deviceId);
+                  },
+                );
+              },
+              child: const Text('View Chat'),
+            ),
           ],
         ),
       ),
@@ -160,5 +183,124 @@ class UserDataScreen extends StatelessWidget {
     } else {
       return Icons.mobile_off;
     }
+  }
+}
+
+class ChatPopup extends StatefulWidget {
+  final String conversationId;
+
+  ChatPopup({required this.conversationId});
+
+  @override
+  State<ChatPopup> createState() => _ChatPopupState();
+}
+
+class _ChatPopupState extends State<ChatPopup> {
+  final ScrollController popupScrollController =
+      ScrollController(initialScrollOffset: 2.0);
+  TextEditingController popupTextController = TextEditingController();
+
+  void addItemToList(Messages message, BuildContext context) {
+    Provider.of<UserInfo>(context, listen: false).addMessageToConversation(
+        widget.conversationId,
+        message.sender,
+        message.msg);
+    // Delay the scroll animation slightly
+    Future.delayed(const Duration(milliseconds: 100), () {
+      popupScrollController.animateTo(
+        popupScrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    });
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<UserInfo>(context, listen: false);
+    return Dialog(
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Chat Messages',
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10.0),
+            Flexible(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('your_collection_name') // Replace with your collection name
+                    .orderBy('timestamp', descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  }
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+                  final documents = snapshot.data!.docs;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    controller: popupScrollController,
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    itemCount: documents.length,
+                    itemBuilder: (context, index) {
+                      final message = documents[index];
+                      // Assuming message structure is something like:
+                      // {
+                      //   'msg': 'Your message',
+                      //   'left': true or false
+                      // }
+                      return Column(
+                        crossAxisAlignment: message['left']
+                            ? CrossAxisAlignment.start
+                            : CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 10,
+                            ),
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: message['left']
+                                  ? Theme.of(context).focusColor.withOpacity(0.5)
+                                  : Theme.of(context).indicatorColor.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: LayoutBuilder(
+                              builder: (context, constraints) {
+                                return message['left']
+                                    ? TypewriterTextAnimation(
+                                  text: message['msg'],
+                                  duration: const Duration(milliseconds: 500),
+                                  constraints: constraints,
+                                )
+                                    : SelectableText(
+                                  message['msg'],
+                                  style: FontStyles.body.copyWith(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

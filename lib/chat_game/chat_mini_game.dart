@@ -968,40 +968,65 @@ class _ChatGameState extends State<ChatGame>
                             ? CrossAxisAlignment.start
                             : CrossAxisAlignment.end,
                         children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 10,
-                            ),
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: message.left
-                                  ? Theme.of(context)
-                                      .focusColor
-                                      .withOpacity(0.5)
-                                  : Theme.of(context)
-                                      .indicatorColor
-                                      .withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: LayoutBuilder(
-                              builder: (context, constraints) {
-                                return message.left
-                                    ? TypewriterTextAnimation(
-                                        text: message.msg,
-                                        duration: const Duration(
-                                            milliseconds: 500),
-                                        constraints: constraints,
-                                      )
-                                    : SelectableText(
-                                        message.msg,
-                                        style: FontStyles.body.copyWith(
-                                          color: Theme.of(context)
-                                              .primaryColor,
-                                        ),
-                                      );
-                              },
-                            ),
+                          Column(
+                            crossAxisAlignment: message.left
+                                ? CrossAxisAlignment.start
+                                : CrossAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 18.0, right: 18.0),
+                                child: Text(
+                                  message.sender,
+                                  style: TextStyle(
+                                      fontWeight: message.sender == 'admin'
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                      color: message.sender == 'admin'
+                                          ? Theme.of(context).primaryColor
+                                          : null),
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 10,
+                                ),
+                                padding: const EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  color: message.left
+                                      ? Theme.of(context)
+                                          .focusColor
+                                          .withOpacity(0.5)
+                                      : Theme.of(context)
+                                          .indicatorColor
+                                          .withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Column(
+                                  children: [
+                                    LayoutBuilder(
+                                      builder: (context, constraints) {
+                                        return message.left
+                                            ? TypewriterTextAnimation(
+                                                text: message.msg,
+                                                duration: const Duration(
+                                                    milliseconds: 500),
+                                                constraints: constraints,
+                                              )
+                                            : SelectableText(
+                                                message.msg,
+                                                style: FontStyles.body.copyWith(
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                ),
+                                              );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                           if (message.shape != 'null')
                             Container(
@@ -1025,9 +1050,7 @@ class _ChatGameState extends State<ChatGame>
                           if (message.images.isNotEmpty && message.left)
                             Wrap(
                               children: [
-                                for (int a = 0;
-                                    a < message.images.length;
-                                    a++)
+                                for (int a = 0; a < message.images.length; a++)
                                   Container(
                                     margin: const EdgeInsets.symmetric(
                                       vertical: 10,
@@ -1035,8 +1058,7 @@ class _ChatGameState extends State<ChatGame>
                                     ),
                                     padding: const EdgeInsets.all(15),
                                     decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                     height: 150,
                                     width: 150,
@@ -1066,9 +1088,8 @@ class _ChatGameState extends State<ChatGame>
                     itemCount: provider.filteredSuggestions.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        selected: provider.selectedIndex == index
-                            ? true
-                            : false,
+                        selected:
+                            provider.selectedIndex == index ? true : false,
                         title: CommonText(
                             text: provider.filteredSuggestions[index]),
                         onTap: () {
@@ -1093,8 +1114,8 @@ class _ChatGameState extends State<ChatGame>
                       Expanded(
                         child: CallbackShortcuts(
                           bindings: <ShortcutActivator, VoidCallback>{
-                            const SingleActivator(
-                                LogicalKeyboardKey.arrowUp): () {
+                            const SingleActivator(LogicalKeyboardKey.arrowUp):
+                                () {
                               if (provider.filteredSuggestions.length >
                                   provider.selectedIndex) {
                                 provider.selectedIndex++;
@@ -1103,8 +1124,8 @@ class _ChatGameState extends State<ChatGame>
                                         provider.selectedIndex];
                               }
                             },
-                            const SingleActivator(
-                                LogicalKeyboardKey.arrowDown): () {
+                            const SingleActivator(LogicalKeyboardKey.arrowDown):
+                                () {
                               if (provider.filteredSuggestions.length >
                                   provider.selectedIndex) {
                                 provider.selectedIndex--;
@@ -1124,8 +1145,7 @@ class _ChatGameState extends State<ChatGame>
                                   color: Theme.of(context).primaryColor),
                               decoration: InputDecoration(
                                 hintStyle: FontStyles.body.copyWith(
-                                    color:
-                                        Theme.of(context).primaryColor),
+                                    color: Theme.of(context).primaryColor),
                                 hintText: 'Type a message',
                                 border: InputBorder.none,
                               ),

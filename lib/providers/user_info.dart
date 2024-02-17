@@ -1,5 +1,6 @@
 import 'dart:html' as html;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -299,7 +300,7 @@ class UserInfo extends ChangeNotifier {
                 headers: <String, String>{
                   'Content-Type': 'application/json',
                   'Authorization':
-                      'key=AAAAy2Awy5M:APA91bHy0D-kVL7hR5vWL8M_56uxq_gpSPP6H29Ez7Goi7wIgm9Q1wGQSaE-fbVyF8F76vmfo1-gXYHVLh0TLW5wt5cgokJApoG2yCxf8qXXWhug_nY6HUrWzrmNk1QKhIq_Ebdme_d_'
+                      'key=AAAA0N_AC4k:APA91bFU6iBj84btOP8EA2dLJ0BjyxIFoIpeMwOpX9BaxJ1FZ557Dj7bESkerNBUuCpd8-GX-rsU5k2J3SfT0Wq2iHsDo3Cm6pL7xUEdOnKPCxelnjs7hgyNJHDkd0afPJJ6tOF6XEZ6'
                 },
                 body: json.encode({
                   'to': tokenFirebqse.toString(),
@@ -331,7 +332,7 @@ class UserInfo extends ChangeNotifier {
             headers: <String, String>{
               'Content-Type': 'application/json',
               'Authorization':
-                  'key=AAAAy2Awy5M:APA91bHy0D-kVL7hR5vWL8M_56uxq_gpSPP6H29Ez7Goi7wIgm9Q1wGQSaE-fbVyF8F76vmfo1-gXYHVLh0TLW5wt5cgokJApoG2yCxf8qXXWhug_nY6HUrWzrmNk1QKhIq_Ebdme_d_'
+                  'key=AAAA0N_AC4k:APA91bFU6iBj84btOP8EA2dLJ0BjyxIFoIpeMwOpX9BaxJ1FZ557Dj7bESkerNBUuCpd8-GX-rsU5k2J3SfT0Wq2iHsDo3Cm6pL7xUEdOnKPCxelnjs7hgyNJHDkd0afPJJ6tOF6XEZ6'
             },
             body: json.encode({
               'to': fbaseToken.toString(),
@@ -460,6 +461,8 @@ class UserInfo extends ChangeNotifier {
     // Create and return the Color object
     return colorValue;
   }
+
+
 
   Future<void> updateUserDeviceInfo() async {
     print('Starting updateUserDeviceInfo function.');
@@ -598,9 +601,41 @@ class UserInfo extends ChangeNotifier {
 
   final ScrollController chatScrollController = ScrollController();
 
+  Future<void> addMessageToConversation(
+      String conversationId,
+      String sender,
+      String content,
+      ) async {
+    try {
+      // Reference to the Firestore instance
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Reference to the conversation document
+      DocumentReference conversationRef =
+      firestore.collection('conversations').doc(conversationId);
+
+      // Add a new message document to the messages sub-collection
+      await conversationRef.collection('messages').add({
+        'msg': content,
+        'left': false,
+        'song': 'songName',
+        'shape': 'null',
+        'sender': sender,
+        'images': [],
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      print('Message added to conversation successfully');
+    } catch (e) {
+      print('Error adding message to conversation: $e');
+    }
+  }
+
+
+
   void addItemToList(Messages message) {
     listMesseges.add(message);
-
+    addMessageToConversation(deviceId, message.sender, message.msg);
     // Delay the scroll animation slightly
     Future.delayed(const Duration(milliseconds: 100), () {
       chatScrollController.animateTo(
@@ -630,7 +665,10 @@ class UserInfo extends ChangeNotifier {
           left: false,
           song: songName,
           shape: 'null',
-          images: []));
+          sender: 'User',
+          images: [],
+      ),
+      );
 
       String? rText;
       if (userGivenText.isNumeric) {
@@ -718,6 +756,7 @@ class UserInfo extends ChangeNotifier {
           left: true,
           song: songName,
           shape: shape,
+          sender: 'robot',
           images: listImages));
 
       replyTest = rText ?? "I didn't get";

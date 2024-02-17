@@ -3,8 +3,6 @@ import 'package:portfoli_web/providers/user_info.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/push_notifications.dart';
-import 'invitation_srceen/invitation_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 
