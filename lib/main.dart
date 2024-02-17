@@ -4,23 +4,17 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/push_notifications.dart';
 import 'invitation_srceen/invitation_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await initializeFirebase();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
-Future<void> initializeFirebase() async {
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyCcyArg2tLT6FgAIvfe_mU2Q1DAzGC1gD4",
-      appId: "1:873492171667:web:f210c8d97d4b34f169b666",
-      messagingSenderId: "873492171667",
-      projectId: "rollapp123-6b732",
-    ),
-  );
-}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

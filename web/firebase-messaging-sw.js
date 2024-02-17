@@ -1,14 +1,15 @@
 importScripts('https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.4.1/firebase-messaging.js');
 
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCcyArg2tLT6FgAIvfe_mU2Q1DAzGC1gD4",
-  authDomain: "rollapp123-6b732.firebaseapp.com",
-  projectId: "rollapp123-6b732",
-  storageBucket: "rollapp123-6b732.appspot.com",
-  messagingSenderId: "873492171667",
-  appId: "1:873492171667:web:f210c8d97d4b34f169b666",
-  measurementId: "G-9X1ZNVD6ZY"
+  apiKey: "AIzaSyCn6xImuKu2ywEM2cMeUbRixBGLhaOi11k",
+  authDomain: "rollapp-2c71b.firebaseapp.com",
+  projectId: "rollapp-2c71b",
+  storageBucket: "rollapp-2c71b.appspot.com",
+  messagingSenderId: "897107102601",
+  appId: "1:897107102601:web:3c3dba140ec011e126ef58",
+  measurementId: "G-83YL6H9JGF"
 };
 
 firebase.initializeApp(firebaseConfig);
