@@ -38,7 +38,7 @@ class _ChatGameState extends State<ChatGame>
       duration: const Duration(milliseconds: 1000),
     );
     _chairIconAnimation = Tween<double>(
-      begin: 35.0,
+      begin: 65.0,
       end: 134.0,
     ).animate(CurvedAnimation(
       parent: _chairController,
@@ -858,12 +858,10 @@ class _ChatGameState extends State<ChatGame>
                         builder: (context, child) {
                           return Transform.scale(
                             scale: _chairIconAnimation.value / 35.0,
-                            child: Icon(
-                              widget.hideBackButton
-                                  ? Icons.chair
-                                  : Icons.arrow_back_rounded,
-                              color: Theme.of(context).primaryColor,
-                              size: _chairIconAnimation.value,
+                            child: Image.asset(
+                              'assets/images/logo_chaan.png',
+                              height: _chairIconAnimation.value,
+                              width: _chairIconAnimation.value,
                             ),
                           );
                         },
@@ -987,7 +985,7 @@ class _ChatGameState extends State<ChatGame>
                                 padding: const EdgeInsets.only(
                                     left: 18.0, right: 18.0),
                                 child: CommonText(
-                                  text:message['sender'],
+                                  text: message['sender'],
                                   style: TextStyle(
                                       fontWeight: message['sender'] == 'admin'
                                           ? FontWeight.bold
@@ -1060,7 +1058,9 @@ class _ChatGameState extends State<ChatGame>
                           if (message['images'].isNotEmpty && message['left'])
                             Wrap(
                               children: [
-                                for (int a = 0; a < message['images'].length; a++)
+                                for (int a = 0;
+                                    a < message['images'].length;
+                                    a++)
                                   Container(
                                     margin: const EdgeInsets.symmetric(
                                       vertical: 10,
@@ -1079,7 +1079,8 @@ class _ChatGameState extends State<ChatGame>
                               ],
                             ),
                           if ((message['song'].toString() != 'null' &&
-                                  message['song'].isNotEmpty) && message['song'].toString() != 'songName' &&
+                                  message['song'].isNotEmpty) &&
+                              message['song'].toString() != 'songName' &&
                               message['left'])
                             Center(
                               child: YouTubePlayerWidget(
